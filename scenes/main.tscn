@@ -2,8 +2,10 @@
 
 [ext_resource type="PackedScene" uid="uid://84amswouxexy" path="res://scenes/player.tscn" id="1_o5qli"]
 [ext_resource type="PackedScene" uid="uid://ued1gefky06h" path="res://scenes/enemy.tscn" id="3_sugp2"]
+[ext_resource type="Script" path="res://scenes/main.gd" id="4_main"]
 
 [node name="Main" type="Node2D" unique_id=1100356496]
+script = ExtResource("4_main")
 
 [node name="Ground" type="ColorRect" parent="." unique_id=739260343]
 offset_top = 240.0
@@ -15,3 +17,4 @@ position = Vector2(100, 210)
 
 [node name="Enemy" parent="." unique_id=1046536965 instance=ExtResource("3_sugp2")]
 position = Vector2(600, 210)
+[connection signal="atacou" from="Player" to="." method="_on_player_atacou"]
