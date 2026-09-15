@@ -92,7 +92,7 @@ offset_left = 287.0
 offset_top = 100.0
 offset_right = 423.0
 offset_bottom = 135.0
-text = "Secundária: vazio"
+text = "Arma 2: vazio"
 
 [node name="Acessorio" type="Button" parent="Equipamento"]
 offset_left = 287.0
@@ -110,10 +110,17 @@ offset_bottom = 286.0
 [node name="TituloBau" type="Label" parent="Bau"]
 offset_left = 16.0
 offset_top = 8.0
-offset_right = 380.0
+offset_right = 205.0
 offset_bottom = 34.0
 theme_override_font_sizes/font_size = 20
 text = "Baú"
+
+[node name="Gold" type="Label" parent="Bau"]
+offset_left = 215.0
+offset_top = 12.0
+offset_right = 395.0
+offset_bottom = 36.0
+text = "Gold 0"
 
 [node name="Fechar" type="Button" parent="Bau"]
 offset_left = 414.0
@@ -160,20 +167,36 @@ columns = 7
 [node name="Contagem" type="Label" parent="Bau"]
 offset_left = 15.0
 offset_top = 217.0
-offset_right = 290.0
+offset_right = 160.0
 offset_bottom = 241.0
-text = "0 itens guardados"
+text = "0/0 itens"
+
+[node name="CraftInfo" type="Label" parent="Bau"]
+offset_left = 166.0
+offset_top = 217.0
+offset_right = 484.0
+offset_bottom = 241.0
+clip_text = true
+text = "Fundir 2 iguais + Gold"
 
 [node name="Detalhe" type="Label" parent="Bau"]
 offset_left = 15.0
 offset_top = 243.0
-offset_right = 385.0
+offset_right = 326.0
 offset_bottom = 267.0
 clip_text = true
 text = "Escolha um item do baú."
 
+[node name="Fundir" type="Button" parent="Bau"]
+offset_left = 330.0
+offset_top = 236.0
+offset_right = 407.0
+offset_bottom = 270.0
+disabled = true
+text = "Fundir"
+
 [node name="Equipar" type="Button" parent="Bau"]
-offset_left = 390.0
+offset_left = 410.0
 offset_top = 236.0
 offset_right = 485.0
 offset_bottom = 270.0

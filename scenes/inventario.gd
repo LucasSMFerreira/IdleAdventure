@@ -1,6 +1,7 @@
 extends CanvasLayer
 
 signal equipamento_mudou
+signal craft_concluido
 
 const BOTOES = {
 	"arma": "Arma",
@@ -26,10 +27,21 @@ const CORES = [
 @onready var contagem: Label = $Bau/Contagem
 @onready var detalhe: Label = $Bau/Detalhe
 @onready var equipar_botao: Button = $Bau/Equipar
+@onready var fundir_botao: Button = $Bau/Fundir
+@onready var craft_info: Label = $Bau/CraftInfo
+@onready var gold_label: Label = $Bau/Gold
 
 var selecionado_id = 0
+var tamanho_anterior = Vector2i.ZERO
+var modo_mobile = OS.has_feature("mobile") or OS.has_feature("web_android") or OS.has_feature("web_ios")
 
 func _ready():
+	if not modo_mobile:
+		tamanho_anterior = get_window().size
+		get_window().size = Vector2i(1000, 600)
+		offset = Vector2(0, 300)
+	else:
+		offset = Vector2.ZERO
 	filtro_parte.add_item("Parte")
 	for slot in Itens.SLOTS:
 		filtro_parte.add_item("Arma 2" if slot == "arma_secundaria" else Itens.PARTES[slot])
@@ -44,9 +56,15 @@ func _ready():
 	filtro_andar.item_selected.connect(_filtros_mudaram)
 	so_melhores.toggled.connect(_melhores_mudou)
 	equipar_botao.pressed.connect(_equipar_selecionado)
+	fundir_botao.pressed.connect(_fundir_selecionado)
 	for slot in BOTOES:
 		get_node("Equipamento/" + BOTOES[slot]).pressed.connect(_selecionar_equipado.bind(slot))
+	EstadoJogo.dados_mudaram.connect(_atualizar)
 	_atualizar()
+
+func _exit_tree():
+	if tamanho_anterior != Vector2i.ZERO:
+		get_window().size = tamanho_anterior
 
 func _cor_item(item: Dictionary) -> Color:
 	return CORES[clampi(int(item.get("qualidade", 0)), 0, CORES.size() - 1)]
@@ -74,7 +92,10 @@ func _atualizar_equipados():
 		var botao: Button = get_node("Equipamento/" + BOTOES[slot])
 		var item = EstadoJogo.item_equipado(slot)
 		var titulo = "Arma 2" if slot == "arma_secundaria" else Itens.PARTES[slot]
-		botao.text = "%s: %s" % [titulo, Itens.QUALIDADES[clampi(int(item.get("qualidade", 0)), 0, 3)] if not item.is_empty() else "vazio"]
+		var categoria = Itens.QUALIDADES[clampi(int(item.get("qualidade", 0)), 0, 3)]
+		if not item.is_empty() and int(item.get("qualidade", 0)) == 3:
+			categoria = "Lend.%d%%" % int(item.get("qualidade_pct", 100))
+		botao.text = "%s: %s" % [titulo, categoria if not item.is_empty() else "vazio"]
 		botao.tooltip_text = _descricao(item) if not item.is_empty() else "%s: vazio" % titulo
 		_estilizar(botao, _cor_item(item) if not item.is_empty() else Color(0.35, 0.35, 0.38), not item.is_empty())
 
@@ -95,7 +116,7 @@ func _itens_visiveis() -> Array:
 		for item in visiveis:
 			var chave = "%s_%d" % [item.get("slot", ""), int(item.get("andar", 1))]
 			var anterior = melhores.get(chave, {})
-			if anterior.is_empty() or int(item.get("qualidade", 0)) > int(anterior.get("qualidade", 0)) or (int(item.get("qualidade", 0)) == int(anterior.get("qualidade", 0)) and int(item.get("id", 0)) > int(anterior.get("id", 0))):
+			if anterior.is_empty() or Itens.pontuacao(item) > Itens.pontuacao(anterior) or (Itens.pontuacao(item) == Itens.pontuacao(anterior) and int(item.get("id", 0)) > int(anterior.get("id", 0))):
 				melhores[chave] = item
 		visiveis = melhores.values()
 	visiveis.sort_custom(func(a, b): return int(a.get("id", 0)) > int(b.get("id", 0)))
@@ -113,14 +134,18 @@ func _atualizar_bau():
 		var botao = Button.new()
 		botao.custom_minimum_size = Vector2(62, 56)
 		var parte = Itens.PARTES.get(item.get("slot", ""), "Item")
-		botao.text = "%s\n%s" % [parte.substr(0, 5), Itens.QUALIDADES[clampi(int(item.get("qualidade", 0)), 0, 3)].substr(0, 4)]
+		var categoria = Itens.QUALIDADES[clampi(int(item.get("qualidade", 0)), 0, 3)].substr(0, 4)
+		if int(item.get("qualidade", 0)) == 3:
+			categoria = "%d%%" % int(item.get("qualidade_pct", 100))
+		botao.text = "%s\n%s" % [parte.substr(0, 5), categoria]
 		botao.tooltip_text = _descricao(item)
 		_estilizar(botao, _cor_item(item), int(item.get("id", 0)) == selecionado_id)
 		botao.pressed.connect(_selecionar.bind(int(item.get("id", 0))))
 		grade.add_child(botao)
 	if not existe:
 		selecionado_id = 0
-	contagem.text = "%d itens guardados  |  %d exibidos" % [EstadoJogo.inventario.size(), visiveis.size()]
+	contagem.text = "%d/%d itens" % [visiveis.size(), EstadoJogo.inventario.size()]
+	gold_label.text = "Gold %d" % EstadoJogo.gold
 	_atualizar_detalhe()
 
 func _buscar(id: int) -> Dictionary:
@@ -130,7 +155,7 @@ func _buscar(id: int) -> Dictionary:
 	return {}
 
 func _descricao(item: Dictionary) -> String:
-	return "%s  |  +%d HP  +%d ATK" % [item.get("nome", "Item"), int(item.get("bonus_vida", 0)), int(item.get("bonus_ataque", 0))]
+	return "%s  |  +%d HP  +%d ATK" % [Itens.nome_exibicao(item), int(item.get("bonus_vida", 0)), int(item.get("bonus_ataque", 0))]
 
 func _atualizar_detalhe():
 	var item = _buscar(selecionado_id)
@@ -138,6 +163,20 @@ func _atualizar_detalhe():
 	detalhe.tooltip_text = _descricao(item) if not item.is_empty() else ""
 	equipar_botao.disabled = item.is_empty() or int(EstadoJogo.equipados.get(item.get("slot", ""), 0)) == selecionado_id
 	equipar_botao.text = "Equipado" if not item.is_empty() and equipar_botao.disabled else "Equipar"
+	var custo = Itens.custo_craft(item)
+	var parceiro = EstadoJogo.parceiro_craft(selecionado_id)
+	fundir_botao.disabled = custo == 0 or parceiro.is_empty() or EstadoJogo.gold < custo
+	if item.is_empty():
+		craft_info.text = "Fundir 2 iguais + Gold"
+	elif custo == 0:
+		craft_info.text = "Lendário já está em 100%"
+	elif parceiro.is_empty():
+		craft_info.text = "Precisa outra peça igual"
+	elif EstadoJogo.gold < custo:
+		craft_info.text = "Faltam %d Gold (custa %d)" % [custo - EstadoJogo.gold, custo]
+	else:
+		craft_info.text = "%d Gold: %s" % [custo, "refinar %" if int(item.get("qualidade", 0)) == 3 else Itens.QUALIDADES[int(item.get("qualidade", 0)) + 1]]
+	fundir_botao.tooltip_text = "Funde duas peças da mesma parte, andar e categoria. Custo: %d Gold." % custo
 
 func _selecionar(id: int):
 	selecionado_id = id
@@ -146,11 +185,23 @@ func _selecionar(id: int):
 func _selecionar_equipado(slot: String):
 	var item = EstadoJogo.item_equipado(slot)
 	if not item.is_empty():
+		so_melhores.button_pressed = false
+		filtro_parte.select(0)
+		filtro_qualidade.select(0)
+		filtro_andar.select(0)
 		selecionado_id = int(item.get("id", 0))
 		_atualizar_bau()
 
 func _equipar_selecionado():
 	if EstadoJogo.equipar(selecionado_id):
+		equipamento_mudou.emit()
+		_atualizar()
+
+func _fundir_selecionado():
+	var novo_id = EstadoJogo.craft(selecionado_id)
+	if novo_id > 0:
+		selecionado_id = novo_id
+		craft_concluido.emit()
 		equipamento_mudou.emit()
 		_atualizar()
 

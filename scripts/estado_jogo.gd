@@ -1,5 +1,7 @@
 extends Node
 
+signal dados_mudaram
+
 var caminho_save = "user://idle_adventure.json"
 var maior_fase_liberada = 1
 var andar_escolhido = 1
@@ -33,11 +35,22 @@ func carregar():
 		if nivel == Evolucao.NIVEL_MAXIMO:
 			xp_atual = 0
 		inventario = dados.get("inventario", []) if dados.get("inventario", []) is Array else []
+		for item in inventario:
+			if item is Dictionary:
+				if item.get("slot", "") == "armadura":
+					item["slot"] = "peito"
+					item["nome"] = str(item.get("nome", "Armadura")).replace("Armadura", "Peito")
+				if not item.has("andar"):
+					item["andar"] = clampi(int((int(item.get("nivel", 1)) - 1) / 10) + 1, 1, 10)
+				if int(item.get("qualidade", 0)) == 3 and not item.has("qualidade_pct"):
+					item["qualidade_pct"] = 100
 		var salvos = dados.get("equipados", {})
 		equipados = {"arma": 0, "arma_secundaria": 0, "cabeca": 0, "peito": 0, "pernas": 0, "luvas": 0, "acessorio": 0}
 		if salvos is Dictionary:
 			for slot in equipados:
 				equipados[slot] = int(salvos.get(slot, 0))
+			if equipados["peito"] == 0:
+				equipados["peito"] = int(salvos.get("armadura", 0))
 		proximo_item_id = maxi(int(dados.get("proximo_item_id", 1)), 1)
 
 func salvar():
@@ -65,12 +78,14 @@ func ganhar_xp(valor: int) -> bool:
 	if nivel == Evolucao.NIVEL_MAXIMO:
 		xp_atual = 0
 	salvar()
+	dados_mudaram.emit()
 	return nivel > nivel_anterior
 
 func ganhar_gold(valor: int):
 	if valor > 0:
 		gold += valor
 		salvar()
+		dados_mudaram.emit()
 
 func adicionar_item(item: Dictionary) -> int:
 	if item.is_empty():
@@ -80,22 +95,64 @@ func adicionar_item(item: Dictionary) -> int:
 	proximo_item_id += 1
 	inventario.append(novo)
 	salvar()
+	dados_mudaram.emit()
 	return int(novo["id"])
 
 func equipar(id: int) -> bool:
 	for item in inventario:
-		if int(item.get("id", 0)) == id and equipados.has(item.get("slot", "")):
+		if item is Dictionary and int(item.get("id", 0)) == id and equipados.has(item.get("slot", "")):
 			equipados[item["slot"]] = id
 			salvar()
+			dados_mudaram.emit()
 			return true
 	return false
 
-func item_equipado(slot: String) -> Dictionary:
-	var id = int(equipados.get(slot, 0))
+func item_por_id(id: int) -> Dictionary:
 	for item in inventario:
-		if int(item.get("id", 0)) == id:
+		if item is Dictionary and int(item.get("id", 0)) == id:
 			return item
 	return {}
+
+func parceiro_craft(id: int) -> Dictionary:
+	var alvo = item_por_id(id)
+	if alvo.is_empty() or Itens.custo_craft(alvo) == 0:
+		return {}
+	for item in inventario:
+		if item is Dictionary and int(item.get("id", 0)) != id and int(item.get("id", 0)) not in equipados.values() and item.get("slot", "") == alvo.get("slot", "") and int(item.get("andar", 1)) == int(alvo.get("andar", 1)) and int(item.get("qualidade", 0)) == int(alvo.get("qualidade", 0)):
+			return item
+	return {}
+
+func craft(id: int) -> int:
+	var alvo = item_por_id(id)
+	var parceiro = parceiro_craft(id)
+	var custo = Itens.custo_craft(alvo)
+	if alvo.is_empty() or parceiro.is_empty() or custo == 0 or gold < custo:
+		return 0
+	var qualidade = int(alvo.get("qualidade", 0))
+	var percentual = 0
+	if qualidade == 3:
+		percentual = mini(100, maxi(int(alvo.get("qualidade_pct", 100)), int(parceiro.get("qualidade_pct", 100))) + randi_range(1, 10))
+	else:
+		qualidade += 1
+	var novo = Itens.criar_item(int(alvo.get("andar", 1)), str(alvo.get("slot", "")), qualidade, percentual)
+	if novo.is_empty():
+		return 0
+	var equipado = int(equipados.get(alvo.get("slot", ""), 0)) == id
+	inventario.erase(parceiro)
+	inventario.erase(alvo)
+	gold -= custo
+	novo["id"] = proximo_item_id
+	proximo_item_id += 1
+	inventario.append(novo)
+	if equipado:
+		equipados[novo["slot"]] = int(novo["id"])
+	salvar()
+	dados_mudaram.emit()
+	return int(novo["id"])
+
+func item_equipado(slot: String) -> Dictionary:
+	var id = int(equipados.get(slot, 0))
+	return item_por_id(id)
 
 func bonus_vida() -> int:
 	var bonus = 0
@@ -124,3 +181,4 @@ func liberar_proxima(andar: int, fase: int):
 	else:
 		maior_fase_liberada = maxi(maior_fase_liberada, indice + 1)
 	salvar()
+	dados_mudaram.emit()

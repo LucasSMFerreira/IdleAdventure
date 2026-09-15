@@ -34,4 +34,9 @@ func _iniciar_fase(andar: int, fase: int):
 		get_tree().change_scene_to_file("res://scenes/main.tscn")
 
 func _on_inventario_pressed():
-	add_child(preload("res://scenes/inventario.tscn").instantiate())
+	if get_node_or_null("PainelBau"):
+		return
+	var painel = preload("res://scenes/inventario.tscn").instantiate()
+	painel.name = "PainelBau"
+	add_child(painel)
+	painel.craft_concluido.connect(func(): _mostrar_fases(escolha_andar.selected))

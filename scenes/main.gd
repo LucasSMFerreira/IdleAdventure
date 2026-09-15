@@ -105,7 +105,7 @@ func _on_inimigo_morreu(tipo: String):
 	var item = Itens.gerar_drop(andar_atual, fase_atual, tipo)
 	if not item.is_empty():
 		EstadoJogo.adicionar_item(item)
-		texto_drop.text = "DROP: %s  |  +%d Gold" % [item["nome"], gold_drop]
+		texto_drop.text = "DROP: %s  |  +%d Gold" % [Itens.nome_exibicao(item), gold_drop]
 	_atualizar_xp()
 
 func _atualizar_gold():
@@ -142,6 +142,10 @@ func _on_menu_pressed():
 	get_tree().change_scene_to_file("res://scenes/menu.tscn")
 
 func _on_inventario_pressed():
+	if get_node_or_null("PainelBau"):
+		return
 	var painel = preload("res://scenes/inventario.tscn").instantiate()
+	painel.name = "PainelBau"
 	add_child(painel)
 	painel.connect("equipamento_mudou", _aplicar_status)
+	painel.connect("craft_concluido", _atualizar_gold)
