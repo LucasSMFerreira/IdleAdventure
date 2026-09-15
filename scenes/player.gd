@@ -17,6 +17,7 @@ func _physics_process(_delta):
 func _on_detection_body_entered(body):
 	if body is CharacterBody2D and body.is_in_group("enemy") and not inimigo_perto:
 		alvo = body
+		alvo.tree_exiting.connect(_on_alvo_saiu)
 		inimigo_perto = true
 		_atacar()
 		tempo_ataque.start()
@@ -30,3 +31,10 @@ func _atacar():
 
 func _on_tempo_aviso_timeout():
 	aviso_ataque.hide()
+
+func _on_alvo_saiu():
+	tempo_ataque.stop()
+	tempo_aviso.stop()
+	aviso_ataque.hide()
+	alvo = null
+	inimigo_perto = false
