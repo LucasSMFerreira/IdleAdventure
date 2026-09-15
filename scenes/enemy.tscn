@@ -4,7 +4,7 @@
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_f1574"]
 
-[node name="Enemy" type="CharacterBody2D" unique_id=1046536965]
+[node name="Enemy" type="CharacterBody2D" unique_id=1046536965 groups=["enemy"]]
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=314700448]
 scale = Vector2(0.35, 0.35)
