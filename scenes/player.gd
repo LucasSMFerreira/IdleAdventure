@@ -11,14 +11,22 @@ var vida_atual = vida_maxima
 var derrotado = false
 var inimigo_perto = false
 var alvo: Enemy
+var tempo_passos = 0.0
+var tween_dano: Tween
 
+@onready var visual: Sprite2D = $Visual
 @onready var aviso_ataque: Label = $AvisoAtaque
 @onready var tempo_ataque: Timer = $TempoAtaque
 @onready var tempo_aviso: Timer = $TempoAviso
 
-func _physics_process(_delta):
+func _physics_process(delta):
 	velocity.x = 0.0 if inimigo_perto or derrotado else velocidade
 	move_and_slide()
+	if velocity.x != 0.0:
+		tempo_passos += delta
+		visual.position.y = sin(tempo_passos * 12.0) * 2.0
+	else:
+		visual.position.y = 0.0
 
 func _on_detection_body_entered(body):
 	if body is Enemy and not inimigo_perto and not derrotado:
@@ -32,6 +40,8 @@ func _atacar():
 	if derrotado or not is_instance_valid(alvo):
 		return
 	atacou.emit(alvo)
+	visual.scale = Vector2(0.42, 0.42)
+	create_tween().tween_property(visual, "scale", Vector2(0.35, 0.35), 0.2)
 	aviso_ataque.show()
 	tempo_aviso.start()
 
@@ -40,8 +50,15 @@ func receber_dano(dano: int):
 		return
 	vida_atual = maxi(vida_atual - dano, 0)
 	vida_mudou.emit(vida_atual, vida_maxima)
+	if is_instance_valid(tween_dano) and tween_dano.is_running():
+		tween_dano.kill()
+	visual.modulate = Color(1, 0.25, 0.25)
+	tween_dano = create_tween()
+	tween_dano.tween_property(visual, "modulate", Color(0.45, 0.7, 1), 0.3)
 	if vida_atual == 0:
 		derrotado = true
+		tween_dano.kill()
+		visual.modulate = Color(0.4, 0.4, 0.4)
 		tempo_ataque.stop()
 		tempo_aviso.stop()
 		aviso_ataque.hide()

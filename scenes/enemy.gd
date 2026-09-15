@@ -7,6 +7,7 @@ var vida_maxima = 3
 var vida_atual = vida_maxima
 var alvo: Player
 
+@onready var visual: Sprite2D = $Sprite2D
 @onready var texto_vida: Label = $Vida
 @onready var tempo_ataque: Timer = $TempoAtaque
 
@@ -18,9 +19,13 @@ func receber_dano(dano: int):
 		return
 	vida_atual = maxi(vida_atual - dano, 0)
 	_atualizar_vida()
+	visual.modulate = Color(1, 0.25, 0.25)
+	create_tween().tween_property(visual, "modulate", Color(1, 0.65, 0.45), 0.3)
 	if vida_atual == 0:
 		tempo_ataque.stop()
-		queue_free()
+		var saida = create_tween()
+		saida.tween_property(self, "modulate", Color(1, 1, 1, 0), 0.35)
+		saida.tween_callback(queue_free)
 
 func _on_area_ataque_body_entered(body):
 	if body is Player and not body.derrotado:
@@ -36,6 +41,8 @@ func _on_area_ataque_body_exited(body):
 func _atacar():
 	if vida_atual > 0 and is_instance_valid(alvo) and not alvo.derrotado:
 		atacou.emit(alvo)
+		visual.scale = Vector2(0.42, 0.42)
+		create_tween().tween_property(visual, "scale", Vector2(0.35, 0.35), 0.2)
 
 func _atualizar_vida():
 	texto_vida.text = "HP %d/%d" % [vida_atual, vida_maxima]

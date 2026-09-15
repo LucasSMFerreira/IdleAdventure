@@ -8,6 +8,12 @@
 script = ExtResource("4_main")
 cena_inimigo = ExtResource("3_sugp2")
 
+[node name="Background" type="ColorRect" parent="."]
+offset_right = 1000.0
+offset_bottom = 240.0
+mouse_filter = 2
+color = Color(0.1, 0.2, 0.15, 1)
+
 [node name="Ground" type="ColorRect" parent="." unique_id=739260343]
 offset_top = 240.0
 offset_right = 1000.0

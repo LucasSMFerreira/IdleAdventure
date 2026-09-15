@@ -3,6 +3,7 @@ extends Node2D
 @export var cena_inimigo: PackedScene
 
 @onready var player: Player = $Player
+@onready var background: ColorRect = $Background
 @onready var ground: ColorRect = $Ground
 @onready var texto_fase: Label = $Interface/Fase
 @onready var texto_player: Label = $Interface/VidaPlayer
@@ -42,6 +43,7 @@ func _proxima_fase():
 func _criar_onda():
 	texto_fase.text = "FASE %d  |  CICLO %d" % [fase_atual + 1, ciclo]
 	ground.color = [Color(0.3, 0.55, 0.35), Color(0.65, 0.5, 0.3), Color(0.45, 0.35, 0.65)][fase_atual]
+	background.color = [Color(0.1, 0.2, 0.15), Color(0.25, 0.18, 0.1), Color(0.15, 0.1, 0.25)][fase_atual]
 	for x in ONDAS[fase_atual]:
 		var inimigo: Enemy = cena_inimigo.instantiate()
 		add_child(inimigo)
