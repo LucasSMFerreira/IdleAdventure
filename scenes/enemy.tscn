@@ -21,6 +21,16 @@ offset_right = 58.0
 offset_bottom = -35.0
 theme_override_colors/font_color = Color(1, 0.4, 0.4, 1)
 text = "HP 3/3"
+[node name="BarraVida" type="ProgressBar" parent="."]
+visible = false
+offset_left = -22.0
+offset_top = -39.0
+offset_right = 22.0
+offset_bottom = -34.0
+mouse_filter = 2
+show_percentage = false
+value = 100.0
+
 [node name="AreaAtaque" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AreaAtaque"]

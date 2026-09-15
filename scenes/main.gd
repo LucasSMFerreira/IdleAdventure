@@ -12,6 +12,9 @@ extends Node2D
 @onready var texto_xp: Label = $Interface/Experiencia
 @onready var texto_drop: Label = $Interface/Drop
 @onready var texto_gold: Label = $Interface/Gold
+@onready var barra_vida: ProgressBar = $Interface/BarraVida
+@onready var barra_xp: ProgressBar = $Interface/BarraXP
+@onready var aviso_drop: Timer = $AvisoDrop
 @onready var reinicio: Timer = $Reinicio
 
 var andar_atual = 1
@@ -28,7 +31,19 @@ func _ready():
 	_on_player_vida_mudou(player.vida_atual, player.vida_maxima)
 	_atualizar_xp()
 	_atualizar_gold()
+	_estilizar_barra(barra_vida, Color(0.22, 0.79, 0.48))
+	_estilizar_barra(barra_xp, Color(0.42, 0.72, 1.0))
 	_criar_onda()
+
+func _estilizar_barra(barra: ProgressBar, cor: Color):
+	var fundo = StyleBoxFlat.new()
+	fundo.bg_color = Color(0.06, 0.11, 0.16)
+	fundo.set_corner_radius_all(3)
+	barra.add_theme_stylebox_override("background", fundo)
+	var preenchimento = StyleBoxFlat.new()
+	preenchimento.bg_color = cor
+	preenchimento.set_corner_radius_all(3)
+	barra.add_theme_stylebox_override("fill", preenchimento)
 
 func _physics_process(_delta):
 	if em_derrota or torre_concluida:
@@ -61,7 +76,9 @@ func _avancar():
 	trocando_ciclo = false
 
 func _criar_onda():
-	texto_fase.text = "ANDAR %d/%d  |  FASE %d/%d  |  CICLO %d/%d" % [andar_atual, Progressao.TOTAL_ANDARES, fase_atual, Progressao.FASES_POR_ANDAR, ciclo_atual, Progressao.CICLOS_POR_FASE]
+	texto_fase.text = "ANDAR %d/%d  •  FASE %d/%d  •  CICLO %d/%d" % [andar_atual, Progressao.TOTAL_ANDARES, fase_atual, Progressao.FASES_POR_ANDAR, ciclo_atual, Progressao.CICLOS_POR_FASE]
+	texto_drop.hide()
+	aviso_drop.stop()
 	var cor = Color.from_hsv(float((andar_atual + 2) % 10) / 10.0, 0.45, 0.18 + fase_atual * 0.005)
 	background.color = cor
 	ground.color = cor.lightened(0.4)
@@ -112,7 +129,12 @@ func _on_inimigo_morreu(tipo: String):
 	if not item.is_empty():
 		EstadoJogo.adicionar_item(item)
 		texto_drop.text = "DROP: %s  |  +%d Gold" % [Itens.nome_exibicao(item), gold_drop]
+	texto_drop.show()
+	aviso_drop.start()
 	_atualizar_xp()
+
+func _on_aviso_drop_timeout():
+	texto_drop.hide()
 
 func _atualizar_gold():
 	texto_gold.text = "GOLD %d" % EstadoJogo.gold
@@ -122,12 +144,16 @@ func _aplicar_status():
 
 func _atualizar_xp():
 	if EstadoJogo.nivel == Evolucao.NIVEL_MAXIMO:
-		texto_xp.text = "NÍVEL 100/100  |  XP MÁXIMO"
+		texto_xp.text = "LV 100  •  XP MAX"
+		barra_xp.value = 100.0
 	else:
-		texto_xp.text = "NÍVEL %d/100  |  XP %d/%d" % [EstadoJogo.nivel, EstadoJogo.xp_atual, Evolucao.xp_para_proximo(EstadoJogo.nivel)]
+		var necessario = Evolucao.xp_para_proximo(EstadoJogo.nivel)
+		texto_xp.text = "LV %d  •  XP %d/%d" % [EstadoJogo.nivel, EstadoJogo.xp_atual, necessario]
+		barra_xp.value = 100.0 * EstadoJogo.xp_atual / necessario
 
 func _on_player_vida_mudou(atual: int, maxima: int):
-	texto_player.text = "PLAYER HP %d/%d  |  ATAQUE %d" % [atual, maxima, player.dano]
+	texto_player.text = "HP %d/%d  •  ATK %d" % [atual, maxima, player.dano]
+	barra_vida.value = 100.0 * atual / maxi(maxima, 1)
 
 func _on_player_morreu():
 	em_derrota = true

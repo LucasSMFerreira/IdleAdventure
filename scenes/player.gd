@@ -15,6 +15,7 @@ var vida_atual = vida_maxima
 var derrotado = false
 var inimigo_perto = false
 var alvo: Enemy
+var golpe_pendente = false
 
 @onready var visual: AnimatedSprite2D = $Visual
 @onready var aviso_ataque: Label = $AvisoAtaque
@@ -25,6 +26,7 @@ func _ready():
 	visual.sprite_frames = AnimacaoSprites.montar("barbarian", ["idle", "walk", "attack", "hit", "death"])
 	visual.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	visual.animation_finished.connect(_on_animation_finished)
+	visual.frame_changed.connect(_on_frame_changed)
 	_tocar_estado(State.WALK)
 
 func _physics_process(_delta):
@@ -63,10 +65,8 @@ func _on_detection_body_entered(body):
 func _atacar():
 	if derrotado or not is_instance_valid(alvo) or alvo.vida_atual == 0:
 		return
+	golpe_pendente = true
 	_tocar_estado(State.ATTACK)
-	atacou.emit(alvo)
-	aviso_ataque.show()
-	tempo_aviso.start()
 
 func receber_dano(valor: int):
 	if derrotado:
@@ -75,6 +75,7 @@ func receber_dano(valor: int):
 	vida_mudou.emit(vida_atual, vida_maxima)
 	if vida_atual == 0:
 		derrotado = true
+		golpe_pendente = false
 		tempo_ataque.stop()
 		tempo_aviso.stop()
 		aviso_ataque.hide()
@@ -89,6 +90,12 @@ func curar(valor: int):
 	vida_atual = mini(vida_atual + valor, vida_maxima)
 	vida_mudou.emit(vida_atual, vida_maxima)
 
+func _on_frame_changed():
+	if current_state == State.ATTACK and visual.frame == 3 and golpe_pendente:
+		golpe_pendente = false
+		if is_instance_valid(alvo) and alvo.vida_atual > 0 and not derrotado:
+			atacou.emit(alvo)
+
 func _on_animation_finished():
 	match current_state:
 		State.ATTACK, State.HIT:
@@ -101,6 +108,7 @@ func _on_alvo_saiu():
 	tempo_ataque.stop()
 	tempo_aviso.stop()
 	aviso_ataque.hide()
+	golpe_pendente = false
 	alvo = null
 	inimigo_perto = false
 	if not derrotado and current_state != State.HIT:
@@ -118,9 +126,11 @@ func reiniciar():
 	tempo_ataque.stop()
 	tempo_aviso.stop()
 	aviso_ataque.hide()
+	golpe_pendente = false
 	alvo = null
 	inimigo_perto = false
 	derrotado = false
+	golpe_pendente = false
 	vida_atual = vida_maxima
 	set_physics_process(true)
 	visual.modulate = Color.WHITE

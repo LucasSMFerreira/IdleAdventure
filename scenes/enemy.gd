@@ -15,6 +15,7 @@ var alvo: Player
 
 @onready var visual: AnimatedSprite2D = $Visual
 @onready var texto_vida: Label = $Vida
+@onready var barra_vida: ProgressBar = $BarraVida
 @onready var tempo_ataque: Timer = $TempoAtaque
 
 func configurar(nova_vida: int, novo_dano: int, novo_tipo: String = "normal", nova_especie: String = "enemy_slime"):
@@ -39,6 +40,12 @@ func _ready():
 	visual.scale = Vector2.ONE * escala_base
 	visual.animation_finished.connect(_on_animation_finished)
 	visual.play("idle")
+	var fundo = StyleBoxFlat.new()
+	fundo.bg_color = Color(0.13, 0.14, 0.17)
+	barra_vida.add_theme_stylebox_override("background", fundo)
+	var cheio = StyleBoxFlat.new()
+	cheio.bg_color = Color(0.88, 0.3, 0.27) if tipo == "normal" else Color(0.96, 0.69, 0.3)
+	barra_vida.add_theme_stylebox_override("fill", cheio)
 	_atualizar_vida()
 
 func receber_dano(valor: int):
@@ -81,5 +88,8 @@ func _atacar():
 		atacou.emit(alvo, dano_final)
 
 func _atualizar_vida():
-	var nome = "MINI BOSS " if tipo == "mini" else ("BOSS " if tipo == "boss" else "")
-	texto_vida.text = "%sHP %d/%d" % [nome, vida_atual, vida_maxima]
+	barra_vida.value = 100.0 * vida_atual / maxi(vida_maxima, 1)
+	barra_vida.visible = vida_atual < vida_maxima and vida_atual > 0
+	texto_vida.visible = tipo != "normal" and vida_atual > 0
+	if tipo != "normal":
+		texto_vida.text = "%s %d/%d" % ["BOSS" if tipo == "boss" else "MINI", vida_atual, vida_maxima]
