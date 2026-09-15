@@ -4,6 +4,8 @@
 [ext_resource type="Script" path="res://scenes/enemy.gd" id="2_enemy"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_f1574"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_attack"]
+size = Vector2(45, 50)
 
 [node name="Enemy" type="CharacterBody2D" unique_id=1046536965 groups=["enemy"]]
 script = ExtResource("2_enemy")
@@ -21,3 +23,15 @@ offset_right = 58.0
 offset_bottom = -35.0
 theme_override_colors/font_color = Color(1, 0.4, 0.4, 1)
 text = "HP 3/3"
+[node name="AreaAtaque" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AreaAtaque"]
+position = Vector2(-30, 0)
+shape = SubResource("RectangleShape2D_attack")
+
+[node name="TempoAtaque" type="Timer" parent="."]
+wait_time = 1.5
+
+[connection signal="body_entered" from="AreaAtaque" to="." method="_on_area_ataque_body_entered"]
+[connection signal="body_exited" from="AreaAtaque" to="." method="_on_area_ataque_body_exited"]
+[connection signal="timeout" from="TempoAtaque" to="." method="_atacar"]
