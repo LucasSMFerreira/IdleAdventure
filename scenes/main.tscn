@@ -6,6 +6,7 @@
 
 [node name="Main" type="Node2D" unique_id=1100356496]
 script = ExtResource("4_main")
+cena_inimigo = ExtResource("3_sugp2")
 
 [node name="Ground" type="ColorRect" parent="." unique_id=739260343]
 offset_top = 240.0
