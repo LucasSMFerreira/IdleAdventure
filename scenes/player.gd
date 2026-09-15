@@ -79,3 +79,16 @@ func _on_alvo_saiu():
 	aviso_ataque.hide()
 	alvo = null
 	inimigo_perto = false
+
+func reiniciar():
+	tempo_ataque.stop()
+	tempo_aviso.stop()
+	aviso_ataque.hide()
+	alvo = null
+	inimigo_perto = false
+	derrotado = false
+	vida_atual = vida_maxima
+	visual.modulate = Color(0.45, 0.7, 1)
+	visual.scale = Vector2(0.35, 0.35)
+	visual.position = Vector2.ZERO
+	vida_mudou.emit(vida_atual, vida_maxima)

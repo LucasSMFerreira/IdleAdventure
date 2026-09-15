@@ -1,15 +1,21 @@
 class_name Enemy
 extends CharacterBody2D
 
-signal atacou(alvo: Player)
+signal atacou(alvo: Player, dano: int)
 
 var vida_maxima = 3
 var vida_atual = vida_maxima
+var dano = 1
 var alvo: Player
 
 @onready var visual: Sprite2D = $Sprite2D
 @onready var texto_vida: Label = $Vida
 @onready var tempo_ataque: Timer = $TempoAtaque
+
+func configurar(nova_vida: int, novo_dano: int):
+	vida_maxima = nova_vida
+	vida_atual = nova_vida
+	dano = novo_dano
 
 func _ready():
 	_atualizar_vida()
@@ -40,7 +46,7 @@ func _on_area_ataque_body_exited(body):
 
 func _atacar():
 	if vida_atual > 0 and is_instance_valid(alvo) and not alvo.derrotado:
-		atacou.emit(alvo)
+		atacou.emit(alvo, dano)
 		visual.scale = Vector2(0.42, 0.42)
 		create_tween().tween_property(visual, "scale", Vector2(0.35, 0.35), 0.2)
 

@@ -28,9 +28,9 @@ position = Vector2(100, 210)
 [node name="Fase" type="Label" parent="Interface"]
 offset_left = 12.0
 offset_top = 10.0
-offset_right = 240.0
+offset_right = 520.0
 offset_bottom = 34.0
-text = "FASE 1  |  CICLO 1"
+text = "ANDAR 1/10  |  FASE 1/10  |  CICLO 1/3"
 
 [node name="VidaPlayer" type="Label" parent="Interface"]
 offset_left = 12.0
