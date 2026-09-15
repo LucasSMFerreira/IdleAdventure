@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 64" width="128" height="64">
+  <defs>
+    <style>
+      .out { stroke: #1a1512; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+      .slime-base { fill: #4ade80; }
+      .slime-hit { fill: #86efac; }
+      .slime-dark { fill: #16a34a; }
+      .hit-fx { stroke: #fde047; stroke-width: 1.8; fill: none; stroke-linecap: round; }
+    </style>
+  </defs>
+
+  <!-- FRAME 1: ONDULAÇÃO DE CHOQUE (0 a 64px) -->
+  <g id="slime_hit_01" class="out">
+    <path d="M46 36 L51 32 M47 48 L53 50" class="hit-fx" />
+    <!-- Corpo distorcido e amassado para trás -->
+    <path d="M14 53 C12 40 24 33 30 36 C38 40 38 32 44 38 C48 42 46 54 44 56 C34 58 14 58 14 53 Z" class="slime-hit" />
+    <!-- Olhos rodopiando (linhas em espiral/cruz) -->
+    <path d="M28 42 L33 46 M33 42 L28 46" stroke="#1a1512" stroke-width="1.8" fill="none" />
+    <path d="M37 42 L42 46 M42 42 L37 46" stroke="#1a1512" stroke-width="1.8" fill="none" />
+    <!-- Pequena gota espirrando -->
+    <circle cx="48" cy="30" r="1.8" class="slime-hit" />
+  </g>
+
+  <!-- FRAME 2: AMORTECIMENTO REBOTE (64 a 128px) -->
+  <g id="slime_hit_02" class="out" transform="translate(64, 0)">
+    <ellipse cx="32" cy="51" rx="16" ry="7" class="slime-dark" />
+    <!-- Retorno gelatinoso balançando -->
+    <path d="M16 53 C16 42 22 36 32 36 C42 36 48 42 48 53 C48 57 16 57 16 53 Z" class="slime-base" />
+    <!-- Olhos semicerrados atordoados -->
+    <ellipse cx="33" cy="46" rx="2.5" ry="1.5" fill="#1a1512" stroke="none" />
+    <ellipse cx="41" cy="46" rx="2.5" ry="1.5" fill="#1a1512" stroke="none" />
+  </g>
+</svg>

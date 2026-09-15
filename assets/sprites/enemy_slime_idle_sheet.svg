@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 64" width="256" height="64">
+  <defs>
+    <style>
+      .out { stroke: #1a1512; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+      .slime-base { fill: #4ade80; }
+      .slime-dark { fill: #16a34a; }
+      .slime-light { fill: #bbf7d0; }
+      .eye-white { fill: #ffffff; }
+      .eye-pupil { fill: #1a1512; stroke: none; }
+      .eye-shine { fill: #ffffff; stroke: none; }
+    </style>
+  </defs>
+
+  <!-- FRAME 1: FORMA BASE (0 a 64px) -->
+  <g id="slime_idle_01" class="out">
+    <!-- Sombra/Base inferior -->
+    <ellipse cx="32" cy="50" rx="15" ry="8" class="slime-dark" />
+    <!-- Corpo do Slime -->
+    <path d="M18 53 C17 40 22 34 32 34 C42 34 47 40 46 53 C46 57 18 57 18 53 Z" class="slime-base" />
+    <!-- Brilho Superior -->
+    <path d="M25 37 C27 36 33 36 35 38" stroke="#bbf7d0" stroke-width="2" fill="none" />
+    <circle cx="23" cy="40" r="1.5" class="slime-light" stroke="none" />
+    <!-- Olho Esquerdo -->
+    <circle cx="33" cy="45" r="3.2" class="eye-white" />
+    <circle cx="34.5" cy="45" r="1.8" class="eye-pupil" />
+    <circle cx="35" cy="44" r="0.7" class="eye-shine" />
+    <!-- Olho Direito -->
+    <circle cx="41" cy="45" r="3" class="eye-white" />
+    <circle cx="42.5" cy="45" r="1.6" class="eye-pupil" />
+    <circle cx="43" cy="44" r="0.6" class="eye-shine" />
+  </g>
+
+  <!-- FRAME 2: COMPRESSÃO SUAVE / SQUASH (64 a 128px) -->
+  <g id="slime_idle_02" class="out" transform="translate(64, 0)">
+    <ellipse cx="32" cy="51" rx="16.5" ry="7.5" class="slime-dark" />
+    <!-- Corpo mais largo e achatado -->
+    <path d="M16 54 C15 42 21 37 32 37 C43 37 49 42 48 54 C48 58 16 58 16 54 Z" class="slime-base" />
+    <path d="M25 39 C28 38 34 38 36 40" stroke="#bbf7d0" stroke-width="2" fill="none" />
+    <circle cx="22" cy="42" r="1.5" class="slime-light" stroke="none" />
+    <circle cx="34" cy="47" r="3.2" class="eye-white" />
+    <circle cx="35.5" cy="47" r="1.8" class="eye-pupil" />
+    <circle cx="36" cy="46" r="0.7" class="eye-shine" />
+    <circle cx="42" cy="47" r="3" class="eye-white" />
+    <circle cx="43.5" cy="47" r="1.6" class="eye-pupil" />
+    <circle cx="44" cy="46" r="0.6" class="eye-shine" />
+  </g>
+
+  <!-- FRAME 3: ELONGAÇÃO / STRETCH (128 a 192px) -->
+  <g id="slime_idle_03" class="out" transform="translate(128, 0)">
+    <ellipse cx="32" cy="49" rx="13.5" ry="8.5" class="slime-dark" />
+    <!-- Corpo mais alto e estreito -->
+    <path d="M19 53 C18 37 23 31 32 31 C41 31 46 37 45 53 C45 57 19 57 19 53 Z" class="slime-base" />
+    <path d="M26 34 C28 33 33 33 35 35" stroke="#bbf7d0" stroke-width="2" fill="none" />
+    <circle cx="23" cy="37" r="1.5" class="slime-light" stroke="none" />
+    <circle cx="33" cy="43" r="3.2" class="eye-white" />
+    <circle cx="34.5" cy="43" r="1.8" class="eye-pupil" />
+    <circle cx="35" cy="42" r="0.7" class="eye-shine" />
+    <circle cx="41" cy="43" r="3" class="eye-white" />
+    <circle cx="42.5" cy="43" r="1.6" class="eye-pupil" />
+    <circle cx="43" cy="42" r="0.6" class="eye-shine" />
+  </g>
+
+  <!-- FRAME 4: RETORNO (192 a 256px) -->
+  <g id="slime_idle_04" class="out" transform="translate(192, 0)">
+    <ellipse cx="32" cy="50" rx="14.5" ry="8" class="slime-dark" />
+    <path d="M18 53 C17 39 22 33 32 33 C42 33 47 39 46 53 C46 57 18 57 18 53 Z" class="slime-base" />
+    <path d="M25 36 C27 35 33 35 35 37" stroke="#bbf7d0" stroke-width="2" fill="none" />
+    <circle cx="23" cy="39" r="1.5" class="slime-light" stroke="none" />
+    <circle cx="33" cy="44" r="3.2" class="eye-white" />
+    <circle cx="34.5" cy="44" r="1.8" class="eye-pupil" />
+    <circle cx="35" cy="43" r="0.7" class="eye-shine" />
+    <circle cx="41" cy="44" r="3" class="eye-white" />
+    <circle cx="42.5" cy="44" r="1.6" class="eye-pupil" />
+    <circle cx="43" cy="43" r="0.6" class="eye-shine" />
+  </g>
+</svg>

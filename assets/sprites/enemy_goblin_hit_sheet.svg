@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 64" width="128" height="64">
+  <defs>
+    <style>
+      .out { stroke: #1a1512; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+      .skin { fill: #76a938; }
+      .skin-hit { fill: #97c858; }
+      .cloth { fill: #5c4028; }
+      .cloth-dark { fill: #3d2b1b; }
+      .metal { fill: #8a939e; }
+      .hit-fx { stroke: #ffea79; stroke-width: 1.8; fill: none; stroke-linecap: round; }
+    </style>
+  </defs>
+
+  <!-- FRAME 1: IMPACTO / RECUO (0 a 64px) -->
+  <g id="goblin_hit_01" class="out">
+    <path d="M38 27 L42 23 M40 33 L45 34" class="hit-fx" />
+    <path d="M22 50 L16 57 L21 58" fill="none" stroke="#5a8527" stroke-width="4" />
+    <path d="M29 50 L26 57 L31 58" fill="none" stroke="#76a938" stroke-width="4" />
+    <ellipse cx="24" cy="43" rx="7" ry="7.5" class="skin-hit" transform="rotate(-18 24 43)" />
+    <path d="M17 42 C17 50 31 51 31 42 Z" class="cloth" transform="rotate(-18 24 43)" />
+    <ellipse cx="24" cy="31" rx="8" ry="7" class="skin-hit" />
+    <polygon points="30,31 37,33 30,35" class="skin-hit" />
+    <!-- Orelhas caídas para trás -->
+    <polygon points="18,31 8,30 17,37" class="skin-hit" />
+    <!-- Olho fechado em aperto -->
+    <path d="M27 29 L31 32 M31 29 L27 32" stroke="#1a1512" stroke-width="1.5" fill="none" />
+    <!-- Faca desestabilizada -->
+    <path d="M30 42 L34 46 L37 43" fill="none" stroke="#76a938" stroke-width="3" />
+    <polygon points="36,44 38,41 44,46 39,48" class="metal" />
+  </g>
+
+  <!-- FRAME 2: ESTABILIZAÇÃO (64 a 128px) -->
+  <g id="goblin_hit_02" class="out" transform="translate(64, 0)">
+    <path d="M25 49 L21 57 L26 58" fill="none" stroke="#5a8527" stroke-width="4" />
+    <path d="M32 49 L34 57 L39 58" fill="none" stroke="#76a938" stroke-width="4" />
+    <ellipse cx="28" cy="42" rx="7" ry="8" class="skin" />
+    <path d="M21 41 C21 49 35 50 35 41 Z" class="cloth" />
+    <ellipse cx="29" cy="31" rx="8" ry="7" class="skin" />
+    <polygon points="35,31 42,33 35,35" class="skin" />
+    <polygon points="23,31 13,27 22,36" class="skin" />
+    <circle cx="33" cy="30" r="1.8" fill="#ffe066" />
+    <circle cx="34" cy="30" r="0.9" fill="#1a1512" stroke="none" />
+    <path d="M34 40 L40 44 L44 42" fill="none" stroke="#76a938" stroke-width="3" />
+    <polygon points="43,43 46,40 52,44 46,46" class="metal" />
+  </g>
+</svg>

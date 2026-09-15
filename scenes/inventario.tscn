@@ -1,7 +1,11 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://scenes/inventario.gd" id="1_inventory"]
-[ext_resource type="Texture2D" path="res://scenes/icon.svg" id="2_icon"]
+[ext_resource type="Texture2D" path="res://assets/sprites/barbarian_idle_sheet.svg" id="2_barbarian"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_avatar"]
+atlas = ExtResource("2_barbarian")
+region = Rect2(0, 0, 64, 64)
 
 [node name="Inventario" type="CanvasLayer"]
 layer = 10
@@ -31,7 +35,8 @@ offset_left = 170.0
 offset_top = 75.0
 offset_right = 270.0
 offset_bottom = 175.0
-texture = ExtResource("2_icon")
+texture = SubResource("AtlasTexture_avatar")
+texture_filter = 1
 expand_mode = 1
 stretch_mode = 5
 modulate = Color(0.62, 0.73, 0.88, 1)

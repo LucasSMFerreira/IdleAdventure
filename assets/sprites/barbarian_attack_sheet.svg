@@ -1,0 +1,173 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 64" width="384" height="64">
+  <defs>
+    <!-- Estilo Global Padronizado -->
+    <style>
+      .outline { stroke: #1a1512; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+      .skin { fill: #f0b884; }
+      .skin-shadow { fill: #db9769; }
+      .hair { fill: #b5451b; }
+      .tunic { fill: #6e4327; }
+      .pants { fill: #453327; }
+      .boots { fill: #2e1f16; }
+      .metal { fill: #8a939e; }
+      .metal-detail { stroke: #5a636e; stroke-width: 1; fill: none; }
+      .wood { fill: #573822; }
+      .gold { fill: #cfa134; }
+      .slash { fill: none; stroke: #e0f8cf; stroke-width: 2.5; stroke-linecap: round; opacity: 0.9; }
+    </style>
+  </defs>
+
+  <!-- ========================================== -->
+  <!-- FRAME 1: POSIÇÃO NORMAL / BASE (0 a 64px) -->
+  <!-- ========================================== -->
+  <g id="frame_01" class="outline">
+    <!-- Pernas -->
+    <rect x="23" y="47" width="5" height="11" rx="2" class="pants" />
+    <rect x="23" y="55" width="7" height="5" rx="1.5" class="boots" />
+    <rect x="31" y="47" width="5" height="11" rx="2" class="pants" />
+    <rect x="31" y="55" width="7" height="5" rx="1.5" class="boots" />
+    <!-- Braço Esquerdo / Machado em Repouso -->
+    <rect x="13" y="32" width="3" height="22" rx="1" class="wood" transform="rotate(-15 14 43)" />
+    <path d="M12 28 C9 24 5 25 4 29 C4 35 9 37 12 34 Z" class="metal" />
+    <path d="M7 27 C8 30 8 33 7 35" class="metal-detail" />
+    <!-- Tronco e Cinto -->
+    <rect x="21" y="32" width="16" height="16" rx="3" class="tunic" />
+    <rect x="20" y="43" width="18" height="4" class="boots" />
+    <rect x="28" y="43" width="4" height="4" class="gold" />
+    <!-- Cabeça e Barba -->
+    <circle cx="31" cy="22" r="9" class="skin" />
+    <ellipse cx="23" cy="23" rx="1.5" ry="2" class="skin-shadow" />
+    <path d="M22 20 C22 13 38 12 39 19 C39 21 37 23 35 22 C33 21 31 16 26 18 C23 19 22 21 22 20 Z" class="hair" />
+    <path d="M25 24 C25 34 33 36 38 30 C38 27 36 26 34 26 C31 26 29 28 26 25 Z" class="hair" />
+    <circle cx="34" cy="21" r="1.5" fill="#1a1512" stroke="none" />
+    <path d="M31 18 L36 19" stroke="#8c2f0d" stroke-width="1.8" fill="none" />
+    <!-- Braço Direito -->
+    <rect x="27" y="34" width="5" height="9" rx="2.5" class="skin" />
+    <rect x="27" y="39" width="5" height="3" class="boots" />
+  </g>
+
+  <!-- ============================================== -->
+  <!-- FRAME 2: PREPARA O MACHADO (64 a 128px)        -->
+  <!-- ============================================== -->
+  <g id="frame_02" class="outline" transform="translate(64, 0)">
+    <!-- Pernas levemente flexionadas -->
+    <path d="M22 47 L19 54 L24 57" fill="none" stroke="#453327" stroke-width="5" />
+    <rect x="18" y="55" width="7" height="4" rx="1.5" class="boots" />
+    <path d="M30 47 L33 55 L38 57" fill="none" stroke="#453327" stroke-width="5" />
+    <rect x="33" y="55" width="7" height="4" rx="1.5" class="boots" />
+    <!-- Tronco recuando levemente -->
+    <rect x="19" y="33" width="16" height="16" rx="3" class="tunic" transform="rotate(-5 27 41)" />
+    <rect x="18" y="44" width="18" height="4" class="boots" transform="rotate(-5 27 46)" />
+    <!-- Machado puxado para trás -->
+    <rect x="5" y="30" width="3" height="22" rx="1" class="wood" transform="rotate(-40 6 41)" />
+    <path d="M5 25 C1 22 -2 24 -3 28 C-3 34 2 36 5 32 Z" class="metal" />
+    <!-- Cabeça e Barba -->
+    <circle cx="29" cy="23" r="9" class="skin" />
+    <path d="M20 21 C20 14 36 13 37 20 C37 22 35 24 33 23 C31 22 29 17 24 19 C21 20 20 22 20 21 Z" class="hair" />
+    <path d="M23 25 C23 35 31 37 36 31 C36 28 34 27 32 27 C29 27 27 29 24 26 Z" class="hair" />
+    <circle cx="32" cy="22" r="1.5" fill="#1a1512" stroke="none" />
+    <path d="M29 19 L34 20" stroke="#8c2f0d" stroke-width="1.8" fill="none" />
+    <!-- Braço Direito estabilizando -->
+    <rect x="23" y="35" width="5" height="9" rx="2.5" class="skin" transform="rotate(-15 25 39)" />
+  </g>
+
+  <!-- ============================================== -->
+  <!-- FRAME 3: LEVANTA O MACHADO (128 a 192px)       -->
+  <!-- ============================================== -->
+  <g id="frame_03" class="outline" transform="translate(128, 0)">
+    <!-- Pernas firmes -->
+    <rect x="21" y="47" width="5" height="11" rx="2" class="pants" />
+    <rect x="21" y="55" width="7" height="5" rx="1.5" class="boots" />
+    <rect x="30" y="47" width="5" height="11" rx="2" class="pants" />
+    <rect x="30" y="55" width="7" height="5" rx="1.5" class="boots" />
+    <!-- Machado erguido no topo -->
+    <rect x="18" y="10" width="3" height="22" rx="1" class="wood" transform="rotate(-65 19 21)" />
+    <path d="M9 13 C7 9 3 9 2 13 C2 19 7 21 10 18 Z" class="metal" />
+    <!-- Tronco e Cabeça -->
+    <rect x="21" y="31" width="16" height="16" rx="3" class="tunic" />
+    <rect x="20" y="42" width="18" height="4" class="boots" />
+    <circle cx="31" cy="21" r="9" class="skin" />
+    <path d="M22 19 C22 12 38 11 39 18 C39 20 37 22 35 21 C33 20 31 15 26 17 C23 18 22 20 22 19 Z" class="hair" />
+    <path d="M25 23 C25 33 33 35 38 29 C38 26 36 25 34 25 C31 25 29 27 26 24 Z" class="hair" />
+    <circle cx="34" cy="20" r="1.5" fill="#1a1512" stroke="none" />
+    <path d="M31 16 L36 18" stroke="#8c2f0d" stroke-width="1.8" fill="none" />
+    <!-- Braços erguidos segurando -->
+    <rect x="21" y="25" width="5" height="10" rx="2.5" class="skin" transform="rotate(-40 23 30)" />
+  </g>
+
+  <!-- ============================================== -->
+  <!-- FRAME 4: GOLPE PRINCIPAL / IMPACTO (192 a 256px)-->
+  <!-- ============================================== -->
+  <g id="frame_04" class="outline" transform="translate(192, 0)">
+    <!-- Base aberta de ataque -->
+    <path d="M19 48 L12 56 L17 58" fill="none" stroke="#453327" stroke-width="5" />
+    <rect x="11" y="56" width="7" height="4" rx="1.5" class="boots" />
+    <path d="M29 48 L37 56 L43 58" fill="none" stroke="#453327" stroke-width="5" />
+    <rect x="37" y="56" width="7" height="4" rx="1.5" class="boots" />
+    <!-- Tronco inclinado para frente -->
+    <rect x="24" y="34" width="16" height="15" rx="3" class="tunic" transform="rotate(18 32 41)" />
+    <rect x="24" y="44" width="17" height="4" class="boots" transform="rotate(18 32 46)" />
+    <!-- Cabeça projetada -->
+    <circle cx="36" cy="25" r="9" class="skin" />
+    <path d="M27 23 C27 16 43 15 44 22 C44 24 42 26 40 25 Z" class="hair" />
+    <path d="M30 27 C30 37 38 39 43 33 Z" class="hair" />
+    <circle cx="39" cy="24" r="1.5" fill="#1a1512" stroke="none" />
+    <path d="M36 21 L41 23" stroke="#8c2f0d" stroke-width="2" fill="none" />
+    <!-- Machado batendo no chão / alvo -->
+    <rect x="42" y="37" width="3" height="22" rx="1" class="wood" transform="rotate(50 43 48)" />
+    <path d="M53 43 C56 40 60 41 61 45 C61 51 56 53 53 50 Z" class="metal" />
+    <!-- Efeito do corte (Slash FX) -->
+    <path d="M42 18 C56 22 62 36 60 52" class="slash" />
+  </g>
+
+  <!-- ============================================== -->
+  <!-- FRAME 5: CONTINUAÇÃO DO GOLPE (256 a 320px)    -->
+  <!-- ============================================== -->
+  <g id="frame_05" class="outline" transform="translate(256, 0)">
+    <!-- Base se recuperando -->
+    <path d="M21 47 L16 56 L21 58" fill="none" stroke="#453327" stroke-width="5" />
+    <rect x="15" y="56" width="7" height="4" rx="1.5" class="boots" />
+    <path d="M30 47 L35 56 L41 58" fill="none" stroke="#453327" stroke-width="5" />
+    <rect x="35" y="56" width="7" height="4" rx="1.5" class="boots" />
+    <!-- Tronco assentando -->
+    <rect x="23" y="33" width="16" height="16" rx="3" class="tunic" transform="rotate(8 31 41)" />
+    <rect x="22" y="44" width="18" height="4" class="boots" transform="rotate(8 31 46)" />
+    <!-- Cabeça -->
+    <circle cx="33" cy="23" r="9" class="skin" />
+    <path d="M24 21 C24 14 40 13 41 20 Z" class="hair" />
+    <path d="M27 25 C27 35 35 37 40 31 Z" class="hair" />
+    <circle cx="36" cy="22" r="1.5" fill="#1a1512" stroke="none" />
+    <!-- Machado descido rente ao chão -->
+    <rect x="39" y="38" width="3" height="22" rx="1" class="wood" transform="rotate(35 40 49)" />
+    <path d="M48 45 C51 42 55 43 56 47 C56 53 51 55 48 52 Z" class="metal" />
+    <!-- Rastro de corte dissipando -->
+    <path d="M52 38 C56 44 56 49 54 55" class="slash" stroke-dasharray="3,3" />
+  </g>
+
+  <!-- ============================================== -->
+  <!-- FRAME 6: RETORNO À BASE (320 a 384px)          -->
+  <!-- ============================================== -->
+  <g id="frame_06" class="outline" transform="translate(320, 0)">
+    <!-- Pernas voltando à posição ereta -->
+    <rect x="22" y="47" width="5" height="11" rx="2" class="pants" />
+    <rect x="22" y="55" width="7" height="5" rx="1.5" class="boots" />
+    <rect x="31" y="47" width="5" height="11" rx="2" class="pants" />
+    <rect x="31" y="55" width="7" height="5" rx="1.5" class="boots" />
+    <!-- Tronco alinhado -->
+    <rect x="21" y="32" width="16" height="16" rx="3" class="tunic" />
+    <rect x="20" y="43" width="18" height="4" class="boots" />
+    <rect x="28" y="43" width="4" height="4" class="gold" />
+    <!-- Braço trazendo machado de volta -->
+    <rect x="17" y="33" width="3" height="22" rx="1" class="wood" transform="rotate(-5 18 44)" />
+    <path d="M16 28 C13 24 9 25 8 29 C8 35 13 37 16 34 Z" class="metal" />
+    <!-- Cabeça e Barba -->
+    <circle cx="31" cy="22" r="9" class="skin" />
+    <path d="M22 20 C22 13 38 12 39 19 C39 21 37 23 35 22 Z" class="hair" />
+    <path d="M25 24 C25 34 33 36 38 30 Z" class="hair" />
+    <circle cx="34" cy="21" r="1.5" fill="#1a1512" stroke="none" />
+    <path d="M31 18 L36 19" stroke="#8c2f0d" stroke-width="1.8" fill="none" />
+    <!-- Braço Direito -->
+    <rect x="27" y="34" width="5" height="9" rx="2.5" class="skin" />
+    <rect x="27" y="39" width="5" height="3" class="boots" />
+  </g>
+</svg>

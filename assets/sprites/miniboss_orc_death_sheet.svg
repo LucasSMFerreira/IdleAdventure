@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 64" width="384" height="64">
+  <defs>
+    <style>
+      .out { stroke: #1a1512; stroke-width: 1.6; stroke-linejoin: round; stroke-linecap: round; }
+      .skin { fill: #486b36; }
+      .skin-down { fill: #38532a; }
+      .armor { fill: #576574; }
+      .armor-dark { fill: #343c45; }
+      .leather { fill: #483423; }
+      .metal { fill: #8395a7; }
+      .wood { fill: #382313; }
+    </style>
+  </defs>
+
+  <!-- FRAME 1: GOLPE FINAL (0 a 64px) -->
+  <g id="orc_dth_01" class="out">
+    <path d="M18 47 L12 54 L14 58" fill="none" stroke="#483423" stroke-width="7" />
+    <path d="M30 47 L28 54 L31 58" fill="none" stroke="#483423" stroke-width="7" />
+    <!-- Machado caindo da mão -->
+    <rect x="0" y="28" width="4" height="34" rx="1" class="wood" transform="rotate(-55 2 45)" />
+    <path d="M2 20 C-3 15 -7 17 -8 23 C-8 31 -2 35 4 30 Z" class="metal" />
+    <rect x="14" y="28" width="24" height="19" rx="4" class="skin" transform="rotate(-16 26 37)" />
+    <circle cx="23" cy="17" r="8" class="skin" />
+    <path d="M26 16 L30 18 M30 16 L26 18" stroke="#1a1512" stroke-width="1.8" fill="none" />
+  </g>
+
+  <!-- FRAME 2: JOELHOS CEDENDO (64 a 128px) -->
+  <g id="orc_dth_02" class="out" transform="translate(64, 0)">
+    <path d="M20 50 L14 55 L16 58" fill="none" stroke="#483423" stroke-width="7" />
+    <path d="M30 50 L27 55 L32 58" fill="none" stroke="#483423" stroke-width="7" />
+    <!-- Machado solto no ar -->
+    <rect x="42" y="34" width="4" height="34" rx="1" class="wood" transform="rotate(35 44 51)" />
+    <path d="M52 42 C56 37 60 39 61 45 C61 53 55 57 49 52 Z" class="metal" />
+    <rect x="15" y="32" width="24" height="18" rx="4" class="skin" transform="rotate(-30 27 41)" />
+    <circle cx="21" cy="21" r="8" class="skin" />
+  </g>
+
+  <!-- FRAME 3: TOMBAMENTO (128 a 192px) -->
+  <g id="orc_dth_03" class="out" transform="translate(128, 0)">
+    <path d="M24 53 L18 57 L14 58" fill="none" stroke="#483423" stroke-width="7" />
+    <!-- Tronco caindo em ângulo agudo -->
+    <rect x="14" y="38" width="24" height="16" rx="4" class="skin" transform="rotate(-55 26 46)" />
+    <circle cx="17" cy="27" r="8" class="skin" />
+    <rect x="42" y="55" width="24" height="4" rx="1" class="wood" />
+    <path d="M42 50 C38 46 34 47 33 52 C33 58 38 61 41 57 Z" class="metal" />
+  </g>
+
+  <!-- FRAME 4: IMPACTO NO SOLO (192 a 256px) -->
+  <g id="orc_dth_04" class="out" transform="translate(192, 0)">
+    <path d="M32 55 L40 57 L46 58" fill="none" stroke="#483423" stroke-width="6" />
+    <rect x="14" y="47" width="24" height="12" rx="4" class="skin" transform="rotate(-80 26 53)" />
+    <circle cx="11" cy="40" r="7.5" class="skin" />
+    <rect x="44" y="56" width="20" height="3.5" rx="1" class="wood" />
+    <path d="M44 51 C40 48 37 49 36 53 C36 58 40 60 43 57 Z" class="metal" />
+  </g>
+
+  <!-- FRAME 5: CORPO ESTIRADO (256 a 320px) -->
+  <g id="orc_dth_05" class="out" transform="translate(256, 0)">
+    <rect x="36" y="53" width="16" height="6.5" rx="2" class="leather" />
+    <rect x="50" y="53" width="8" height="6" rx="1.5" class="armor-dark" />
+    <rect x="17" y="49" width="22" height="11" rx="4" class="skin-down" />
+    <path d="M19 50 L37 50 L35 59 L19 59 Z" class="armor" />
+    <circle cx="11" cy="49" r="7" class="skin-down" />
+    <rect x="34" y="57" width="24" height="3" rx="1" class="wood" />
+    <path d="M34 53 C30 50 27 51 26 55 C26 59 30 61 33 58 Z" class="metal" />
+  </g>
+
+  <!-- FRAME 6: REPOUSO DEFINITIVO (320 a 384px) -->
+  <g id="orc_dth_06" class="out" transform="translate(320, 0)">
+    <rect x="35" y="54" width="16" height="6" rx="2" class="leather" />
+    <rect x="49" y="54" width="8" height="5.5" rx="1.5" class="armor-dark" />
+    <rect x="16" y="50" width="22" height="10.5" rx="4" class="skin-down" />
+    <path d="M18 51 L36 51 L34 60 L18 60 Z" class="armor" />
+    <circle cx="10" cy="50" r="7" class="skin-down" />
+    <rect x="34" y="57.5" width="24" height="3" rx="1" class="wood" />
+    <path d="M34 53.5 C30 50.5 27 51.5 26 55.5 C26 59.5 30 61.5 33 58.5 Z" class="metal" />
+  </g>
+</svg>

@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 64" width="320" height="64">
+  <defs>
+    <style>
+      .tile-out { stroke: #1a1512; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+      .grass-top { fill: #558b2f; }
+      .grass-accent { stroke: #7cb342; stroke-width: 1.5; fill: none; }
+      .dirt-sub { fill: #4e342e; }
+      .dirt-mid { fill: #6d4c41; }
+      .stone-block { fill: #78909c; }
+      .stone-crevice { stroke: #37474f; stroke-width: 1.2; fill: none; }
+    </style>
+  </defs>
+
+  <!-- ============================================== -->
+  <!-- TILE 1: GROUND_GRASS_01 (0 a 64px)             -->
+  <!-- ============================================== -->
+  <g id="ground_grass_01" class="tile-out">
+    <!-- Subsolo de terra firme -->
+    <rect x="0" y="52" width="64" height="12" class="dirt-sub" />
+    <!-- Camada superior de grama verde -->
+    <rect x="0" y="48" width="64" height="6" class="grass-top" />
+    <!-- Tufos decorativos na superfície -->
+    <path d="M12 48 L14 43 L16 48" class="grass-accent" />
+    <path d="M36 48 L39 42 L42 48" class="grass-accent" />
+    <!-- Pequenas raízes no corte inferior -->
+    <circle cx="20" cy="58" r="1.2" fill="#3e2723" stroke="none" />
+    <circle cx="48" cy="56" r="1.5" fill="#3e2723" stroke="none" />
+  </g>
+
+  <!-- ============================================== -->
+  <!-- TILE 2: GROUND_GRASS_02 (64 a 128px)           -->
+  <!-- ============================================== -->
+  <g id="ground_grass_02" class="tile-out" transform="translate(64, 0)">
+    <rect x="0" y="52" width="64" height="12" class="dirt-sub" />
+    <rect x="0" y="48" width="64" height="6" class="grass-top" />
+    <path d="M48 48 L51 43 L54 48" class="grass-accent" />
+    <!-- Pequenos seixos incrustados na relva -->
+    <ellipse cx="22" cy="49" rx="3" ry="1.8" fill="#90a4ae" />
+    <ellipse cx="28" cy="50" rx="2" ry="1.2" fill="#78909c" />
+    <circle cx="34" cy="57" r="1.4" fill="#3e2723" stroke="none" />
+  </g>
+
+  <!-- ============================================== -->
+  <!-- TILE 3: GROUND_DIRT_01 (128 a 192px)           -->
+  <!-- ============================================== -->
+  <g id="ground_dirt_01" class="tile-out" transform="translate(128, 0)">
+    <rect x="0" y="52" width="64" height="12" class="dirt-sub" />
+    <!-- Terra batida central com faixas de grama nas pontas -->
+    <rect x="0" y="48" width="64" height="6" class="dirt-mid" />
+    <path d="M0 48 L16 48 L12 53 L0 53 Z" class="grass-top" />
+    <path d="M52 48 L64 48 L64 53 L48 53 Z" class="grass-top" />
+    <path d="M8 48 L10 44 L12 48" class="grass-accent" />
+    <line x1="20" y1="50" x2="44" y2="50" stroke="#3e2723" stroke-width="1.2" />
+  </g>
+
+  <!-- ============================================== -->
+  <!-- TILE 4: GROUND_DIRT_02 (192 a 256px)           -->
+  <!-- ============================================== -->
+  <g id="ground_dirt_02" class="tile-out" transform="translate(192, 0)">
+    <!-- Estrada de terra batida plena -->
+    <rect x="0" y="52" width="64" height="12" class="dirt-sub" />
+    <rect x="0" y="48" width="64" height="6" class="dirt-mid" />
+    <!-- Sulco de roda de carroça desgastado -->
+    <line x1="0" y1="50" x2="64" y2="50" stroke="#4e342e" stroke-width="1.8" />
+    <ellipse cx="18" cy="53" rx="4" ry="1.5" fill="#3e2723" stroke="none" />
+    <ellipse cx="46" cy="54" rx="3" ry="1.2" fill="#3e2723" stroke="none" />
+  </g>
+
+  <!-- ============================================== -->
+  <!-- TILE 5: GROUND_STONE_01 (256 a 320px)          -->
+  <!-- ============================================== -->
+  <g id="ground_stone_01" class="tile-out" transform="translate(256, 0)">
+    <rect x="0" y="52" width="64" height="12" class="dirt-sub" />
+    <!-- Pedras retangulares de calçamento encaixadas -->
+    <rect x="0" y="48" width="20" height="6" class="stone-block" />
+    <rect x="22" y="48" width="22" height="6" class="stone-block" />
+    <rect x="46" y="48" width="18" height="6" class="stone-block" />
+    <rect x="8" y="54" width="24" height="5" class="stone-block" />
+    <rect x="34" y="54" width="24" height="5" class="stone-block" />
+    <!-- Fissuras entre as lajes -->
+    <path d="M20 48 L22 54 M44 48 L46 54" class="stone-crevice" />
+    <!-- Tufo de capim nascendo entre as pedras -->
+    <path d="M20 48 L21 44 L22 48" class="grass-accent" />
+  </g>
+</svg>

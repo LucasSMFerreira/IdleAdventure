@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 64" width="256" height="64">
+  <defs>
+    <style>
+      .out { stroke: #1a1512; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+      .slime-base { fill: #4ade80; }
+      .slime-dark { fill: #16a34a; }
+      .slime-light { fill: #bbf7d0; }
+      .eye-white { fill: #ffffff; }
+      .eye-pupil { fill: #1a1512; stroke: none; }
+      .splash-fx { fill: none; stroke: #bbf7d0; stroke-width: 2; stroke-linecap: round; }
+    </style>
+  </defs>
+
+  <!-- FRAME 1: COMPRESSÃO DE SALTO (0 a 64px) -->
+  <g id="slime_atk_01" class="out">
+    <ellipse cx="32" cy="53" rx="18" ry="5.5" class="slime-dark" />
+    <path d="M14 55 C13 46 20 42 32 42 C44 42 51 46 50 55 C50 59 14 59 14 55 Z" class="slime-base" />
+    <!-- Olhos semicerrados determinados -->
+    <path d="M30 48 Q34 46 38 48" stroke="#1a1512" stroke-width="2" fill="none" />
+    <path d="M40 48 Q44 46 48 48" stroke="#1a1512" stroke-width="2" fill="none" />
+  </g>
+
+  <!-- FRAME 2: LANÇAMENTO / SALTO HORIZONTAL (64 a 128px) -->
+  <g id="slime_atk_02" class="out" transform="translate(64, 0)">
+    <!-- Projetado no ar na diagonal para a direita -->
+    <g transform="rotate(35 36 34)">
+      <ellipse cx="36" cy="34" rx="9" ry="17" class="slime-base" />
+      <path d="M29 25 C31 22 36 21 40 23" stroke="#bbf7d0" stroke-width="2" fill="none" />
+      <circle cx="38" cy="28" r="2.8" class="eye-white" />
+      <circle cx="39" cy="27" r="1.5" class="eye-pupil" />
+    </g>
+    <!-- Rastro de decolagem no chão -->
+    <ellipse cx="20" cy="56" rx="6" ry="1.5" fill="#16a34a" opacity="0.6" stroke="none" />
+  </g>
+
+  <!-- FRAME 3: BOTE / IMPACTO (128 a 192px) -->
+  <g id="slime_atk_03" class="out" transform="translate(128, 0)">
+    <!-- Corpo estufado na horizontal acertando o alvo -->
+    <path d="M22 46 C24 35 34 32 46 32 C56 32 60 41 60 48 C60 55 52 58 42 58 C28 58 20 54 22 46 Z" class="slime-base" />
+    <path d="M36 35 C42 34 50 35 54 38" stroke="#bbf7d0" stroke-width="2" fill="none" />
+    <!-- Olhos esbugalhados no choque -->
+    <circle cx="48" cy="42" r="3.5" class="eye-white" />
+    <circle cx="50" cy="42" r="1.8" class="eye-pupil" />
+    <circle cx="56" cy="43" r="3" class="eye-white" />
+    <circle cx="57.5" cy="43" r="1.5" class="eye-pupil" />
+    <!-- Gotas de impacto -->
+    <circle cx="62" cy="36" r="1.5" class="slime-base" />
+    <circle cx="63" cy="52" r="1.2" class="slime-base" />
+    <path d="M58 30 L63 28 M59 58 L64 60" class="splash-fx" />
+  </g>
+
+  <!-- FRAME 4: ATERRISSAGEM (192 a 256px) -->
+  <g id="slime_atk_04" class="out" transform="translate(192, 0)">
+    <ellipse cx="36" cy="53" rx="17" ry="6.5" class="slime-dark" />
+    <path d="M19 55 C18 44 25 40 36 40 C47 40 54 44 53 55 C53 59 19 59 19 55 Z" class="slime-base" />
+    <circle cx="37" cy="47" r="3.2" class="eye-white" />
+    <circle cx="38.5" cy="47" r="1.8" class="eye-pupil" />
+    <circle cx="45" cy="47" r="3" class="eye-white" />
+    <circle cx="46.5" cy="47" r="1.6" class="eye-pupil" />
+  </g>
+</svg>

@@ -5,6 +5,7 @@ extends Node2D
 @onready var player: Player = $Player
 @onready var background: ColorRect = $Background
 @onready var ground: ColorRect = $Ground
+@onready var cenario: Cenario = $Cenario
 @onready var texto_fase: Label = $Interface/Fase
 @onready var texto_player: Label = $Interface/VidaPlayer
 @onready var objetivo: Label = $Interface/Objetivo
@@ -64,11 +65,12 @@ func _criar_onda():
 	var cor = Color.from_hsv(float((andar_atual + 2) % 10) / 10.0, 0.45, 0.18 + fase_atual * 0.005)
 	background.color = cor
 	ground.color = cor.lightened(0.4)
+	cenario.configurar(andar_atual, fase_atual)
 	if ciclo_atual == Progressao.CICLOS_POR_FASE:
 		var guardas = Progressao.guardas_de_chefe(andar_atual, fase_atual)
 		for indice in range(guardas):
 			var x = 450 if guardas == 1 else 350 + int(350.0 * indice / (guardas - 1))
-			_criar_inimigo(x, Progressao.vida_inimigo(andar_atual, fase_atual), Progressao.dano_inimigo(andar_atual), "normal")
+			_criar_inimigo(x, Progressao.vida_inimigo(andar_atual, fase_atual), Progressao.dano_inimigo(andar_atual), "normal", _especie_normal(indice))
 		var tipo = "boss" if fase_atual == Progressao.FASES_POR_ANDAR else "mini"
 		_criar_inimigo(850, Progressao.vida_chefe(andar_atual, fase_atual), Progressao.dano_chefe(andar_atual, fase_atual), tipo)
 		objetivo.text = "Boss do andar" if tipo == "boss" else "Mini boss da fase"
@@ -76,12 +78,16 @@ func _criar_onda():
 		var quantidade = Progressao.quantidade_inimigos(andar_atual, fase_atual, ciclo_atual)
 		for indice in range(quantidade):
 			var x = 350 + int(500.0 * indice / maxi(quantidade - 1, 1))
-			_criar_inimigo(x, Progressao.vida_inimigo(andar_atual, fase_atual), Progressao.dano_inimigo(andar_atual), "normal")
+			_criar_inimigo(x, Progressao.vida_inimigo(andar_atual, fase_atual), Progressao.dano_inimigo(andar_atual), "normal", _especie_normal(indice))
 		objetivo.text = "Elimine os inimigos para avançar."
 
-func _criar_inimigo(x: int, vida: int, dano: int, tipo: String):
+func _especie_normal(indice: int) -> String:
+	var especies = ["enemy_slime", "enemy_goblin", "enemy_skeleton"]
+	return especies[(andar_atual + fase_atual + ciclo_atual + indice) % especies.size()]
+
+func _criar_inimigo(x: int, vida: int, dano: int, tipo: String, especie: String = "enemy_slime"):
 	var inimigo: Enemy = cena_inimigo.instantiate()
-	inimigo.configurar(vida, dano, tipo)
+	inimigo.configurar(vida, dano, tipo, especie)
 	add_child(inimigo)
 	inimigo.position = Vector2(x, 210)
 	inimigo.atacou.connect(_on_inimigo_atacou)

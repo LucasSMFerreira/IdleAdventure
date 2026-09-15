@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 64" width="384" height="64">
+  <defs>
+    <style>
+      .prop-out { stroke: #1a1512; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+      .wood { fill: #6e4327; }
+      .wood-dark { fill: #482c19; }
+      .leaf-dark { fill: #2d6a4f; }
+      .leaf-mid { fill: #40916c; }
+      .leaf-light { fill: #74c69d; }
+      .stone { fill: #7f8c8d; }
+      .stone-dark { fill: #576574; }
+      .bone { fill: #e8dfcf; }
+      .banner { fill: #b71515; }
+    </style>
+  </defs>
+
+  <!-- PROP 1: ÁRVORE MEDIEVAL (0 a 64px) -->
+  <g id="prop_tree" class="prop-out">
+    <path d="M28 48 L28 28 Q24 24 20 22 M32 28 Q36 22 40 20" stroke="#482c19" stroke-width="5" fill="none" />
+    <circle cx="30" cy="18" r="14" class="leaf-dark" />
+    <circle cx="26" cy="16" r="11" class="leaf-mid" />
+    <circle cx="28" cy="13" r="7" class="leaf-light" />
+  </g>
+
+  <!-- PROP 2: ROCHA MUSGOSA E ARBUSTO (64 a 128px) -->
+  <g id="prop_rock_bush" class="prop-out" transform="translate(64, 0)">
+    <!-- Rocha -->
+    <path d="M12 48 L16 36 L28 34 L36 42 L38 48 Z" class="stone" />
+    <path d="M16 36 L24 38 L30 48" class="stone-dark" fill="none" />
+    <!-- Arbusto na frente -->
+    <circle cx="38" cy="42" r="7" class="leaf-mid" />
+    <circle cx="44" cy="44" r="5" class="leaf-dark" />
+    <circle cx="37" cy="40" r="3.5" class="leaf-light" />
+  </g>
+
+  <!-- PROP 3: CERCA RÚSTICA DA VILA (128 a 192px) -->
+  <g id="prop_fence" class="prop-out" transform="translate(128, 0)">
+    <!-- Mourões verticais -->
+    <rect x="14" y="32" width="5" height="16" rx="1" class="wood" />
+    <polygon points="14,32 16.5,28 19,32" class="wood" />
+    <rect x="42" y="32" width="5" height="16" rx="1" class="wood" />
+    <polygon points="42,32 44.5,28 47,32" class="wood" />
+    <!-- Travessas horizontais -->
+    <rect x="8" y="35" width="46" height="3" rx="1" class="wood-dark" />
+    <rect x="8" y="41" width="46" height="3" rx="1" class="wood-dark" />
+  </g>
+
+  <!-- PROP 4: RUÍNA COM HERAS (192 a 256px) -->
+  <g id="prop_ruin" class="prop-out" transform="translate(192, 0)">
+    <rect x="16" y="24" width="12" height="24" class="stone" />
+    <rect x="28" y="32" width="16" height="16" class="stone-dark" />
+    <!-- Blocos quebrados de alvenaria -->
+    <line x1="16" y1="32" x2="28" y2="32" stroke="#1a1512" stroke-width="1.2" />
+    <line x1="16" y1="40" x2="28" y2="40" stroke="#1a1512" stroke-width="1.2" />
+    <line x1="28" y1="40" x2="44" y2="40" stroke="#1a1512" stroke-width="1.2" />
+    <!-- Hera rasteira subindo na pedra -->
+    <path d="M14 46 Q18 36 17 28 Q20 30 22 26" stroke="#40916c" stroke-width="2" fill="none" />
+  </g>
+
+  <!-- PROP 5: PALIÇADA ORC (256 a 320px) -->
+  <g id="prop_orc_barricade" class="prop-out" transform="translate(256, 0)">
+    <!-- Troncos apontados amarrados com corda -->
+    <polygon points="16,48 18,20 23,20 25,48" class="wood-dark" transform="rotate(-8 20 35)" />
+    <polygon points="26,48 29,14 34,14 37,48" class="wood" />
+    <polygon points="38,48 41,22 46,22 48,48" class="wood-dark" transform="rotate(10 43 35)" />
+    <!-- Amarras de couro/corda em X -->
+    <line x1="16" y1="35" x2="46" y2="39" stroke="#d4af37" stroke-width="2" />
+    <line x1="16" y1="39" x2="46" y2="35" stroke="#d4af37" stroke-width="2" />
+  </g>
+
+  <!-- PROP 6: TOTEM COM CRÂNIO E BANDEIRA (320 a 384px) -->
+  <g id="prop_orc_totem" class="prop-out" transform="translate(320, 0)">
+    <!-- Estaca vertical -->
+    <rect x="29" y="16" width="6" height="32" rx="1.5" class="wood-dark" />
+    <!-- Crânio espetado no topo -->
+    <circle cx="32" cy="14" r="6" class="bone" />
+    <rect x="30" y="18" width="4" height="3" class="bone" />
+    <circle cx="30.5" cy="14" r="1.2" fill="#1a1512" stroke="none" />
+    <circle cx="33.5" cy="14" r="1.2" fill="#1a1512" stroke="none" />
+    <!-- Estandarte carmesim orc rasgado -->
+    <path d="M35 22 L52 26 L48 34 L54 40 L35 34 Z" class="banner" />
+  </g>
+</svg>

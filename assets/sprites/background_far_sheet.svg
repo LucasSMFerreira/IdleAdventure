@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 64" width="384" height="64">
+  <defs>
+    <style>
+      .out-far { stroke: #2c3e50; stroke-width: 1.2; stroke-linejoin: round; }
+      .mountain-back { fill: #6c7a89; }
+      .mountain-mid { fill: #596275; }
+      .mountain-snow { fill: #d2dae2; }
+      .forest-far { fill: #3b5998; opacity: 0.7; }
+      .orc-tower { fill: #2f3542; }
+    </style>
+  </defs>
+
+  <!-- VARIAÇÃO 1: MONTANHAS SELVAGENS (0 a 128px) -->
+  <g id="far_01" class="out-far">
+    <!-- Picos de fundo -->
+    <polygon points="-10,48 24,18 58,48" class="mountain-back" />
+    <polygon points="24,18 34,26 24,28 14,26" class="mountain-snow" stroke="none" />
+    <polygon points="40,48 78,12 116,48" class="mountain-back" />
+    <polygon points="78,12 90,22 78,25 66,22" class="mountain-snow" stroke="none" />
+    <!-- Colinas médias -->
+    <path d="M0 48 Q32 32 64 42 Q96 30 128 44 L128 48 L0 48 Z" class="mountain-mid" />
+  </g>
+
+  <!-- VARIAÇÃO 2: COLINAS E RUÍNAS DISTANTES (128 a 256px) -->
+  <g id="far_02" class="out-far" transform="translate(128, 0)">
+    <polygon points="10,48 45,22 80,48" class="mountain-back" />
+    <polygon points="60,48 95,20 130,48" class="mountain-back" />
+    <!-- Ruína de torre de vigia em silhueta -->
+    <rect x="26" y="30" width="8" height="15" rx="1" class="orc-tower" />
+    <polygon points="24,30 30,24 36,30" class="orc-tower" />
+    <!-- Silhueta contínua de copas de floresta distante -->
+    <path d="M0 48 Q15 36 30 40 Q45 35 60 42 Q80 34 100 41 Q115 36 128 43 L128 48 L0 48 Z" class="forest-far" />
+  </g>
+
+  <!-- VARIAÇÃO 3: FORTIFICAÇÕES ORCS DISTANTES (256 a 384px) -->
+  <g id="far_03" class="out-far" transform="translate(256, 0)">
+    <polygon points="0,48 30,16 65,48" class="mountain-mid" />
+    <polygon points="50,48 85,14 120,48" class="mountain-mid" />
+    <!-- Paliçadas e torres pontudas orcs no horizonte -->
+    <polygon points="68,42 72,28 76,42" class="orc-tower" />
+    <polygon points="80,44 84,24 88,44" class="orc-tower" />
+    <polygon points="92,42 96,29 100,42" class="orc-tower" />
+    <!-- Colina rochosa escura -->
+    <path d="M0 48 Q40 38 75 40 Q105 34 128 46 L128 48 L0 48 Z" class="orc-tower" />
+  </g>
+</svg>

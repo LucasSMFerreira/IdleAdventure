@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 64" width="256" height="64">
+  <defs>
+    <style>
+      .out { stroke: #1a1512; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+      .skin { fill: #76a938; }
+      .skin-dark { fill: #5a8527; }
+      .cloth { fill: #5c4028; }
+      .metal { fill: #8a939e; }
+    </style>
+  </defs>
+
+  <!-- FRAME 1: GOLPE FINAL / SOLTA FACA (0 a 64px) -->
+  <g id="goblin_dth_01" class="out">
+    <path d="M22 51 L16 57 L21 58" fill="none" stroke="#5a8527" stroke-width="4" />
+    <path d="M28 51 L25 57 L30 58" fill="none" stroke="#76a938" stroke-width="4" />
+    <ellipse cx="23" cy="43" rx="7" ry="7" class="skin" transform="rotate(-25 23 43)" />
+    <path d="M16 42 C16 50 30 51 30 42 Z" class="cloth" transform="rotate(-25 23 43)" />
+    <ellipse cx="21" cy="32" rx="8" ry="6.5" class="skin" />
+    <polygon points="15,31 6,28 14,37" class="skin" />
+    <path d="M24 30 L28 33 M28 30 L24 33" stroke="#1a1512" stroke-width="1.5" fill="none" />
+    <!-- Faca voando para longe -->
+    <polygon points="40,30 44,27 50,32 45,34" class="metal" transform="rotate(30 45 30)" />
+  </g>
+
+  <!-- FRAME 2: TOMBANDO DE COSTAS (64 a 128px) -->
+  <g id="goblin_dth_02" class="out" transform="translate(64, 0)">
+    <path d="M25 52 L17 56 L20 58" fill="none" stroke="#5a8527" stroke-width="4" />
+    <ellipse cx="20" cy="46" rx="7" ry="6" class="skin" transform="rotate(-50 20 46)" />
+    <path d="M14 45 C14 52 26 53 26 45 Z" class="cloth" transform="rotate(-50 20 46)" />
+    <ellipse cx="14" cy="38" rx="7" ry="6" class="skin" />
+    <polygon points="9,37 0,37 7,43" class="skin" />
+    <!-- Faca caindo -->
+    <polygon points="44,48 48,45 54,50 49,52" class="metal" transform="rotate(70 49 48)" />
+  </g>
+
+  <!-- FRAME 3: IMPACTO NO CHÃO (128 a 192px) -->
+  <g id="goblin_dth_03" class="out" transform="translate(128, 0)">
+    <path d="M29 55 L35 56 L40 57" fill="none" stroke="#76a938" stroke-width="3.5" />
+    <ellipse cx="21" cy="52" rx="7" ry="5.5" class="skin" />
+    <path d="M16 50 C16 56 26 57 26 50 Z" class="cloth" />
+    <ellipse cx="12" cy="51" rx="6.5" ry="5.5" class="skin" />
+    <polygon points="7,50 0,47 5,54" class="skin" />
+    <!-- Faca pousada -->
+    <polygon points="43,56 47,54 53,57 48,58" class="metal" />
+  </g>
+
+  <!-- FRAME 4: REPOUSO FINAL (192 a 256px) -->
+  <g id="goblin_dth_04" class="out" transform="translate(192, 0)">
+    <path d="M28 56 L35 57 L40 58" fill="none" stroke="#5a8527" stroke-width="3.5" />
+    <ellipse cx="20" cy="53" rx="7" ry="5" class="skin" />
+    <path d="M15 51 C15 57 25 58 25 51 Z" class="cloth" />
+    <ellipse cx="11" cy="52" rx="6.5" ry="5" class="skin" />
+    <polygon points="6,51 0,48 4,55" class="skin" />
+    <polygon points="43,57 47,55 53,58 48,59" class="metal" />
+  </g>
+</svg>

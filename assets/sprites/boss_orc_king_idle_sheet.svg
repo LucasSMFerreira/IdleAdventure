@@ -1,0 +1,134 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 64" width="256" height="64">
+  <defs>
+    <style>
+      .out { stroke: #111417; stroke-width: 1.6; stroke-linejoin: round; stroke-linecap: round; }
+      .skin { fill: #365327; }
+      .skin-dark { fill: #233718; }
+      .armor { fill: #2f3640; }
+      .armor-light { fill: #57606f; }
+      .gold { fill: #d4af37; }
+      .cape { fill: #8b0000; }
+      .cape-dark { fill: #530404; }
+      .metal { fill: #747d8c; }
+      .tusk { fill: #f1f2f6; }
+      .wood { fill: #2d1d11; }
+    </style>
+  </defs>
+
+  <!-- FRAME 1: BASE (0 a 64px) -->
+  <g id="king_idle_01" class="out">
+    <!-- Capa Carmesim (Fundo) -->
+    <path d="M14 28 C10 40 10 52 14 58 L24 58 C20 48 20 36 22 28 Z" class="cape-dark" />
+    <!-- Pernas Pesadas com Grevas de Ferro -->
+    <rect x="18" y="44" width="8" height="14" rx="2.5" class="armor" />
+    <rect x="16" y="54" width="10" height="6" rx="1.5" class="armor-light" />
+    <rect x="32" y="44" width="8" height="14" rx="2.5" class="armor" />
+    <rect x="32" y="54" width="10" height="6" rx="1.5" class="armor-light" />
+    <!-- Cabo do Machado de Duas Mãos -->
+    <rect x="8" y="16" width="5" height="42" rx="1.5" class="wood" transform="rotate(-15 10 37)" />
+    <!-- Lâmina Dupla Enorme -->
+    <path d="M3 14 C-4 8 -8 11 -10 18 C-10 28 -2 33 5 26 Z" class="metal" />
+    <path d="M10 12 C16 7 20 10 22 17 C22 26 14 31 8 25 Z" class="metal" />
+    <!-- Tronco Maciço com Couraça Plena -->
+    <rect x="16" y="24" width="26" height="23" rx="4" class="skin" />
+    <path d="M18 26 L40 26 L38 43 L20 43 Z" class="armor" />
+    <line x1="29" y1="26" x2="29" y2="43" stroke="#57606f" stroke-width="2" />
+    <rect x="16" y="42" width="26" height="5" class="gold" />
+    <!-- Cabeça, Presas e Cicatriz -->
+    <circle cx="29" cy="15" r="8.5" class="skin" />
+    <line x1="28" y1="10" x2="26" y2="16" stroke="#1f2d15" stroke-width="1.8" />
+    <polygon points="31,19 33,14 35,19" class="tusk" />
+    <circle cx="33" cy="14" r="1.6" fill="#ff4757" stroke="none" />
+    <!-- Coroa de Ferro com Pontas -->
+    <path d="M22 11 L23 6 L26 9 L29 4 L32 9 L35 6 L36 11 Z" class="armor-light" />
+    <!-- Ombreiras Duplas Espinhadas -->
+    <circle cx="15" cy="24" r="6" class="armor-light" />
+    <polygon points="14,19 11,13 16,18" class="gold" />
+    <circle cx="25" cy="25" r="6.5" class="armor-light" />
+    <polygon points="25,19 23,12 28,18" class="gold" />
+    <!-- Braço em Empunhadura -->
+    <rect x="33" y="27" width="8" height="11" rx="3" class="skin" />
+    <rect x="33" y="34" width="8" height="4" class="armor" />
+  </g>
+
+  <!-- FRAME 2: INSPIRAÇÃO (64 a 128px) -->
+  <g id="king_idle_02" class="out" transform="translate(64, 0)">
+    <path d="M14 27 C9 39 9 52 13 58 L23 58 C19 48 19 35 22 27 Z" class="cape-dark" />
+    <rect x="18" y="44" width="8" height="14" rx="2.5" class="armor" />
+    <rect x="16" y="54" width="10" height="6" rx="1.5" class="armor-light" />
+    <rect x="32" y="44" width="8" height="14" rx="2.5" class="armor" />
+    <rect x="32" y="54" width="10" height="6" rx="1.5" class="armor-light" />
+    <rect x="8" y="15" width="5" height="42" rx="1.5" class="wood" transform="rotate(-13 10 36)" />
+    <path d="M3 13 C-4 7 -8 10 -10 17 C-10 27 -2 32 5 25 Z" class="metal" />
+    <path d="M10 11 C16 6 20 9 22 16 C22 25 14 30 8 24 Z" class="metal" />
+    <!-- Tronco sobe 1px -->
+    <rect x="16" y="23" width="26" height="24" rx="4" class="skin" />
+    <path d="M18 25 L40 25 L38 42 L20 42 Z" class="armor" />
+    <line x1="29" y1="25" x2="29" y2="42" stroke="#57606f" stroke-width="2" />
+    <rect x="16" y="42" width="26" height="5" class="gold" />
+    <circle cx="29" cy="14" r="8.5" class="skin" />
+    <line x1="28" y1="9" x2="26" y2="15" stroke="#1f2d15" stroke-width="1.8" />
+    <polygon points="31,18 33,13 35,18" class="tusk" />
+    <circle cx="33" cy="13" r="1.6" fill="#ff4757" stroke="none" />
+    <path d="M22 10 L23 5 L26 8 L29 3 L32 8 L35 5 L36 10 Z" class="armor-light" />
+    <circle cx="15" cy="23" r="6" class="armor-light" />
+    <polygon points="14,18 11,12 16,17" class="gold" />
+    <circle cx="25" cy="24" r="6.5" class="armor-light" />
+    <polygon points="25,18 23,11 28,17" class="gold" />
+    <rect x="33" y="26" width="8" height="11" rx="3" class="skin" />
+    <rect x="33" y="33" width="8" height="4" class="armor" />
+  </g>
+
+  <!-- FRAME 3: PICO RESPIRATÓRIO (128 a 192px) -->
+  <g id="king_idle_03" class="out" transform="translate(128, 0)">
+    <path d="M14 26 C8 38 8 51 12 58 L22 58 C18 47 18 34 22 26 Z" class="cape-dark" />
+    <rect x="18" y="44" width="8" height="14" rx="2.5" class="armor" />
+    <rect x="16" y="54" width="10" height="6" rx="1.5" class="armor-light" />
+    <rect x="32" y="44" width="8" height="14" rx="2.5" class="armor" />
+    <rect x="32" y="54" width="10" height="6" rx="1.5" class="armor-light" />
+    <rect x="8" y="14" width="5" height="42" rx="1.5" class="wood" transform="rotate(-12 10 35)" />
+    <path d="M3 12 C-4 6 -8 9 -10 16 C-10 26 -2 31 5 24 Z" class="metal" />
+    <path d="M10 10 C16 5 20 8 22 15 C22 24 14 29 8 23 Z" class="metal" />
+    <!-- Expansão máxima do peitoral -->
+    <rect x="15.5" y="22.5" width="27" height="24.5" rx="4" class="skin" />
+    <path d="M17.5 24.5 L40.5 24.5 L38.5 42 L19.5 42 Z" class="armor" />
+    <line x1="29" y1="24.5" x2="29" y2="42" stroke="#57606f" stroke-width="2" />
+    <rect x="16" y="42" width="26" height="5" class="gold" />
+    <circle cx="29" cy="13.5" r="8.5" class="skin" />
+    <polygon points="31,17.5 33,12.5 35,17.5" class="tusk" />
+    <circle cx="33" cy="12.5" r="1.6" fill="#ff4757" stroke="none" />
+    <path d="M22 9.5 L23 4.5 L26 7.5 L29 2.5 L32 7.5 L35 4.5 L36 9.5 Z" class="armor-light" />
+    <circle cx="15" cy="22.5" r="6" class="armor-light" />
+    <polygon points="14,17.5 11,11.5 16,16.5" class="gold" />
+    <circle cx="25" cy="23.5" r="6.5" class="armor-light" />
+    <polygon points="25,17.5 23,10.5 28,16.5" class="gold" />
+    <rect x="33" y="25.5" width="8" height="11" rx="3" class="skin" />
+    <rect x="33" y="32.5" width="8" height="4" class="armor" />
+  </g>
+
+  <!-- FRAME 4: EXALAÇÃO (192 a 256px) -->
+  <g id="king_idle_04" class="out" transform="translate(192, 0)">
+    <path d="M14 27.5 C9.5 39.5 9.5 52 13.5 58 L23.5 58 C19.5 48 19.5 35.5 22 27.5 Z" class="cape-dark" />
+    <rect x="18" y="44" width="8" height="14" rx="2.5" class="armor" />
+    <rect x="16" y="54" width="10" height="6" rx="1.5" class="armor-light" />
+    <rect x="32" y="44" width="8" height="14" rx="2.5" class="armor" />
+    <rect x="32" y="54" width="10" height="6" rx="1.5" class="armor-light" />
+    <rect x="8" y="15.5" width="5" height="42" rx="1.5" class="wood" transform="rotate(-14 10 36.5)" />
+    <path d="M3 13.5 C-4 7.5 -8 10.5 -10 17.5 C-10 27.5 -2 32.5 5 25.5 Z" class="metal" />
+    <path d="M10 11.5 C16 6.5 20 9.5 22 16.5 C22 25.5 14 30.5 8 24.5 Z" class="metal" />
+    <rect x="16" y="23.5" width="26" height="23.5" rx="4" class="skin" />
+    <path d="M18 25.5 L40 25.5 L38 42.5 L20 42.5 Z" class="armor" />
+    <line x1="29" y1="25.5" x2="29" y2="42.5" stroke="#57606f" stroke-width="2" />
+    <rect x="16" y="42" width="26" height="5" class="gold" />
+    <circle cx="29" cy="14.5" r="8.5" class="skin" />
+    <polygon points="31,18.5 33,13.5 35,18.5" class="tusk" />
+    <circle cx="33" cy="13.5" r="1.6" fill="#ff4757" stroke="none" />
+    <path d="M22 10.5 L23 5.5 L26 8.5 L29 3.5 L32 8.5 L35 5.5 L36 10.5 Z" class="armor-light" />
+    <circle cx="15" cy="23.5" r="6" class="armor-light" />
+    <polygon points="14,18.5 11,12.5 16,17.5" class="gold" />
+    <circle cx="25" cy="24.5" r="6.5" class="armor-light" />
+    <polygon points="25,18.5 23,11.5 28,17.5" class="gold" />
+    <rect x="33" y="26.5" width="8" height="11" rx="3" class="skin" />
+    <rect x="33" y="33.5" width="8" height="4" class="armor" />
+  </g>
+</svg>

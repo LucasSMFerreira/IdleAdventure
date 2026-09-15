@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 64" width="256" height="64">
+  <defs>
+    <style>
+      .outline { stroke: #1a1512; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+      .skin { fill: #f0b884; }
+      .skin-shadow { fill: #db9769; }
+      .hair { fill: #b5451b; }
+      .tunic { fill: #6e4327; }
+      .pants { fill: #453327; }
+      .boots { fill: #2e1f16; }
+      .metal { fill: #8a939e; }
+      .metal-detail { stroke: #5a636e; stroke-width: 1; fill: none; }
+      .wood { fill: #573822; }
+      .gold { fill: #cfa134; }
+    </style>
+  </defs>
+
+  <!-- FRAME 1: BASE / REPOUSO (0 a 64px) -->
+  <g id="idle_01" class="outline">
+    <rect x="23" y="47" width="5" height="11" rx="2" class="pants" />
+    <rect x="23" y="55" width="7" height="5" rx="1.5" class="boots" />
+    <rect x="31" y="47" width="5" height="11" rx="2" class="pants" />
+    <rect x="31" y="55" width="7" height="5" rx="1.5" class="boots" />
+    <rect x="13" y="32" width="3" height="22" rx="1" class="wood" transform="rotate(-15 14 43)" />
+    <path d="M12 28 C9 24 5 25 4 29 C4 35 9 37 12 34 Z" class="metal" />
+    <path d="M7 27 C8 30 8 33 7 35" class="metal-detail" />
+    <rect x="21" y="32" width="16" height="16" rx="3" class="tunic" />
+    <rect x="20" y="43" width="18" height="4" class="boots" />
+    <rect x="28" y="43" width="4" height="4" class="gold" />
+    <circle cx="31" cy="22" r="9" class="skin" />
+    <ellipse cx="23" cy="23" rx="1.5" ry="2" class="skin-shadow" />
+    <path d="M22 20 C22 13 38 12 39 19 C39 21 37 23 35 22 C33 21 31 16 26 18 C23 19 22 21 22 20 Z" class="hair" />
+    <path d="M25 24 C25 34 33 36 38 30 C38 27 36 26 34 26 C31 26 29 28 26 25 Z" class="hair" />
+    <circle cx="34" cy="21" r="1.5" fill="#1a1512" stroke="none" />
+    <path d="M31 18 L36 19" stroke="#8c2f0d" stroke-width="1.8" fill="none" />
+    <rect x="27" y="34" width="5" height="9" rx="2.5" class="skin" />
+    <rect x="27" y="39" width="5" height="3" class="boots" />
+  </g>
+
+  <!-- FRAME 2: INÍCIO DA INALAÇÃO (64 a 128px) -->
+  <g id="idle_02" class="outline" transform="translate(64, 0)">
+    <rect x="23" y="47" width="5" height="11" rx="2" class="pants" />
+    <rect x="23" y="55" width="7" height="5" rx="1.5" class="boots" />
+    <rect x="31" y="47" width="5" height="11" rx="2" class="pants" />
+    <rect x="31" y="55" width="7" height="5" rx="1.5" class="boots" />
+    <rect x="13" y="31" width="3" height="22" rx="1" class="wood" transform="rotate(-13 14 42)" />
+    <path d="M12 27 C9 23 5 24 4 28 C4 34 9 36 12 33 Z" class="metal" />
+    <path d="M7 26 C8 29 8 32 7 34" class="metal-detail" />
+    <rect x="21" y="31" width="16" height="17" rx="3" class="tunic" />
+    <rect x="20" y="43" width="18" height="4" class="boots" />
+    <rect x="28" y="43" width="4" height="4" class="gold" />
+    <circle cx="31" cy="21" r="9" class="skin" />
+    <ellipse cx="23" cy="22" rx="1.5" ry="2" class="skin-shadow" />
+    <path d="M22 19 C22 12 38 11 39 18 C39 20 37 22 35 21 C33 20 31 15 26 17 C23 18 22 20 22 19 Z" class="hair" />
+    <path d="M25 23 C25 33 34 35 38 29 C38 26 36 25 34 25 C31 25 29 27 26 24 Z" class="hair" />
+    <circle cx="34" cy="20" r="1.5" fill="#1a1512" stroke="none" />
+    <path d="M31 17 L36 18" stroke="#8c2f0d" stroke-width="1.8" fill="none" />
+    <rect x="27" y="33" width="5" height="9" rx="2.5" class="skin" />
+    <rect x="27" y="38" width="5" height="3" class="boots" />
+  </g>
+
+  <!-- FRAME 3: PICO DA RESPIRAÇÃO (128 a 192px) -->
+  <g id="idle_03" class="outline" transform="translate(128, 0)">
+    <rect x="23" y="47" width="5" height="11" rx="2" class="pants" />
+    <rect x="23" y="55" width="7" height="5" rx="1.5" class="boots" />
+    <rect x="31" y="47" width="5" height="11" rx="2" class="pants" />
+    <rect x="31" y="55" width="7" height="5" rx="1.5" class="boots" />
+    <rect x="13" y="30" width="3" height="22" rx="1" class="wood" transform="rotate(-12 14 41)" />
+    <path d="M12 26 C9 22 5 23 4 27 C4 33 9 35 12 32 Z" class="metal" />
+    <path d="M7 25 C8 28 8 31 7 33" class="metal-detail" />
+    <rect x="21" y="30" width="17" height="18" rx="3" class="tunic" />
+    <rect x="20" y="43" width="18" height="4" class="boots" />
+    <rect x="28" y="43" width="4" height="4" class="gold" />
+    <circle cx="31" cy="20" r="9" class="skin" />
+    <ellipse cx="23" cy="21" rx="1.5" ry="2" class="skin-shadow" />
+    <path d="M22 18 C22 11 38 10 39 17 C39 19 37 21 35 20 C33 19 31 14 26 16 C23 17 22 19 22 18 Z" class="hair" />
+    <path d="M25 22 C25 32 35 34 39 28 C38 25 36 24 34 24 C31 24 29 26 26 23 Z" class="hair" />
+    <circle cx="34" cy="19" r="1.5" fill="#1a1512" stroke="none" />
+    <path d="M31 16 L36 17" stroke="#8c2f0d" stroke-width="1.8" fill="none" />
+    <rect x="27" y="32" width="5" height="9" rx="2.5" class="skin" />
+    <rect x="27" y="37" width="5" height="3" class="boots" />
+  </g>
+
+  <!-- FRAME 4: EXALAÇÃO / RETORNO (192 a 256px) -->
+  <g id="idle_04" class="outline" transform="translate(192, 0)">
+    <rect x="23" y="47" width="5" height="11" rx="2" class="pants" />
+    <rect x="23" y="55" width="7" height="5" rx="1.5" class="boots" />
+    <rect x="31" y="47" width="5" height="11" rx="2" class="pants" />
+    <rect x="31" y="55" width="7" height="5" rx="1.5" class="boots" />
+    <rect x="13" y="31" width="3" height="22" rx="1" class="wood" transform="rotate(-14 14 42)" />
+    <path d="M12 27 C9 23 5 24 4 28 C4 34 9 36 12 33 Z" class="metal" />
+    <path d="M7 26 C8 29 8 32 7 34" class="metal-detail" />
+    <rect x="21" y="31.5" width="16.5" height="16.5" rx="3" class="tunic" />
+    <rect x="20" y="43" width="18" height="4" class="boots" />
+    <rect x="28" y="43" width="4" height="4" class="gold" />
+    <circle cx="31" cy="21.5" r="9" class="skin" />
+    <ellipse cx="23" cy="22.5" rx="1.5" ry="2" class="skin-shadow" />
+    <path d="M22 19.5 C22 12.5 38 11.5 39 18.5 C39 20.5 37 22.5 35 21.5 C33 20.5 31 15.5 26 17.5 C23 18.5 22 20.5 22 19.5 Z" class="hair" />
+    <path d="M25 23.5 C25 33.5 33.5 35.5 38 29.5 C38 26.5 36 25.5 34 25.5 C31 25.5 29 27.5 26 24.5 Z" class="hair" />
+    <circle cx="34" cy="20.5" r="1.5" fill="#1a1512" stroke="none" />
+    <path d="M31 17.5 L36 18.5" stroke="#8c2f0d" stroke-width="1.8" fill="none" />
+    <rect x="27" y="33.5" width="5" height="9" rx="2.5" class="skin" />
+    <rect x="27" y="38.5" width="5" height="3" class="boots" />
+  </g>
+</svg>

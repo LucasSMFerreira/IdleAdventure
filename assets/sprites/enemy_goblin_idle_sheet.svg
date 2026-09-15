@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 64" width="256" height="64">
+  <defs>
+    <style>
+      .out { stroke: #1a1512; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+      .skin { fill: #76a938; }
+      .skin-dark { fill: #5a8527; }
+      .cloth { fill: #5c4028; }
+      .cloth-dark { fill: #3d2b1b; }
+      .metal { fill: #8a939e; }
+      .eye { fill: #ffe066; }
+      .pupil { fill: #1a1512; stroke: none; }
+    </style>
+  </defs>
+
+  <!-- FRAME 1: BASE (0 a 64px) -->
+  <g id="goblin_idle_01" class="out">
+    <!-- Pernas finas e arqueadas -->
+    <path d="M26 49 L23 57 L28 58" fill="none" stroke="#5a8527" stroke-width="4" />
+    <path d="M33 49 L35 57 L40 58" fill="none" stroke="#76a938" stroke-width="4" />
+    <polygon points="26,56 29,58 24,59" class="skin-dark" />
+    <polygon points="38,56 42,58 36,59" class="skin" />
+    <!-- Tronco e Trapo de Couro -->
+    <ellipse cx="29" cy="42" rx="7" ry="8" class="skin" />
+    <path d="M22 41 C22 49 36 50 36 41 L34 49 L29 52 L24 49 Z" class="cloth" />
+    <rect x="22" y="41" width="14" height="2.5" class="cloth-dark" />
+    <!-- Orelha Esquerda (Trás) -->
+    <polygon points="22,30 11,25 21,34" class="skin-dark" />
+    <!-- Cabeça Goblins -->
+    <ellipse cx="30" cy="31" rx="8" ry="7" class="skin" />
+    <!-- Nariz Pontudo -->
+    <polygon points="36,31 43,33 36,35" class="skin" />
+    <!-- Orelha Direita (Frente) -->
+    <polygon points="25,31 15,28 24,36" class="skin" />
+    <polygon points="23,32 17,30 22,35" class="skin-dark" stroke="none" />
+    <!-- Olho Amarelo -->
+    <circle cx="34" cy="30" r="2.2" class="eye" />
+    <circle cx="35.2" cy="30" r="1" class="pupil" />
+    <!-- Braço Esquerdo segurando Faca -->
+    <path d="M35 39 L41 44 L45 42" fill="none" stroke="#76a938" stroke-width="3" />
+    <!-- Faca Curva -->
+    <polygon points="44,43 47,40 53,44 47,46" class="metal" />
+    <!-- Braço Direito relaxado -->
+    <path d="M24 39 L22 46" fill="none" stroke="#5a8527" stroke-width="3" />
+  </g>
+
+  <!-- FRAME 2: INSPIRAÇÃO (64 a 128px) -->
+  <g id="goblin_idle_02" class="out" transform="translate(64, 0)">
+    <path d="M26 49 L23 57 L28 58" fill="none" stroke="#5a8527" stroke-width="4" />
+    <path d="M33 49 L35 57 L40 58" fill="none" stroke="#76a938" stroke-width="4" />
+    <polygon points="26,56 29,58 24,59" class="skin-dark" />
+    <polygon points="38,56 42,58 36,59" class="skin" />
+    <!-- Tronco sobe 1px -->
+    <ellipse cx="29" cy="41" rx="7.2" ry="8" class="skin" />
+    <path d="M22 40 C22 48 36 49 36 40 L34 48 L29 51 L24 48 Z" class="cloth" />
+    <rect x="22" y="40" width="14" height="2.5" class="cloth-dark" />
+    <polygon points="22,29 11,23 21,33" class="skin-dark" />
+    <ellipse cx="30" cy="30" rx="8" ry="7" class="skin" />
+    <polygon points="36,30 43,32 36,34" class="skin" />
+    <polygon points="25,30 15,26 24,35" class="skin" />
+    <polygon points="23,31 17,28 22,34" class="skin-dark" stroke="none" />
+    <circle cx="34" cy="29" r="2.2" class="eye" />
+    <circle cx="35.2" cy="29" r="1" class="pupil" />
+    <path d="M35 38 L41 43 L45 41" fill="none" stroke="#76a938" stroke-width="3" />
+    <polygon points="44,42 47,39 53,43 47,45" class="metal" />
+    <path d="M24 38 L22 45" fill="none" stroke="#5a8527" stroke-width="3" />
+  </g>
+
+  <!-- FRAME 3: PICO (128 a 192px) -->
+  <g id="goblin_idle_03" class="out" transform="translate(128, 0)">
+    <path d="M26 49 L23 57 L28 58" fill="none" stroke="#5a8527" stroke-width="4" />
+    <path d="M33 49 L35 57 L40 58" fill="none" stroke="#76a938" stroke-width="4" />
+    <polygon points="26,56 29,58 24,59" class="skin-dark" />
+    <polygon points="38,56 42,58 36,59" class="skin" />
+    <!-- Tronco no ponto mais alto -->
+    <ellipse cx="29" cy="40.5" rx="7.5" ry="8" class="skin" />
+    <path d="M22 39.5 C22 47.5 36 48.5 36 39.5 L34 47.5 L29 50.5 L24 47.5 Z" class="cloth" />
+    <rect x="22" y="39.5" width="14" height="2.5" class="cloth-dark" />
+    <!-- Orelhas com leve tremulação na ponta -->
+    <polygon points="22,28.5 11,21.5 21,32.5" class="skin-dark" />
+    <ellipse cx="30" cy="29.5" rx="8" ry="7" class="skin" />
+    <polygon points="36,29.5 43,31.5 36,33.5" class="skin" />
+    <polygon points="25,29.5 15,24.5 24,34.5" class="skin" />
+    <polygon points="23,30.5 17,26.5 22,33.5" class="skin-dark" stroke="none" />
+    <circle cx="34" cy="28.5" r="2.2" class="eye" />
+    <circle cx="35.2" cy="28.5" r="1" class="pupil" />
+    <path d="M35 37.5 L41 42.5 L45 40.5" fill="none" stroke="#76a938" stroke-width="3" />
+    <polygon points="44,41.5 47,38.5 53,42.5 47,44.5" class="metal" />
+    <path d="M24 37.5 L22 44.5" fill="none" stroke="#5a8527" stroke-width="3" />
+  </g>
+
+  <!-- FRAME 4: RETORNO (192 a 256px) -->
+  <g id="goblin_idle_04" class="out" transform="translate(192, 0)">
+    <path d="M26 49 L23 57 L28 58" fill="none" stroke="#5a8527" stroke-width="4" />
+    <path d="M33 49 L35 57 L40 58" fill="none" stroke="#76a938" stroke-width="4" />
+    <polygon points="26,56 29,58 24,59" class="skin-dark" />
+    <polygon points="38,56 42,58 36,59" class="skin" />
+    <ellipse cx="29" cy="41.5" rx="7" ry="8" class="skin" />
+    <path d="M22 40.5 C22 48.5 36 49.5 36 40.5 L34 48.5 L29 51.5 L24 48.5 Z" class="cloth" />
+    <rect x="22" y="40.5" width="14" height="2.5" class="cloth-dark" />
+    <polygon points="22,29.5 11,24 21,33.5" class="skin-dark" />
+    <ellipse cx="30" cy="30.5" rx="8" ry="7" class="skin" />
+    <polygon points="36,30.5 43,32.5 36,34.5" class="skin" />
+    <polygon points="25,30.5 15,27 24,35.5" class="skin" />
+    <polygon points="23,31.5 17,29 22,34.5" class="skin-dark" stroke="none" />
+    <circle cx="34" cy="29.5" r="2.2" class="eye" />
+    <circle cx="35.2" cy="29.5" r="1" class="pupil" />
+    <path d="M35 38.5 L41 43.5 L45 41.5" fill="none" stroke="#76a938" stroke-width="3" />
+    <polygon points="44,42.5 47,39.5 53,43.5 47,45.5" class="metal" />
+    <path d="M24 38.5 L22 45.5" fill="none" stroke="#5a8527" stroke-width="3" />
+  </g>
+</svg>

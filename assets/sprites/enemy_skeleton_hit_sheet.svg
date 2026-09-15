@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 64" width="128" height="64">
+  <defs>
+    <style>
+      .out { stroke: #1a1512; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+      .bone { fill: #e8dfcf; }
+      .bone-hit { fill: #fffbeb; }
+      .bone-dark { fill: #b5a993; }
+      .metal { fill: #7a848f; }
+      .wood { fill: #5c3a21; }
+      .socket { fill: #1a1512; stroke: none; }
+      .hit-fx { stroke: #fde047; stroke-width: 1.8; fill: none; stroke-linecap: round; }
+    </style>
+  </defs>
+
+  <!-- FRAME 1: IMPACTO / DESALINHAMENTO (0 a 64px) -->
+  <g id="skel_hit_01" class="out">
+    <path d="M40 22 L45 18 M42 30 L48 31" class="hit-fx" />
+    <!-- Pernas deslocadas -->
+    <path d="M22 46 L17 53 L16 58" fill="none" stroke="#b5a993" stroke-width="3" />
+    <path d="M29 46 L27 53 L29 58" fill="none" stroke="#fffbeb" stroke-width="3.2" />
+    <!-- Coluna vergada para trás -->
+    <path d="M23 37 L26 44" fill="none" stroke="#fffbeb" stroke-width="3.5" />
+    <!-- Crânio jogado com mandíbula aberta -->
+    <circle cx="22" cy="20" r="6.5" class="bone-hit" />
+    <rect x="23" y="25" width="5" height="3" rx="1" class="bone-hit" transform="rotate(15 25 26)" />
+    <ellipse cx="25" cy="19" rx="1.6" ry="2" class="socket" />
+    <!-- Escudo solavancado -->
+    <circle cx="16" cy="36" r="6.5" class="wood" />
+    <!-- Espada apontada para trás desarmada -->
+    <rect x="36" y="24" width="3" height="18" rx="1" class="metal" transform="rotate(45 37 33)" />
+    <path d="M28 32 L34 35 L38 34" fill="none" stroke="#fffbeb" stroke-width="2.5" />
+  </g>
+
+  <!-- FRAME 2: RECUPERAÇÃO RÍGIDA (64 a 128px) -->
+  <g id="skel_hit_02" class="out" transform="translate(64, 0)">
+    <path d="M25 45 L23 52 L22 58" fill="none" stroke="#b5a993" stroke-width="3" />
+    <path d="M32 45 L33 52 L34 58" fill="none" stroke="#e8dfcf" stroke-width="3.2" />
+    <path d="M28 36 L28 44" fill="none" stroke="#e8dfcf" stroke-width="3.5" />
+    <circle cx="29" cy="22" r="6.5" class="bone" />
+    <rect x="28" y="26" width="5" height="3" rx="1" class="bone" />
+    <ellipse cx="32" cy="22" rx="1.6" ry="2" class="socket" />
+    <circle cx="20" cy="37" r="6.5" class="wood" />
+    <rect x="41" y="18" width="3" height="18" rx="1" class="metal" transform="rotate(22 42 27)" />
+    <path d="M31 32 L37 36 L40 35" fill="none" stroke="#e8dfcf" stroke-width="2.5" />
+  </g>
+</svg>

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 64" width="128" height="64">
+  <defs>
+    <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4a90e2" />
+      <stop offset="55%" stop-color="#87ceeb" />
+      <stop offset="100%" stop-color="#e0f2fe" />
+    </linearGradient>
+    <style>
+      .cloud-back { fill: #cce7ff; opacity: 0.6; }
+      .cloud-front { fill: #ffffff; opacity: 0.85; }
+    </style>
+  </defs>
+
+  <!-- Fundo Gradiente -->
+  <rect width="128" height="64" fill="url(#skyGrad)" />
+
+  <!-- Nuvens Distantes (Camada Suave) -->
+  <path d="M-10 24 Q5 18 20 24 Q35 16 50 24 Q60 20 70 25 L70 34 L-10 34 Z" class="cloud-back" />
+  <path d="M80 20 Q95 14 110 20 Q125 12 138 20 L138 30 L80 30 Z" class="cloud-back" />
+
+  <!-- Nuvens Principais Estruturadas -->
+  <path d="M15 16 Q25 8 36 14 Q46 6 56 13 Q64 10 70 17 L10 17 Z" class="cloud-front" />
+  <path d="M90 12 Q100 4 112 10 Q122 3 134 11 L85 11 Z" class="cloud-front" />
+</svg>

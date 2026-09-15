@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 64" width="256" height="64">
+  <defs>
+    <style>
+      .out { stroke: #1a1512; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+      .slime-base { fill: #4ade80; }
+      .slime-dark { fill: #16a34a; }
+      .bubble { fill: #bbf7d0; stroke: #1a1512; stroke-width: 1.2; }
+    </style>
+  </defs>
+
+  <!-- FRAME 1: ESTOURO / POP (0 a 64px) -->
+  <g id="slime_dth_01" class="out">
+    <!-- Centro rompendo -->
+    <path d="M19 54 C18 45 22 43 27 46 C32 40 38 41 41 47 C45 44 48 48 47 54 Z" class="slime-base" />
+    <!-- Gotículas voando em arco -->
+    <circle cx="16" cy="38" r="2.2" class="bubble" />
+    <circle cx="28" cy="28" r="2.5" class="bubble" />
+    <circle cx="44" cy="30" r="2" class="bubble" />
+    <circle cx="50" cy="41" r="2.4" class="bubble" />
+  </g>
+
+  <!-- FRAME 2: DESMORONAMENTO (64 a 128px) -->
+  <g id="slime_dth_02" class="out" transform="translate(64, 0)">
+    <path d="M14 55 C15 48 24 48 32 50 C40 48 49 48 50 55 C50 58 14 58 14 55 Z" class="slime-base" />
+    <ellipse cx="22" cy="52" rx="4" ry="2" class="slime-dark" stroke="none" />
+    <ellipse cx="42" cy="52" rx="4" ry="2" class="slime-dark" stroke="none" />
+    <!-- Gotas caindo no chão -->
+    <circle cx="12" cy="55" r="1.5" class="slime-base" />
+    <circle cx="52" cy="55" r="1.5" class="slime-base" />
+  </g>
+
+  <!-- FRAME 3: POÇA NO CHÃO (128 a 192px) -->
+  <g id="slime_dth_03" class="out" transform="translate(128, 0)">
+    <!-- Poça achatada -->
+    <path d="M10 56 C14 54 22 55 32 54 C42 55 50 54 54 56 C54 59 10 59 10 56 Z" class="slime-base" />
+    <ellipse cx="28" cy="56" rx="8" ry="1.5" class="slime-dark" stroke="none" />
+    <ellipse cx="44" cy="56.5" rx="5" ry="1" class="slime-dark" stroke="none" />
+  </g>
+
+  <!-- FRAME 4: DISSIPAÇÃO / RESÍDUO (192 a 256px) -->
+  <g id="slime_dth_04" class="out" transform="translate(192, 0)">
+    <!-- Traço plano residual quase dissolvido -->
+    <path d="M16 57 C22 56 30 56.5 36 56 C42 56.5 48 56 50 57 C50 58.5 16 58.5 16 57 Z" fill="#86efac" opacity="0.6" stroke="#16a34a" stroke-width="1" />
+  </g>
+</svg>

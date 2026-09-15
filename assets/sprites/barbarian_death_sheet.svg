@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 64" width="384" height="64">
+  <defs>
+    <style>
+      .outline { stroke: #1a1512; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+      .skin { fill: #f0b884; }
+      .skin-down { fill: #d49c6a; }
+      .hair { fill: #b5451b; }
+      .tunic { fill: #6e4327; }
+      .pants { fill: #453327; }
+      .boots { fill: #2e1f16; }
+      .metal { fill: #8a939e; }
+      .wood { fill: #573822; }
+    </style>
+  </defs>
+
+  <!-- ============================================== -->
+  <!-- FRAME 1: GOLPE FATAL (0 a 64px)                -->
+  <!-- ============================================== -->
+  <g id="death_01" class="outline">
+    <path d="M20 48 L15 56 L20 58" fill="none" stroke="#453327" stroke-width="5" />
+    <rect x="14" y="56" width="7" height="4" rx="1.5" class="boots" />
+    <path d="M29 48 L27 56 L32 58" fill="none" stroke="#453327" stroke-width="5" />
+    <rect x="27" y="56" width="7" height="4" rx="1.5" class="boots" />
+    <!-- Machado escapando da mão -->
+    <rect x="3" y="30" width="3" height="22" rx="1" class="wood" transform="rotate(-55 4 41)" />
+    <path d="M4 24 C1 20 -3 22 -4 26 C-4 32 1 34 4 31 Z" class="metal" />
+    <rect x="17" y="32" width="16" height="16" rx="3" class="tunic" transform="rotate(-18 25 40)" />
+    <rect x="16" y="43" width="18" height="4" class="boots" transform="rotate(-18 25 45)" />
+    <circle cx="27" cy="20" r="9" class="skin" />
+    <path d="M18 17 C18 10 34 10 36 17 Z" class="hair" />
+    <path d="M21 23 C21 33 30 34 34 28 Z" class="hair" />
+    <path d="M30 18 L34 21 M34 18 L30 21" stroke="#1a1512" stroke-width="1.5" fill="none" />
+  </g>
+
+  <!-- ============================================== -->
+  <!-- FRAME 2: PERDA TOTAL DE EQUILÍBRIO (64 a 128px)-->
+  <!-- ============================================== -->
+  <g id="death_02" class="outline" transform="translate(64, 0)">
+    <!-- Pernas cedendo -->
+    <path d="M22 50 L14 55 L18 58" fill="none" stroke="#453327" stroke-width="5" />
+    <rect x="13" y="55" width="7" height="4" rx="1.5" class="boots" />
+    <path d="M28 50 L22 55 L26 58" fill="none" stroke="#453327" stroke-width="5" />
+    <rect x="22" y="55" width="7" height="4" rx="1.5" class="boots" />
+    <!-- Machado solto no ar -->
+    <rect x="0" y="36" width="3" height="22" rx="1" class="wood" transform="rotate(-75 1 47)" />
+    <path d="M0 31 C-3 27 -7 29 -8 33 C-8 39 -3 41 0 38 Z" class="metal" />
+    <!-- Tronco tombando para trás -->
+    <rect x="14" y="34" width="16" height="16" rx="3" class="tunic" transform="rotate(-35 22 42)" />
+    <rect x="13" y="45" width="18" height="4" class="boots" transform="rotate(-35 22 47)" />
+    <circle cx="21" cy="22" r="9" class="skin" />
+    <path d="M12 19 C12 12 28 12 30 19 Z" class="hair" />
+    <path d="M15 25 C15 35 24 36 28 30 Z" class="hair" />
+    <circle cx="24" cy="21" r="1.2" fill="#1a1512" stroke="none" />
+  </g>
+
+  <!-- ============================================== -->
+  <!-- FRAME 3: TOMBANDO / JOELHOS (128 a 192px)      -->
+  <!-- ============================================== -->
+  <g id="death_03" class="outline" transform="translate(128, 0)">
+    <!-- Pernas dobradas no chão -->
+    <path d="M23 54 L15 57 L11 59" fill="none" stroke="#453327" stroke-width="5" />
+    <rect x="9" y="56" width="6" height="4" rx="1.5" class="boots" />
+    <!-- Machado tocando o solo -->
+    <rect x="42" y="55" width="22" height="3" rx="1" class="wood" />
+    <path d="M42 51 C39 48 35 49 34 53 C34 58 38 60 41 57 Z" class="metal" />
+    <!-- Tronco descendo em ângulo -->
+    <rect x="12" y="39" width="16" height="15" rx="3" class="tunic" transform="rotate(-55 20 46)" />
+    <circle cx="16" cy="27" r="9" class="skin" />
+    <path d="M7 24 C7 17 23 17 25 24 Z" class="hair" />
+    <path d="M10 30 C10 40 19 41 23 35 Z" class="hair" />
+  </g>
+
+  <!-- ============================================== -->
+  <!-- FRAME 4: QUEDA AO SOLO (192 a 256px)           -->
+  <!-- ============================================== -->
+  <g id="death_04" class="outline" transform="translate(192, 0)">
+    <!-- Corpo quase horizontal -->
+    <path d="M30 55 L38 57 L44 58" fill="none" stroke="#453327" stroke-width="5" />
+    <rect x="42" y="55" width="6" height="4" rx="1.5" class="boots" />
+    <!-- Tronco próximo ao chão -->
+    <rect x="14" y="47" width="16" height="12" rx="3" class="tunic" transform="rotate(-75 22 53)" />
+    <!-- Machado caído -->
+    <rect x="46" y="56" width="18" height="3" rx="1" class="wood" />
+    <path d="M46 52 C43 50 40 51 39 54 C39 58 43 60 45 57 Z" class="metal" />
+    <!-- Cabeça encostando na base -->
+    <circle cx="12" cy="39" r="8.5" class="skin" />
+    <path d="M4 36 C4 29 19 29 21 36 Z" class="hair" />
+    <path d="M7 41 C7 49 15 50 18 45 Z" class="hair" />
+  </g>
+
+  <!-- ============================================== -->
+  <!-- FRAME 5: CORPO NO CHÃO (256 a 320px)           -->
+  <!-- ============================================== -->
+  <g id="death_05" class="outline" transform="translate(256, 0)">
+    <!-- Corpo completamente estendido horizontalmente -->
+    <rect x="34" y="54" width="14" height="5" rx="2" class="pants" />
+    <rect x="46" y="54" width="6" height="5" rx="1.5" class="boots" />
+    <rect x="18" y="50" width="17" height="9" rx="3" class="tunic" />
+    <circle cx="12" cy="50" r="7.5" class="skin-down" />
+    <path d="M5 48 C5 42 18 42 19 48 Z" class="hair" />
+    <path d="M7 52 C7 58 14 59 17 55 Z" class="hair" />
+    <!-- Machado ao lado no chão -->
+    <rect x="35" y="58" width="18" height="2.5" rx="1" class="wood" />
+    <path d="M35 55 C32 53 29 54 28 57 C28 60 32 62 34 59 Z" class="metal" />
+  </g>
+
+  <!-- ============================================== -->
+  <!-- FRAME 6: POSIÇÃO FINAL / REPOUSO (320 a 384px) -->
+  <!-- ============================================== -->
+  <g id="death_06" class="outline" transform="translate(320, 0)">
+    <!-- Assentamento final plano com silhueta bem contrastada -->
+    <rect x="33" y="55" width="14" height="5" rx="2" class="pants" />
+    <rect x="45" y="55" width="6" height="5" rx="1.5" class="boots" />
+    <rect x="17" y="51" width="17" height="9" rx="3" class="tunic" />
+    <circle cx="11" cy="51" r="7.5" class="skin-down" />
+    <path d="M4 49 C4 43 17 43 18 49 Z" class="hair" />
+    <path d="M6 53 C6 59 13 60 16 56 Z" class="hair" />
+    <!-- Machado estático ao lado -->
+    <rect x="35" y="58" width="18" height="2.5" rx="1" class="wood" />
+    <path d="M35 55 C32 53 29 54 28 57 C28 60 32 62 34 59 Z" class="metal" />
+  </g>
+</svg>

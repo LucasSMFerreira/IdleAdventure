@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 64" width="256" height="64">
+  <defs>
+    <style>
+      .out { stroke: #1a1512; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+      .bone { fill: #e8dfcf; }
+      .bone-dark { fill: #b5a993; }
+      .metal { fill: #7a848f; }
+      .wood { fill: #5c3a21; }
+      .socket { fill: #1a1512; stroke: none; }
+      .slash { fill: none; stroke: #cbd5e1; stroke-width: 2.2; stroke-linecap: round; }
+    </style>
+  </defs>
+
+  <!-- FRAME 1: RECUO DE GUARDA (0 a 64px) -->
+  <g id="skel_atk_01" class="out">
+    <path d="M23 45 L18 52 L17 58" fill="none" stroke="#b5a993" stroke-width="3" />
+    <path d="M31 45 L30 52 L32 58" fill="none" stroke="#e8dfcf" stroke-width="3.2" />
+    <path d="M26 37 L25 44" fill="none" stroke="#e8dfcf" stroke-width="3.5" />
+    <circle cx="26" cy="24" r="6.5" class="bone" />
+    <ellipse cx="29" cy="24" rx="1.6" ry="2" class="socket" />
+    <!-- Escudo projetado para frente protegendo -->
+    <circle cx="34" cy="36" r="7" class="wood" />
+    <circle cx="34" cy="36" r="2.2" class="metal" />
+    <!-- Espada armada bem atrás -->
+    <rect x="8" y="15" width="3" height="18" rx="1" class="metal" transform="rotate(-35 9 24)" />
+    <path d="M25 33 L17 28 L11 28" fill="none" stroke="#e8dfcf" stroke-width="2.5" />
+  </g>
+
+  <!-- FRAME 2: ERGUENDO O GOLPE (64 a 128px) -->
+  <g id="skel_atk_02" class="out" transform="translate(64, 0)">
+    <path d="M24 45 L20 52 L19 58" fill="none" stroke="#b5a993" stroke-width="3" />
+    <path d="M32 45 L33 52 L36 58" fill="none" stroke="#e8dfcf" stroke-width="3.2" />
+    <path d="M28 36 L27 44" fill="none" stroke="#e8dfcf" stroke-width="3.5" />
+    <circle cx="28" cy="23" r="6.5" class="bone" />
+    <ellipse cx="31" cy="23" rx="1.6" ry="2" class="socket" />
+    <circle cx="28" cy="37" r="7" class="wood" />
+    <circle cx="28" cy="37" r="2.2" class="metal" />
+    <!-- Espada no ponto alto pronta para cair -->
+    <rect x="26" y="8" width="3" height="20" rx="1" class="metal" transform="rotate(10 27 18)" />
+    <path d="M29 32 L31 22 L28 16" fill="none" stroke="#e8dfcf" stroke-width="2.5" />
+  </g>
+
+  <!-- FRAME 3: CORTE PRINCIPAL (128 a 192px) -->
+  <g id="skel_atk_03" class="out" transform="translate(128, 0)">
+    <!-- Base aberta no avanço -->
+    <path d="M21 46 L14 53 L13 58" fill="none" stroke="#b5a993" stroke-width="3" />
+    <path d="M33 45 L41 53 L45 58" fill="none" stroke="#e8dfcf" stroke-width="3.2" />
+    <path d="M30 38 L32 45" fill="none" stroke="#e8dfcf" stroke-width="3.5" />
+    <circle cx="34" cy="25" r="6.5" class="bone" />
+    <ellipse cx="37" cy="25" rx="1.6" ry="2" class="socket" />
+    <circle cx="25" cy="40" r="7" class="wood" />
+    <circle cx="25" cy="40" r="2.2" class="metal" />
+    <!-- Espada descida na horizontal/diagonal -->
+    <rect x="42" y="38" width="3" height="20" rx="1" class="metal" transform="rotate(75 43 48)" />
+    <path d="M34 33 L42 36 L48 38" fill="none" stroke="#e8dfcf" stroke-width="2.5" />
+    <!-- Arco de corte (Slash FX) -->
+    <path d="M38 16 C53 19 60 35 58 50" class="slash" />
+  </g>
+
+  <!-- FRAME 4: RECUPERAÇÃO (192 a 256px) -->
+  <g id="skel_atk_04" class="out" transform="translate(192, 0)">
+    <path d="M25 45 L22 52 L21 58" fill="none" stroke="#b5a993" stroke-width="3" />
+    <path d="M33 45 L35 52 L37 58" fill="none" stroke="#e8dfcf" stroke-width="3.2" />
+    <path d="M29 36 L29 44" fill="none" stroke="#e8dfcf" stroke-width="3.5" />
+    <circle cx="31" cy="23" r="6.5" class="bone" />
+    <ellipse cx="34" cy="23" rx="1.6" ry="2" class="socket" />
+    <circle cx="23" cy="38" r="6.5" class="wood" />
+    <circle cx="23" cy="38" r="2.2" class="metal" />
+    <!-- Espada subindo de volta à guarda -->
+    <rect x="42" y="24" width="3" height="19" rx="1" class="metal" transform="rotate(35 43 33)" />
+    <path d="M33 33 L38 37 L41 36" fill="none" stroke="#e8dfcf" stroke-width="2.5" />
+  </g>
+</svg>

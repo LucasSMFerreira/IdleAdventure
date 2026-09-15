@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 64" width="256" height="64">
+  <defs>
+    <style>
+      .out { stroke: #1a1512; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+      .skin { fill: #76a938; }
+      .skin-dark { fill: #5a8527; }
+      .cloth { fill: #5c4028; }
+      .cloth-dark { fill: #3d2b1b; }
+      .metal { fill: #8a939e; }
+      .eye { fill: #ffe066; }
+      .pupil { fill: #1a1512; stroke: none; }
+      .stab-fx { fill: none; stroke: #f0fdf4; stroke-width: 2; stroke-linecap: round; }
+    </style>
+  </defs>
+
+  <!-- FRAME 1: PREPARO / AGACHAMENTO (0 a 64px) -->
+  <g id="goblin_atk_01" class="out">
+    <path d="M24 51 L19 57 L24 58" fill="none" stroke="#5a8527" stroke-width="4" />
+    <path d="M32 51 L31 57 L36 58" fill="none" stroke="#76a938" stroke-width="4" />
+    <ellipse cx="28" cy="44" rx="7" ry="7" class="skin" />
+    <path d="M21 43 C21 51 35 52 35 43 Z" class="cloth" />
+    <ellipse cx="30" cy="33" rx="8" ry="7" class="skin" />
+    <polygon points="36,33 43,35 36,37" class="skin" />
+    <polygon points="24,33 14,31 23,38" class="skin" />
+    <circle cx="34" cy="32" r="2.2" class="eye" />
+    <circle cx="35.5" cy="32" r="1" class="pupil" />
+    <!-- Braço recolhendo a arma -->
+    <path d="M33 41 L30 46 L33 48" fill="none" stroke="#76a938" stroke-width="3" />
+    <polygon points="32,48 35,46 40,51 36,52" class="metal" />
+  </g>
+
+  <!-- FRAME 2: PUXADA PARA TRÁS (64 a 128px) -->
+  <g id="goblin_atk_02" class="out" transform="translate(64, 0)">
+    <path d="M22 50 L16 57 L21 58" fill="none" stroke="#5a8527" stroke-width="4" />
+    <path d="M30 50 L32 57 L37 58" fill="none" stroke="#76a938" stroke-width="4" />
+    <ellipse cx="26" cy="42" rx="7" ry="7" class="skin" transform="rotate(-10 26 42)" />
+    <path d="M19 41 C19 49 33 50 33 41 Z" class="cloth" transform="rotate(-10 26 42)" />
+    <ellipse cx="27" cy="31" rx="8" ry="7" class="skin" />
+    <polygon points="33,31 40,33 33,35" class="skin" />
+    <polygon points="21,31 10,26 20,36" class="skin" />
+    <circle cx="31" cy="30" r="2.2" class="eye" />
+    <circle cx="32.5" cy="30" r="1" class="pupil" />
+    <!-- Adaga armada acima da cabeça -->
+    <path d="M26 36 L21 30 L26 25" fill="none" stroke="#76a938" stroke-width="3" />
+    <polygon points="25,25 28,22 34,17 33,23" class="metal" />
+  </g>
+
+  <!-- FRAME 3: ESTOCADA RÁPIDA (128 a 192px) -->
+  <g id="goblin_atk_03" class="out" transform="translate(128, 0)">
+    <!-- Corpo projetado para frente -->
+    <path d="M20 51 L13 57 L18 58" fill="none" stroke="#5a8527" stroke-width="4" />
+    <path d="M34 50 L41 56 L47 57" fill="none" stroke="#76a938" stroke-width="4" />
+    <ellipse cx="33" cy="42" rx="8" ry="6.5" class="skin" transform="rotate(15 33 42)" />
+    <path d="M25 41 C25 49 39 50 39 41 Z" class="cloth" transform="rotate(15 33 42)" />
+    <ellipse cx="37" cy="32" rx="8" ry="6.5" class="skin" />
+    <polygon points="43,32 50,34 43,36" class="skin" />
+    <polygon points="31,33 21,30 30,38" class="skin" />
+    <circle cx="41" cy="31" r="2.2" class="eye" />
+    <circle cx="42.5" cy="31" r="1" class="pupil" />
+    <!-- Braço totalmente esticado à frente -->
+    <path d="M38 39 L47 38 L54 39" fill="none" stroke="#76a938" stroke-width="3" />
+    <polygon points="53,37 57,36 63,39 57,41" class="metal" />
+    <!-- Linhas de impacto de perfuração -->
+    <path d="M50 33 L62 33 M55 43 L64 42" class="stab-fx" />
+  </g>
+
+  <!-- FRAME 4: RECUPERAÇÃO (192 a 256px) -->
+  <g id="goblin_atk_04" class="out" transform="translate(192, 0)">
+    <path d="M25 49 L21 57 L26 58" fill="none" stroke="#5a8527" stroke-width="4" />
+    <path d="M33 49 L36 57 L41 58" fill="none" stroke="#76a938" stroke-width="4" />
+    <ellipse cx="29" cy="42" rx="7" ry="8" class="skin" />
+    <path d="M22 41 C22 49 36 50 36 41 Z" class="cloth" />
+    <ellipse cx="31" cy="31" rx="8" ry="7" class="skin" />
+    <polygon points="37,31 44,33 37,35" class="skin" />
+    <polygon points="26,31 16,28 25,36" class="skin" />
+    <circle cx="35" cy="30" r="2.2" class="eye" />
+    <circle cx="36.2" cy="30" r="1" class="pupil" />
+    <path d="M35 39 L42 43 L46 41" fill="none" stroke="#76a938" stroke-width="3" />
+    <polygon points="45,42 48,39 54,43 48,45" class="metal" />
+  </g>
+</svg>

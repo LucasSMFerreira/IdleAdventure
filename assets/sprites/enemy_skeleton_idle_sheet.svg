@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 64" width="256" height="64">
+  <defs>
+    <style>
+      .out { stroke: #1a1512; stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+      .bone { fill: #e8dfcf; }
+      .bone-dark { fill: #b5a993; }
+      .metal { fill: #7a848f; }
+      .wood { fill: #5c3a21; }
+      .socket { fill: #1a1512; stroke: none; }
+    </style>
+  </defs>
+
+  <!-- FRAME 1: BASE (0 a 64px) -->
+  <g id="skel_idle_01" class="out">
+    <!-- Perna Traseira -->
+    <path d="M26 44 L24 51 L23 58" fill="none" stroke="#b5a993" stroke-width="3" />
+    <ellipse cx="23" cy="58" rx="2.5" ry="1.2" class="bone-dark" />
+    <!-- Perna Dianteira -->
+    <path d="M33 44 L34 51 L35 58" fill="none" stroke="#e8dfcf" stroke-width="3.2" />
+    <ellipse cx="36" cy="58" rx="2.5" ry="1.2" class="bone" />
+    <!-- Coluna e Bacia -->
+    <path d="M29 36 L29 44" fill="none" stroke="#e8dfcf" stroke-width="3.5" />
+    <path d="M24 43 Q29 46 34 43" stroke="#b5a993" stroke-width="2.5" fill="none" />
+    <!-- Costelas -->
+    <path d="M24 35 C24 40 34 40 34 35" stroke="#e8dfcf" stroke-width="2.2" fill="none" />
+    <path d="M25 32 C25 36 33 36 33 32" stroke="#e8dfcf" stroke-width="2.2" fill="none" />
+    <!-- Braço Esquerdo com Escudo Broquel (Fundo) -->
+    <circle cx="21" cy="38" r="6.5" class="wood" />
+    <circle cx="21" cy="38" r="2.2" class="metal" />
+    <!-- Cabeça / Crânio -->
+    <circle cx="30" cy="23" r="6.5" class="bone" />
+    <rect x="29" y="27" width="5" height="3" rx="1" class="bone" />
+    <!-- Órbita e Nariz -->
+    <ellipse cx="33" cy="23" rx="1.6" ry="2" class="socket" />
+    <polygon points="35,26 36,25 36,27" class="socket" />
+    <!-- Dentes marcados -->
+    <path d="M30 29 L34 29" stroke="#1a1512" stroke-width="1" fill="none" />
+    <!-- Braço Direito e Espada Antiga -->
+    <path d="M32 32 L38 37 L41 35" fill="none" stroke="#e8dfcf" stroke-width="2.5" />
+    <rect x="40" y="33" width="2" height="6" rx="0.8" class="bone-dark" />
+    <rect x="42" y="16" width="3" height="18" rx="1" class="metal" transform="rotate(18 43 25)" />
+    <polygon points="48,15 50,20 45,18" class="metal" />
+  </g>
+
+  <!-- FRAME 2: RESPIRAÇÃO / SUBIDA (64 a 128px) -->
+  <g id="skel_idle_02" class="out" transform="translate(64, 0)">
+    <path d="M26 44 L24 51 L23 58" fill="none" stroke="#b5a993" stroke-width="3" />
+    <ellipse cx="23" cy="58" rx="2.5" ry="1.2" class="bone-dark" />
+    <path d="M33 44 L34 51 L35 58" fill="none" stroke="#e8dfcf" stroke-width="3.2" />
+    <ellipse cx="36" cy="58" rx="2.5" ry="1.2" class="bone" />
+    <!-- Tronco sobe 1px -->
+    <path d="M29 35 L29 43" fill="none" stroke="#e8dfcf" stroke-width="3.5" />
+    <path d="M24 42 Q29 45 34 42" stroke="#b5a993" stroke-width="2.5" fill="none" />
+    <path d="M24 34 C24 39 34 39 34 34" stroke="#e8dfcf" stroke-width="2.2" fill="none" />
+    <path d="M25 31 C25 35 33 35 33 31" stroke="#e8dfcf" stroke-width="2.2" fill="none" />
+    <circle cx="21" cy="37" r="6.5" class="wood" />
+    <circle cx="21" cy="37" r="2.2" class="metal" />
+    <circle cx="30" cy="22" r="6.5" class="bone" />
+    <rect x="29" y="26" width="5" height="3" rx="1" class="bone" />
+    <ellipse cx="33" cy="22" rx="1.6" ry="2" class="socket" />
+    <polygon points="35,25 36,24 36,26" class="socket" />
+    <path d="M30 28 L34 28" stroke="#1a1512" stroke-width="1" fill="none" />
+    <path d="M32 31 L38 36 L41 34" fill="none" stroke="#e8dfcf" stroke-width="2.5" />
+    <rect x="40" y="32" width="2" height="6" rx="0.8" class="bone-dark" />
+    <rect x="42" y="15" width="3" height="18" rx="1" class="metal" transform="rotate(15 43 24)" />
+    <polygon points="48,14 50,19 45,17" class="metal" />
+  </g>
+
+  <!-- FRAME 3: PICO / MANDÍBULA CLATTER (128 a 192px) -->
+  <g id="skel_idle_03" class="out" transform="translate(128, 0)">
+    <path d="M26 44 L24 51 L23 58" fill="none" stroke="#b5a993" stroke-width="3" />
+    <ellipse cx="23" cy="58" rx="2.5" ry="1.2" class="bone-dark" />
+    <path d="M33 44 L34 51 L35 58" fill="none" stroke="#e8dfcf" stroke-width="3.2" />
+    <ellipse cx="36" cy="58" rx="2.5" ry="1.2" class="bone" />
+    <path d="M29 34.5 L29 42.5" fill="none" stroke="#e8dfcf" stroke-width="3.5" />
+    <path d="M24 41.5 Q29 44.5 34 41.5" stroke="#b5a993" stroke-width="2.5" fill="none" />
+    <path d="M24 33.5 C24 38.5 34 38.5 34 33.5" stroke="#e8dfcf" stroke-width="2.2" fill="none" />
+    <path d="M25 30.5 C25 34.5 33 34.5 33 30.5" stroke="#e8dfcf" stroke-width="2.2" fill="none" />
+    <circle cx="21" cy="36.5" r="6.5" class="wood" />
+    <circle cx="21" cy="36.5" r="2.2" class="metal" />
+    <!-- Crânio com mandíbula levemente aberta -->
+    <circle cx="30" cy="21.5" r="6.5" class="bone" />
+    <rect x="29" y="26.5" width="5.2" height="2.8" rx="1" class="bone" />
+    <ellipse cx="33" cy="21.5" rx="1.6" ry="2" class="socket" />
+    <polygon points="35,24.5 36,23.5 36,25.5" class="socket" />
+    <line x1="29" y1="26" x2="34" y2="26" stroke="#1a1512" stroke-width="1.2" />
+    <path d="M32 30.5 L38 35.5 L41 33.5" fill="none" stroke="#e8dfcf" stroke-width="2.5" />
+    <rect x="40" y="31.5" width="2" height="6" rx="0.8" class="bone-dark" />
+    <rect x="42" y="14.5" width="3" height="18" rx="1" class="metal" transform="rotate(13 43 23.5)" />
+    <polygon points="48,13.5 50,18.5 45,16.5" class="metal" />
+  </g>
+
+  <!-- FRAME 4: RETORNO (192 a 256px) -->
+  <g id="skel_idle_04" class="out" transform="translate(192, 0)">
+    <path d="M26 44 L24 51 L23 58" fill="none" stroke="#b5a993" stroke-width="3" />
+    <ellipse cx="23" cy="58" rx="2.5" ry="1.2" class="bone-dark" />
+    <path d="M33 44 L34 51 L35 58" fill="none" stroke="#e8dfcf" stroke-width="3.2" />
+    <ellipse cx="36" cy="58" rx="2.5" ry="1.2" class="bone" />
+    <path d="M29 35.5 L29 43.5" fill="none" stroke="#e8dfcf" stroke-width="3.5" />
+    <path d="M24 42.5 Q29 45.5 34 42.5" stroke="#b5a993" stroke-width="2.5" fill="none" />
+    <path d="M24 34.5 C24 39.5 34 39.5 34 34.5" stroke="#e8dfcf" stroke-width="2.2" fill="none" />
+    <path d="M25 31.5 C25 35.5 33 35.5 33 31.5" stroke="#e8dfcf" stroke-width="2.2" fill="none" />
+    <circle cx="21" cy="37.5" r="6.5" class="wood" />
+    <circle cx="21" cy="37.5" r="2.2" class="metal" />
+    <circle cx="30" cy="22.5" r="6.5" class="bone" />
+    <rect x="29" y="26.5" width="5" height="3" rx="1" class="bone" />
+    <ellipse cx="33" cy="22.5" rx="1.6" ry="2" class="socket" />
+    <polygon points="35,25.5 36,24.5 36,26.5" class="socket" />
+    <path d="M30 28.5 L34 28.5" stroke="#1a1512" stroke-width="1" fill="none" />
+    <path d="M32 31.5 L38 36.5 L41 34.5" fill="none" stroke="#e8dfcf" stroke-width="2.5" />
+    <rect x="40" y="32.5" width="2" height="6" rx="0.8" class="bone-dark" />
+    <rect x="42" y="15.5" width="3" height="18" rx="1" class="metal" transform="rotate(16 43 24.5)" />
+    <polygon points="48,14.5 50,19.5 45,17.5" class="metal" />
+  </g>
+</svg>

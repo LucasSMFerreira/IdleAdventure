@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 64" width="384" height="64">
+  <defs>
+    <style>
+      .out { stroke: #1a1512; stroke-width: 1.6; stroke-linejoin: round; stroke-linecap: round; }
+      .skin { fill: #486b36; }
+      .armor { fill: #576574; }
+      .armor-dark { fill: #343c45; }
+      .leather { fill: #483423; }
+      .metal { fill: #8395a7; }
+      .tusk { fill: #f1f2f6; }
+      .wood { fill: #382313; }
+      .heavy-slash { fill: none; stroke: #ff7675; stroke-width: 3; stroke-linecap: round; opacity: 0.9; }
+    </style>
+  </defs>
+
+  <!-- FRAME 1: BASE (0 a 64px) -->
+  <g id="orc_atk_01" class="out">
+    <rect x="20" y="46" width="7" height="12" rx="2.5" class="leather" />
+    <rect x="18" y="55" width="9" height="5" rx="1.5" class="armor-dark" />
+    <rect x="33" y="46" width="7" height="12" rx="2.5" class="leather" />
+    <rect x="33" y="55" width="9" height="5" rx="1.5" class="armor-dark" />
+    <rect x="10" y="26" width="4" height="34" rx="1" class="wood" transform="rotate(-15 12 43)" />
+    <path d="M6 20 C2 14 -2 16 -4 22 C-4 30 2 34 8 29 Z" class="metal" />
+    <rect x="18" y="28" width="24" height="19" rx="4" class="skin" />
+    <path d="M20 30 L40 30 L38 43 L22 43 Z" class="armor" />
+    <rect x="18" y="43" width="24" height="4.5" class="leather" />
+    <circle cx="30" cy="18" r="8" class="skin" />
+    <polygon points="32,23 33.5,19 35,23" class="tusk" />
+    <circle cx="34" cy="17" r="1.6" fill="#e74c3c" stroke="none" />
+    <circle cx="25" cy="28" r="5.5" class="armor" />
+  </g>
+
+  <!-- FRAME 2: PREPARO E PUXADA (64 a 128px) -->
+  <g id="orc_atk_02" class="out" transform="translate(64, 0)">
+    <path d="M20 47 L16 54 L17 58" fill="none" stroke="#483423" stroke-width="7" />
+    <rect x="14" y="55" width="9" height="5" rx="1.5" class="armor-dark" />
+    <path d="M33 47 L35 54 L38 58" fill="none" stroke="#483423" stroke-width="7" />
+    <rect x="35" y="55" width="9" height="5" rx="1.5" class="armor-dark" />
+    <!-- Machado jogado para trás -->
+    <rect x="2" y="28" width="4" height="34" rx="1" class="wood" transform="rotate(-45 4 45)" />
+    <path d="M1 21 C-4 16 -8 18 -9 24 C-9 32 -3 36 3 31 Z" class="metal" />
+    <rect x="16" y="29" width="24" height="19" rx="4" class="skin" transform="rotate(-6 28 38)" />
+    <path d="M18 31 L38 31 L36 44 L20 44 Z" class="armor" transform="rotate(-6 28 38)" />
+    <circle cx="28" cy="19" r="8" class="skin" />
+    <polygon points="30,24 31.5,20 33,24" class="tusk" />
+    <circle cx="32" cy="18" r="1.6" fill="#e74c3c" stroke="none" />
+    <circle cx="23" cy="29" r="5.5" class="armor" />
+  </g>
+
+  <!-- FRAME 3: ERGUIDO ACIMA DA CABEÇA (128 a 192px) -->
+  <g id="orc_atk_03" class="out" transform="translate(128, 0)">
+    <rect x="20" y="46" width="7" height="12" rx="2.5" class="leather" />
+    <rect x="18" y="55" width="9" height="5" rx="1.5" class="armor-dark" />
+    <rect x="33" y="46" width="7" height="12" rx="2.5" class="leather" />
+    <rect x="33" y="55" width="9" height="5" rx="1.5" class="armor-dark" />
+    <!-- Machado no topo vertical -->
+    <rect x="19" y="4" width="4" height="34" rx="1" class="wood" transform="rotate(-75 21 21)" />
+    <path d="M7 10 C3 4 -1 6 -2 12 C-2 20 4 24 10 19 Z" class="metal" />
+    <rect x="19" y="27" width="24" height="19" rx="4" class="skin" />
+    <path d="M21 29 L41 29 L39 42 L23 42 Z" class="armor" />
+    <circle cx="31" cy="18" r="8" class="skin" />
+    <polygon points="33,23 34.5,19 36,23" class="tusk" />
+    <circle cx="35" cy="17" r="1.6" fill="#e74c3c" stroke="none" />
+    <circle cx="23" cy="24" r="5.5" class="armor" />
+  </g>
+
+  <!-- FRAME 4: GOLPE / IMPACTO PESADO (192 a 256px) -->
+  <g id="orc_atk_04" class="out" transform="translate(192, 0)">
+    <!-- Base aberta agressiva -->
+    <path d="M18 47 L10 54 L12 58" fill="none" stroke="#483423" stroke-width="7" />
+    <rect x="9" y="55" width="9" height="5" rx="1.5" class="armor-dark" />
+    <path d="M33 47 L41 54 L46 58" fill="none" stroke="#483423" stroke-width="7" />
+    <rect x="42" y="55" width="9" height="5" rx="1.5" class="armor-dark" />
+    <rect x="23" y="30" width="24" height="18" rx="4" class="skin" transform="rotate(16 35 39)" />
+    <circle cx="38" cy="21" r="8" class="skin" />
+    <polygon points="41,26 42.5,22 44,26" class="tusk" />
+    <circle cx="43" cy="20" r="1.6" fill="#e74c3c" stroke="none" />
+    <!-- Machado batendo no chão -->
+    <rect x="44" y="31" width="4" height="34" rx="1" class="wood" transform="rotate(52 46 48)" />
+    <path d="M57 37 C61 31 65 33 66 39 C66 47 60 51 54 46 Z" class="metal" />
+    <!-- Efeito Vermelho de Lâmina Pesada -->
+    <path d="M42 12 C60 16 67 34 64 54" class="heavy-slash" />
+  </g>
+
+  <!-- FRAME 5: ASSENTAMENTO NO SOLO (256 a 320px) -->
+  <g id="orc_atk_05" class="out" transform="translate(256, 0)">
+    <path d="M19 47 L13 54 L15 58" fill="none" stroke="#483423" stroke-width="7" />
+    <rect x="12" y="55" width="9" height="5" rx="1.5" class="armor-dark" />
+    <path d="M33 47 L38 54 L42 58" fill="none" stroke="#483423" stroke-width="7" />
+    <rect x="38" y="55" width="9" height="5" rx="1.5" class="armor-dark" />
+    <rect x="21" y="29" width="24" height="18" rx="4" class="skin" transform="rotate(8 33 38)" />
+    <circle cx="35" cy="20" r="8" class="skin" />
+    <polygon points="38,25 39.5,21 41,25" class="tusk" />
+    <circle cx="40" cy="19" r="1.6" fill="#e74c3c" stroke="none" />
+    <rect x="42" y="32" width="4" height="34" rx="1" class="wood" transform="rotate(40 44 49)" />
+    <path d="M53 40 C57 34 61 36 62 42 C62 50 56 54 50 49 Z" class="metal" />
+    <path d="M56 42 C60 47 59 52 56 56" class="heavy-slash" stroke-dasharray="3,3" />
+  </g>
+
+  <!-- FRAME 6: RETORNO À GUARDA (320 a 384px) -->
+  <g id="orc_atk_06" class="out" transform="translate(320, 0)">
+    <rect x="20" y="46" width="7" height="12" rx="2.5" class="leather" />
+    <rect x="18" y="55" width="9" height="5" rx="1.5" class="armor-dark" />
+    <rect x="33" y="46" width="7" height="12" rx="2.5" class="leather" />
+    <rect x="33" y="55" width="9" height="5" rx="1.5" class="armor-dark" />
+    <rect x="12" y="26" width="4" height="34" rx="1" class="wood" transform="rotate(-8 14 43)" />
+    <path d="M10 19 C6 13 2 15 0 21 C0 29 6 33 12 28 Z" class="metal" />
+    <rect x="18" y="28" width="24" height="19" rx="4" class="skin" />
+    <path d="M20 30 L40 30 L38 43 L22 43 Z" class="armor" />
+    <rect x="18" y="43" width="24" height="4.5" class="leather" />
+    <circle cx="30" cy="18" r="8" class="skin" />
+    <polygon points="32,23 33.5,19 35,23" class="tusk" />
+    <circle cx="34" cy="17" r="1.6" fill="#e74c3c" stroke="none" />
+    <circle cx="25" cy="28" r="5.5" class="armor" />
+  </g>
+</svg>
