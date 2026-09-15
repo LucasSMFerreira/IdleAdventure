@@ -6,6 +6,7 @@ signal vida_mudou(atual: int, maxima: int)
 signal morreu
 
 var velocidade = 100.0
+var dano = 1
 var vida_maxima = 20
 var vida_atual = vida_maxima
 var derrotado = false
@@ -79,6 +80,12 @@ func _on_alvo_saiu():
 	aviso_ataque.hide()
 	alvo = null
 	inimigo_perto = false
+
+func configurar_melhorias(fases_liberadas: int):
+	vida_maxima = 20 + mini(fases_liberadas - 1, 40)
+	dano = 1 + mini(int((fases_liberadas - 1) / 5), 5)
+	vida_atual = vida_maxima
+	vida_mudou.emit(vida_atual, vida_maxima)
 
 func reiniciar():
 	tempo_ataque.stop()

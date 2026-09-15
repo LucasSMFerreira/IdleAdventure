@@ -11,9 +11,13 @@ config_version=5
 [application]
 
 config/name="IdleAdventure"
-run/main_scene="res://scenes/main.tscn"
+run/main_scene="res://scenes/menu.tscn"
 config/features=PackedStringArray("4.7", "Forward Plus")
 config/icon="res://scenes/icon.svg"
+
+[autoload]
+
+EstadoJogo="*res://scripts/estado_jogo.gd"
 
 [display]
 
