@@ -2,6 +2,7 @@ class_name Enemy
 extends CharacterBody2D
 
 signal atacou(alvo: Player, dano: int)
+signal morreu(tipo: String)
 
 var vida_maxima = 3
 var vida_atual = vida_maxima
@@ -40,6 +41,7 @@ func receber_dano(valor: int):
 	visual.modulate = Color(1, 0.25, 0.25)
 	create_tween().tween_property(visual, "modulate", cor_base, 0.3)
 	if vida_atual == 0:
+		morreu.emit(tipo)
 		tempo_ataque.stop()
 		var saida = create_tween()
 		saida.tween_property(self, "modulate", Color(1, 1, 1, 0), 0.35)

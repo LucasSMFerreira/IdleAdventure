@@ -47,3 +47,11 @@ offset_top = 245.0
 offset_right = 800.0
 offset_bottom = 270.0
 text = "Liberado até: Andar 1, Fase 1."
+[node name="Inventario" type="Button" parent="."]
+offset_left = 800.0
+offset_top = 24.0
+offset_right = 960.0
+offset_bottom = 62.0
+text = "Inventário"
+
+[connection signal="pressed" from="Inventario" to="." method="_on_inventario_pressed"]

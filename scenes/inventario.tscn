@@ -1,0 +1,50 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scenes/inventario.gd" id="1_inventory"]
+
+[node name="Inventario" type="CanvasLayer"]
+layer = 10
+script = ExtResource("1_inventory")
+
+[node name="Fundo" type="ColorRect" parent="."]
+offset_right = 1000.0
+offset_bottom = 300.0
+color = Color(0.03, 0.04, 0.08, 0.94)
+
+[node name="Painel" type="Panel" parent="."]
+offset_left = 80.0
+offset_top = 15.0
+offset_right = 920.0
+offset_bottom = 285.0
+
+[node name="Titulo" type="Label" parent="Painel"]
+offset_left = 20.0
+offset_top = 10.0
+offset_right = 400.0
+offset_bottom = 42.0
+theme_override_font_sizes/font_size = 22
+text = "Inventário"
+
+[node name="Fechar" type="Button" parent="Painel"]
+offset_left = 730.0
+offset_top = 10.0
+offset_right = 810.0
+offset_bottom = 45.0
+text = "Fechar"
+
+[node name="Status" type="Label" parent="Painel"]
+offset_left = 20.0
+offset_top = 48.0
+offset_right = 810.0
+offset_bottom = 75.0
+text = "Arma: vazio  |  Armadura: vazio  |  Acessório: vazio"
+
+[node name="Lista" type="ScrollContainer" parent="Painel"]
+offset_left = 20.0
+offset_top = 85.0
+offset_right = 810.0
+offset_bottom = 250.0
+
+[node name="Itens" type="VBoxContainer" parent="Painel/Lista"]
+
+[connection signal="pressed" from="Painel/Fechar" to="." method="_on_fechar_pressed"]

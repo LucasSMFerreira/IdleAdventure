@@ -46,6 +46,27 @@ offset_right = 360.0
 offset_bottom = 86.0
 text = "Elimine os inimigos para avançar."
 
+[node name="Experiencia" type="Label" parent="Interface"]
+offset_left = 12.0
+offset_top = 88.0
+offset_right = 340.0
+offset_bottom = 112.0
+text = "NÍVEL 1/100  |  XP 0/25"
+
+[node name="Drop" type="Label" parent="Interface"]
+offset_left = 12.0
+offset_top = 114.0
+offset_right = 600.0
+offset_bottom = 138.0
+text = ""
+
+[node name="Inventario" type="Button" parent="Interface"]
+offset_left = 685.0
+offset_top = 10.0
+offset_right = 830.0
+offset_bottom = 44.0
+text = "Inventário"
+
 [node name="Menu" type="Button" parent="Interface"]
 offset_left = 835.0
 offset_top = 10.0
@@ -57,6 +78,7 @@ text = "Escolher fase"
 wait_time = 2.0
 one_shot = true
 
+[connection signal="pressed" from="Interface/Inventario" to="." method="_on_inventario_pressed"]
 [connection signal="pressed" from="Interface/Menu" to="." method="_on_menu_pressed"]
 [connection signal="atacou" from="Player" to="." method="_on_player_atacou"]
 [connection signal="vida_mudou" from="Player" to="." method="_on_player_vida_mudou"]

@@ -81,10 +81,12 @@ func _on_alvo_saiu():
 	alvo = null
 	inimigo_perto = false
 
-func configurar_melhorias(fases_liberadas: int):
-	vida_maxima = 20 + mini(fases_liberadas - 1, 40)
-	dano = 1 + mini(int((fases_liberadas - 1) / 5), 5)
-	vida_atual = vida_maxima
+func configurar_status(novo_nivel: int, bonus_vida: int, bonus_ataque: int):
+	var nova_vida = Evolucao.vida_maxima(novo_nivel) + bonus_vida
+	var aumento_vida = maxi(nova_vida - vida_maxima, 0)
+	vida_maxima = nova_vida
+	dano = Evolucao.ataque(novo_nivel) + bonus_ataque
+	vida_atual = mini(vida_atual + aumento_vida, vida_maxima)
 	vida_mudou.emit(vida_atual, vida_maxima)
 
 func reiniciar():
