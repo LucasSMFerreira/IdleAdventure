@@ -31,6 +31,16 @@ mouse_filter = 2
 show_percentage = false
 value = 100.0
 
+[node name="AvisoGolpe" type="Label" parent="."]
+visible = false
+offset_left = -19.0
+offset_top = -72.0
+offset_right = 48.0
+offset_bottom = -52.0
+theme_override_colors/font_color = Color(1, 0.8, 0.32, 1)
+theme_override_font_sizes/font_size = 14
+text = "ESPECIAL!"
+
 [node name="AreaAtaque" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AreaAtaque"]

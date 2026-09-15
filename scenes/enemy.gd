@@ -11,6 +11,7 @@ var tipo = "normal"
 var especie = "enemy_slime"
 var escala_base = 1.0
 var ataques = 0
+var dano_pendente = 0
 var alvo: Player
 
 @onready var visual: AnimatedSprite2D = $Visual
@@ -39,6 +40,7 @@ func _ready():
 	visual.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	visual.scale = Vector2.ONE * escala_base
 	visual.animation_finished.connect(_on_animation_finished)
+	visual.frame_changed.connect(_on_frame_changed)
 	visual.play("idle")
 	var fundo = StyleBoxFlat.new()
 	fundo.bg_color = Color(0.13, 0.14, 0.17)
@@ -52,6 +54,8 @@ func receber_dano(valor: int):
 	if vida_atual == 0:
 		return
 	vida_atual = maxi(vida_atual - valor, 0)
+	dano_pendente = 0
+	$AvisoGolpe.hide()
 	_atualizar_vida()
 	if vida_atual == 0:
 		tempo_ataque.stop()
@@ -59,6 +63,15 @@ func receber_dano(valor: int):
 		morreu.emit(tipo)
 	else:
 		visual.play("hit")
+
+func _on_frame_changed():
+	var quadro_impacto = 4 if visual.animation == "special" else (3 if tipo != "normal" else 2)
+	if dano_pendente > 0 and visual.frame == quadro_impacto and (visual.animation == "attack" or visual.animation == "special"):
+		var dano_final = dano_pendente
+		dano_pendente = 0
+		$AvisoGolpe.hide()
+		if vida_atual > 0 and is_instance_valid(alvo) and not alvo.derrotado:
+			atacou.emit(alvo, dano_final)
 
 func _on_animation_finished():
 	if visual.animation == "death":
@@ -75,17 +88,21 @@ func _on_area_ataque_body_entered(body):
 func _on_area_ataque_body_exited(body):
 	if body == alvo:
 		tempo_ataque.stop()
+		dano_pendente = 0
+		$AvisoGolpe.hide()
 		alvo = null
 		if vida_atual > 0:
+			dano_pendente = 0
+			$AvisoGolpe.hide()
 			visual.play("idle")
 
 func _atacar():
 	if vida_atual > 0 and is_instance_valid(alvo) and not alvo.derrotado:
 		ataques += 1
 		var especial = tipo == "boss" and ataques % 3 == 0
+		dano_pendente = dano + maxi(1, int(dano / 2)) if especial else dano
+		$AvisoGolpe.visible = especial
 		visual.play("special" if especial else "attack")
-		var dano_final = dano + maxi(1, int(dano / 2)) if especial else dano
-		atacou.emit(alvo, dano_final)
 
 func _atualizar_vida():
 	barra_vida.value = 100.0 * vida_atual / maxi(vida_maxima, 1)

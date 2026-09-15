@@ -113,32 +113,47 @@ func item_por_id(id: int) -> Dictionary:
 			return item
 	return {}
 
-func parceiro_craft(id: int) -> Dictionary:
+func parceiros_craft(id: int) -> Array:
 	var alvo = item_por_id(id)
+	var parceiros: Array = []
 	if alvo.is_empty() or Itens.custo_craft(alvo) == 0:
-		return {}
+		return parceiros
 	for item in inventario:
-		if item is Dictionary and int(item.get("id", 0)) != id and int(item.get("id", 0)) not in equipados.values() and item.get("slot", "") == alvo.get("slot", "") and int(item.get("andar", 1)) == int(alvo.get("andar", 1)) and int(item.get("qualidade", 0)) == int(alvo.get("qualidade", 0)):
-			return item
-	return {}
+		if not item is Dictionary or int(item.get("id", 0)) == id:
+			continue
+		if int(item.get("id", 0)) in equipados.values():
+			continue
+		if item.get("slot", "") == alvo.get("slot", "") and int(item.get("andar", 1)) == int(alvo.get("andar", 1)) and int(item.get("qualidade", 0)) == int(alvo.get("qualidade", 0)):
+			parceiros.append(item)
+			if parceiros.size() == 5:
+				break
+	return parceiros
+
+func parceiro_craft(id: int) -> Dictionary:
+	var parceiros = parceiros_craft(id)
+	return parceiros[0] if not parceiros.is_empty() else {}
 
 func craft(id: int) -> int:
 	var alvo = item_por_id(id)
-	var parceiro = parceiro_craft(id)
+	var parceiros = parceiros_craft(id)
 	var custo = Itens.custo_craft(alvo)
-	if alvo.is_empty() or parceiro.is_empty() or custo == 0 or gold < custo:
+	if alvo.is_empty() or parceiros.size() < 5 or custo == 0 or gold < custo:
 		return 0
 	var qualidade = int(alvo.get("qualidade", 0))
 	var percentual = 0
 	if qualidade == 3:
-		percentual = mini(100, maxi(int(alvo.get("qualidade_pct", 100)), int(parceiro.get("qualidade_pct", 100))) + randi_range(1, 10))
+		percentual = int(alvo.get("qualidade_pct", 60))
+		for parceiro in parceiros:
+			percentual = maxi(percentual, int(parceiro.get("qualidade_pct", 60)))
+		percentual = mini(100, percentual + randi_range(1, 10))
 	else:
 		qualidade += 1
 	var novo = Itens.criar_item(int(alvo.get("andar", 1)), str(alvo.get("slot", "")), qualidade, percentual)
 	if novo.is_empty():
 		return 0
 	var equipado = int(equipados.get(alvo.get("slot", ""), 0)) == id
-	inventario.erase(parceiro)
+	for parceiro in parceiros:
+		inventario.erase(parceiro)
 	inventario.erase(alvo)
 	gold -= custo
 	novo["id"] = proximo_item_id

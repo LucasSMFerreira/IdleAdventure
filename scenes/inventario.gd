@@ -12,6 +12,15 @@ const BOTOES = {
 	"luvas": "Luvas",
 	"acessorio": "Acessorio",
 }
+const ICONES = {
+	"arma": preload("res://assets/items/arma.svg"),
+	"arma_secundaria": preload("res://assets/items/arma_secundaria.svg"),
+	"cabeca": preload("res://assets/items/cabeca.svg"),
+	"peito": preload("res://assets/items/peito.svg"),
+	"pernas": preload("res://assets/items/pernas.svg"),
+	"luvas": preload("res://assets/items/luvas.svg"),
+	"acessorio": preload("res://assets/items/acessorio.svg"),
+}
 const CORES = [
 	Color(0.42, 0.43, 0.47),
 	Color(0.25, 0.57, 0.85),
@@ -30,8 +39,19 @@ const CORES = [
 @onready var fundir_botao: Button = $Bau/Fundir
 @onready var craft_info: Label = $Bau/CraftInfo
 @onready var gold_label: Label = $Bau/Gold
+@onready var craft_painel: Panel = $Craft
+@onready var receitas: OptionButton = $Craft/Receitas
+@onready var ingredientes: GridContainer = $Craft/Ingredientes
+@onready var resultado: Label = $Craft/Resultado
+@onready var custo_label: Label = $Craft/Custo
+@onready var sintetizar_botao: Button = $Craft/Sintetizar
+@onready var personagem: AnimatedSprite2D = $Equipamento/Personagem
 
 var selecionado_id = 0
+var receitas_ids: Array[int] = []
+var receita_id = 0
+var tamanho_itens_anterior = -1
+var equipados_anteriores = ""
 var tamanho_anterior = Vector2i.ZERO
 var modo_mobile = OS.has_feature("mobile") or OS.has_feature("web_android") or OS.has_feature("web_ios")
 
@@ -56,7 +76,18 @@ func _ready():
 	filtro_andar.item_selected.connect(_filtros_mudaram)
 	so_melhores.toggled.connect(_melhores_mudou)
 	equipar_botao.pressed.connect(_equipar_selecionado)
-	fundir_botao.pressed.connect(_fundir_selecionado)
+	sintetizar_botao.pressed.connect(_fundir_selecionado)
+	$Bau/AbaBau.pressed.connect(_abrir_bau)
+	$Bau/AbaCraft.pressed.connect(_abrir_craft)
+	$Craft/AbaBau.pressed.connect(_abrir_bau)
+	$Craft/AbaCraft.pressed.connect(_abrir_craft)
+	receitas.item_selected.connect(_selecionar_receita)
+	personagem.sprite_frames = AnimacaoSprites.montar("barbarian", ["idle"])
+	personagem.play("idle")
+	$Bau/TituloBau.hide()
+	_estilizar_painel($Equipamento)
+	_estilizar_painel($Bau)
+	_estilizar_painel($Craft)
 	for slot in BOTOES:
 		get_node("Equipamento/" + BOTOES[slot]).pressed.connect(_selecionar_equipado.bind(slot))
 	EstadoJogo.dados_mudaram.connect(_atualizar)
@@ -65,6 +96,26 @@ func _ready():
 func _exit_tree():
 	if tamanho_anterior != Vector2i.ZERO:
 		get_window().size = tamanho_anterior
+
+func _estilizar_painel(painel: Panel):
+	var estilo = StyleBoxFlat.new()
+	estilo.bg_color = Color(0.22, 0.18, 0.14)
+	estilo.border_color = Color(0.57, 0.39, 0.24)
+	estilo.set_border_width_all(3)
+	estilo.set_corner_radius_all(4)
+	painel.add_theme_stylebox_override("panel", estilo)
+
+func _abrir_bau():
+	$Bau.show()
+	craft_painel.hide()
+	_atualizar_bau()
+
+func _abrir_craft():
+	$Bau.hide()
+	if not _buscar(selecionado_id).is_empty():
+		receita_id = selecionado_id
+	craft_painel.show()
+	_atualizar_craft()
 
 func _cor_item(item: Dictionary) -> Color:
 	return CORES[clampi(int(item.get("qualidade", 0)), 0, CORES.size() - 1)]
@@ -80,10 +131,21 @@ func _estilizar(botao: Button, cor: Color, marcado: bool = false):
 	hover.bg_color = cor.darkened(0.43)
 	botao.add_theme_stylebox_override("hover", hover)
 	botao.add_theme_color_override("font_color", Color.WHITE)
+	botao.add_theme_font_size_override("font_size", 13)
 
 func _atualizar():
+	var assinatura = JSON.stringify(EstadoJogo.equipados)
+	var itens_mudaram = tamanho_itens_anterior != EstadoJogo.inventario.size() or assinatura != equipados_anteriores
+	tamanho_itens_anterior = EstadoJogo.inventario.size()
+	equipados_anteriores = assinatura
 	_atualizar_equipados()
-	_atualizar_bau()
+	if itens_mudaram:
+		_atualizar_bau()
+		_atualizar_craft()
+	else:
+		gold_label.text = "Gold %d" % EstadoJogo.gold
+		$Craft/Gold.text = gold_label.text
+		_atualizar_custo()
 
 func _atualizar_equipados():
 	$Equipamento/Nivel.text = "Nível %d" % EstadoJogo.nivel
@@ -95,7 +157,10 @@ func _atualizar_equipados():
 		var categoria = Itens.QUALIDADES[clampi(int(item.get("qualidade", 0)), 0, 3)]
 		if not item.is_empty() and int(item.get("qualidade", 0)) == 3:
 			categoria = "Lend.%d%%" % int(item.get("qualidade_pct", 100))
-		botao.text = "%s: %s" % [titulo, categoria if not item.is_empty() else "vazio"]
+		botao.icon = ICONES[slot]
+		botao.expand_icon = true
+		botao.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		botao.text = "%s\n%s" % [titulo.replace(" secundária", " 2"), categoria if not item.is_empty() else "vazio"]
 		botao.tooltip_text = _descricao(item) if not item.is_empty() else "%s: vazio" % titulo
 		_estilizar(botao, _cor_item(item) if not item.is_empty() else Color(0.35, 0.35, 0.38), not item.is_empty())
 
@@ -132,12 +197,21 @@ func _atualizar_bau():
 		if int(item.get("id", 0)) == selecionado_id:
 			existe = true
 		var botao = Button.new()
-		botao.custom_minimum_size = Vector2(62, 56)
-		var parte = Itens.PARTES.get(item.get("slot", ""), "Item")
-		var categoria = Itens.QUALIDADES[clampi(int(item.get("qualidade", 0)), 0, 3)].substr(0, 4)
+		botao.custom_minimum_size = Vector2(62, 60)
+		botao.icon = ICONES.get(item.get("slot", ""), null)
+		botao.expand_icon = true
+		botao.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		var categoria = Itens.QUALIDADES[clampi(int(item.get("qualidade", 0)), 0, 3)].substr(0, 1)
 		if int(item.get("qualidade", 0)) == 3:
 			categoria = "%d%%" % int(item.get("qualidade_pct", 100))
-		botao.text = "%s\n%s" % [parte.substr(0, 5), categoria]
+		botao.text = ""
+		var selo = Label.new()
+		selo.text = categoria
+		selo.position = Vector2(4, 42)
+		selo.add_theme_font_size_override("font_size", 11)
+		selo.add_theme_color_override("font_color", Color.WHITE)
+		selo.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		botao.add_child(selo)
 		botao.tooltip_text = _descricao(item)
 		_estilizar(botao, _cor_item(item), int(item.get("id", 0)) == selecionado_id)
 		botao.pressed.connect(_selecionar.bind(int(item.get("id", 0))))
@@ -163,20 +237,8 @@ func _atualizar_detalhe():
 	detalhe.tooltip_text = _descricao(item) if not item.is_empty() else ""
 	equipar_botao.disabled = item.is_empty() or int(EstadoJogo.equipados.get(item.get("slot", ""), 0)) == selecionado_id
 	equipar_botao.text = "Equipado" if not item.is_empty() and equipar_botao.disabled else "Equipar"
-	var custo = Itens.custo_craft(item)
-	var parceiro = EstadoJogo.parceiro_craft(selecionado_id)
-	fundir_botao.disabled = custo == 0 or parceiro.is_empty() or EstadoJogo.gold < custo
-	if item.is_empty():
-		craft_info.text = "Fundir 2 iguais + Gold"
-	elif custo == 0:
-		craft_info.text = "Lendário já está em 100%"
-	elif parceiro.is_empty():
-		craft_info.text = "Precisa outra peça igual"
-	elif EstadoJogo.gold < custo:
-		craft_info.text = "Faltam %d Gold (custa %d)" % [custo - EstadoJogo.gold, custo]
-	else:
-		craft_info.text = "%d Gold: %s" % [custo, "refinar %" if int(item.get("qualidade", 0)) == 3 else Itens.QUALIDADES[int(item.get("qualidade", 0)) + 1]]
-	fundir_botao.tooltip_text = "Funde duas peças da mesma parte, andar e categoria. Custo: %d Gold." % custo
+	craft_info.text = ""
+	fundir_botao.disabled = true
 
 func _selecionar(id: int):
 	selecionado_id = id
@@ -198,18 +260,117 @@ func _equipar_selecionado():
 		_atualizar()
 
 func _fundir_selecionado():
-	var novo_id = EstadoJogo.craft(selecionado_id)
+	var novo_id = EstadoJogo.craft(receita_id if craft_painel.visible else selecionado_id)
 	if novo_id > 0:
 		selecionado_id = novo_id
+		receita_id = novo_id
 		craft_concluido.emit()
 		equipamento_mudou.emit()
 		_atualizar()
+		_abrir_craft()
 
 func _filtros_mudaram(_indice: int):
 	_atualizar_bau()
 
 func _melhores_mudou(_ativo: bool):
 	_atualizar_bau()
+
+
+func _atualizar_craft():
+	if not is_node_ready():
+		return
+	var grupos = {}
+	for item in EstadoJogo.inventario:
+		if not item is Dictionary or Itens.custo_craft(item) == 0:
+			continue
+		var chave = "%s|%d|%d" % [item.get("slot", ""), int(item.get("andar", 1)), int(item.get("qualidade", 0))]
+		if not grupos.has(chave):
+			grupos[chave] = []
+		grupos[chave].append(item)
+	var chaves = grupos.keys()
+	chaves.sort_custom(func(a, b):
+		var quantidade_a = grupos[a].size()
+		var quantidade_b = grupos[b].size()
+		return quantidade_a > quantidade_b if quantidade_a != quantidade_b else str(a) < str(b)
+	)
+	receitas.clear()
+	receitas_ids.clear()
+	var indice_escolhido = 0
+	for chave in chaves:
+		var grupo: Array = grupos[chave]
+		var preferido = receita_id if craft_painel.visible and receita_id > 0 else selecionado_id
+		var selecionado_no_grupo = false
+		for candidato in grupo:
+			if int(candidato.get("id", 0)) == preferido:
+				selecionado_no_grupo = true
+		if grupo.size() < 2 and not selecionado_no_grupo:
+			continue
+		var alvo = grupo[0]
+		for item in grupo:
+			if int(item.get("id", 0)) == preferido:
+				alvo = item
+				indice_escolhido = receitas_ids.size()
+		var disponiveis = 1 + EstadoJogo.parceiros_craft(int(alvo.get("id", 0))).size()
+		receitas.add_item("%s • %s • andar %d  (%d/6)" % [Itens.PARTES.get(alvo.get("slot", ""), "Item"), Itens.QUALIDADES[int(alvo.get("qualidade", 0))], int(alvo.get("andar", 1)), disponiveis])
+		receitas_ids.append(int(alvo.get("id", 0)))
+	if receitas_ids.is_empty():
+		receitas.add_item("Nenhuma receita disponível")
+		receita_id = 0
+	else:
+		receitas.select(indice_escolhido)
+		receita_id = receitas_ids[indice_escolhido]
+	_atualizar_receita()
+
+func _selecionar_receita(indice: int):
+	if indice >= 0 and indice < receitas_ids.size():
+		receita_id = receitas_ids[indice]
+		_atualizar_receita()
+
+func _atualizar_custo():
+	var item = _buscar(receita_id)
+	if item.is_empty():
+		return
+	var custo = Itens.custo_craft(item)
+	var entradas = 1 + EstadoJogo.parceiros_craft(receita_id).size()
+	custo_label.text = "%d/6 peças  •  %d Gold" % [entradas, custo]
+	sintetizar_botao.disabled = entradas < 6 or EstadoJogo.gold < custo
+	sintetizar_botao.tooltip_text = "Faltam %d Gold" % maxi(custo - EstadoJogo.gold, 0) if EstadoJogo.gold < custo else "Consome seis peças e cria uma melhor."
+
+func _atualizar_receita():
+	for antigo in ingredientes.get_children():
+		ingredientes.remove_child(antigo)
+		antigo.queue_free()
+	var item = _buscar(receita_id)
+	var parceiros = EstadoJogo.parceiros_craft(receita_id)
+	var entradas = [item] if not item.is_empty() else []
+	entradas.append_array(parceiros)
+	for indice in range(6):
+		var botao = Button.new()
+		botao.custom_minimum_size = Vector2(63, 62)
+		botao.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		botao.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		if indice < entradas.size():
+			var entrada: Dictionary = entradas[indice]
+			botao.icon = ICONES.get(entrada.get("slot", ""), null)
+			botao.expand_icon = true
+			botao.tooltip_text = _descricao(entrada)
+			_estilizar(botao, _cor_item(entrada), indice == 0)
+		else:
+			botao.text = "+"
+			_estilizar(botao, Color(0.36, 0.31, 0.27))
+		ingredientes.add_child(botao)
+	$Craft/Gold.text = "Gold %d" % EstadoJogo.gold
+	if item.is_empty():
+		resultado.text = "Reúna seis peças para começar."
+		custo_label.text = ""
+		$Craft/ResultadoIcone.texture = null
+		sintetizar_botao.disabled = true
+		return
+	var qualidade = int(item.get("qualidade", 0))
+	var saida = "refinar Lendário %" if qualidade == 3 else Itens.QUALIDADES[qualidade + 1]
+	resultado.text = "Resultado: %s • %s • andar %d" % [saida, Itens.PARTES[item.get("slot", "")], int(item.get("andar", 1))]
+	$Craft/ResultadoIcone.texture = ICONES.get(item.get("slot", ""), null)
+	_atualizar_custo()
 
 func _on_fechar_pressed():
 	queue_free()

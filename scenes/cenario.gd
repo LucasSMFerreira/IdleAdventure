@@ -5,6 +5,7 @@ const CEU = preload("res://assets/sprites/sky_loop.svg")
 const FUNDO = preload("res://assets/sprites/background_far_sheet.svg")
 const CHAO = preload("res://assets/sprites/ground_tiles_sheet.svg")
 const OBJETOS = preload("res://assets/sprites/props_mid_sheet.svg")
+const BIOMAS = preload("res://assets/sprites/floor_biomes_sheet.svg")
 
 var andar = 1
 var fase = 1
@@ -42,6 +43,10 @@ func _draw():
 	for coluna in range(10):
 		var quadro_chao = (coluna + andar + fase) % 5
 		draw_texture_rect_region(CHAO, Rect2(coluna * 100, 240, 100, 60), Rect2(quadro_chao * 64, 38, 64, 26))
+	var quantidade_biomas = 2 if andar <= 2 else (3 if andar <= 5 else 5)
+	for indice in range(quantidade_biomas):
+		var x_bioma = 180 + int(640.0 * indice / maxi(quantidade_biomas - 1, 1))
+		draw_texture_rect_region(BIOMAS, Rect2(x_bioma, 184, 48, 56), Rect2((andar - 1) * 64, 0, 64, 64))
 	for indice in range(3):
 		var quadro_objeto = (andar + fase + indice * 2) % 6
 		var x = 215 + indice * 290
