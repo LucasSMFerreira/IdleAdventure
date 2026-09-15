@@ -16,9 +16,14 @@ offset_bottom = 300.0
 [node name="Player" parent="." unique_id=653104005 instance=ExtResource("1_o5qli")]
 position = Vector2(100, 210)
 
-[node name="Enemy" parent="." unique_id=1046536965 instance=ExtResource("3_sugp2")]
-position = Vector2(600, 210)
-[node name="Enemy2" parent="." instance=ExtResource("3_sugp2")]
-position = Vector2(800, 210)
+
+[node name="Interface" type="CanvasLayer" parent="."]
+
+[node name="Fase" type="Label" parent="Interface"]
+offset_left = 12.0
+offset_top = 10.0
+offset_right = 240.0
+offset_bottom = 34.0
+text = "FASE 1  |  CICLO 1"
 
 [connection signal="atacou" from="Player" to="." method="_on_player_atacou"]
