@@ -60,6 +60,13 @@ offset_right = 600.0
 offset_bottom = 138.0
 text = ""
 
+[node name="Gold" type="Label" parent="Interface"]
+offset_left = 440.0
+offset_top = 88.0
+offset_right = 650.0
+offset_bottom = 112.0
+text = "GOLD 0"
+
 [node name="Inventario" type="Button" parent="Interface"]
 offset_left = 685.0
 offset_top = 10.0

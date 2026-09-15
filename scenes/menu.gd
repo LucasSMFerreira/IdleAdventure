@@ -27,7 +27,7 @@ func _mostrar_fases(indice: int):
 	var ultimo_andar = int((EstadoJogo.maior_fase_liberada - 1) / Progressao.FASES_POR_ANDAR) + 1
 	var ultima_fase = (EstadoJogo.maior_fase_liberada - 1) % Progressao.FASES_POR_ANDAR + 1
 	var mensagem = "Torre concluída! Você pode revisitar qualquer fase." if EstadoJogo.torre_concluida else "Liberado até: Andar %d, Fase %d." % [ultimo_andar, ultima_fase]
-	estado.text = "%s  |  Nível %d/100" % [mensagem, EstadoJogo.nivel]
+	estado.text = "%s  |  Nível %d/100  |  Gold %d" % [mensagem, EstadoJogo.nivel, EstadoJogo.gold]
 
 func _iniciar_fase(andar: int, fase: int):
 	if EstadoJogo.selecionar_fase(andar, fase):

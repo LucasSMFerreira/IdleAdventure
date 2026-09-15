@@ -7,8 +7,9 @@ var fase_escolhida = 1
 var torre_concluida = false
 var nivel = 1
 var xp_atual = 0
+var gold = 0
 var inventario: Array = []
-var equipados = {"arma": 0, "armadura": 0, "acessorio": 0}
+var equipados = {"arma": 0, "arma_secundaria": 0, "cabeca": 0, "peito": 0, "pernas": 0, "luvas": 0, "acessorio": 0}
 var proximo_item_id = 1
 
 func _ready():
@@ -25,6 +26,7 @@ func carregar():
 		torre_concluida = bool(dados.get("torre_concluida", false))
 		nivel = clampi(int(dados.get("nivel", 1)), 1, Evolucao.NIVEL_MAXIMO)
 		xp_atual = maxi(int(dados.get("xp_atual", 0)), 0)
+		gold = maxi(int(dados.get("gold", 0)), 0)
 		while nivel < Evolucao.NIVEL_MAXIMO and xp_atual >= Evolucao.xp_para_proximo(nivel):
 			xp_atual -= Evolucao.xp_para_proximo(nivel)
 			nivel += 1
@@ -32,7 +34,7 @@ func carregar():
 			xp_atual = 0
 		inventario = dados.get("inventario", []) if dados.get("inventario", []) is Array else []
 		var salvos = dados.get("equipados", {})
-		equipados = {"arma": 0, "armadura": 0, "acessorio": 0}
+		equipados = {"arma": 0, "arma_secundaria": 0, "cabeca": 0, "peito": 0, "pernas": 0, "luvas": 0, "acessorio": 0}
 		if salvos is Dictionary:
 			for slot in equipados:
 				equipados[slot] = int(salvos.get(slot, 0))
@@ -46,6 +48,7 @@ func salvar():
 			"torre_concluida": torre_concluida,
 			"nivel": nivel,
 			"xp_atual": xp_atual,
+			"gold": gold,
 			"inventario": inventario,
 			"equipados": equipados,
 			"proximo_item_id": proximo_item_id,
@@ -63,6 +66,11 @@ func ganhar_xp(valor: int) -> bool:
 		xp_atual = 0
 	salvar()
 	return nivel > nivel_anterior
+
+func ganhar_gold(valor: int):
+	if valor > 0:
+		gold += valor
+		salvar()
 
 func adicionar_item(item: Dictionary) -> int:
 	if item.is_empty():

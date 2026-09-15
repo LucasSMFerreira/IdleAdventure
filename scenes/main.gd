@@ -10,6 +10,7 @@ extends Node2D
 @onready var objetivo: Label = $Interface/Objetivo
 @onready var texto_xp: Label = $Interface/Experiencia
 @onready var texto_drop: Label = $Interface/Drop
+@onready var texto_gold: Label = $Interface/Gold
 @onready var reinicio: Timer = $Reinicio
 
 var andar_atual = 1
@@ -25,6 +26,7 @@ func _ready():
 	_aplicar_status()
 	_on_player_vida_mudou(player.vida_atual, player.vida_maxima)
 	_atualizar_xp()
+	_atualizar_gold()
 	_criar_onda()
 
 func _physics_process(_delta):
@@ -96,11 +98,18 @@ func _on_inimigo_atacou(alvo: Player, dano: int):
 func _on_inimigo_morreu(tipo: String):
 	if EstadoJogo.ganhar_xp(Progressao.xp_inimigo(andar_atual, tipo)):
 		_aplicar_status()
+	var gold_drop = Progressao.gold_inimigo(andar_atual, tipo)
+	EstadoJogo.ganhar_gold(gold_drop)
+	_atualizar_gold()
+	texto_drop.text = "+%d Gold" % gold_drop
 	var item = Itens.gerar_drop(andar_atual, fase_atual, tipo)
 	if not item.is_empty():
 		EstadoJogo.adicionar_item(item)
-		texto_drop.text = "DROP: %s  |  Abra o inventário para equipar." % item["nome"]
+		texto_drop.text = "DROP: %s  |  +%d Gold" % [item["nome"], gold_drop]
 	_atualizar_xp()
+
+func _atualizar_gold():
+	texto_gold.text = "GOLD %d" % EstadoJogo.gold
 
 func _aplicar_status():
 	player.configurar_status(EstadoJogo.nivel, EstadoJogo.bonus_vida(), EstadoJogo.bonus_ataque())

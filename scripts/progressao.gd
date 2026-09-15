@@ -28,7 +28,14 @@ static func dano_chefe(andar: int, fase: int) -> int:
 
 static func xp_inimigo(andar: int, tipo: String) -> int:
 	if tipo == "boss":
-		return 80 + 10 * andar
+		return 20 + 5 * andar
 	if tipo == "mini":
-		return 25 + 5 * andar
-	return 5 + 2 * andar
+		return 8 + 2 * andar
+	return 2 + andar
+
+static func gold_inimigo(andar: int, tipo: String) -> int:
+	if tipo == "boss":
+		return randi_range(15, 25) * andar
+	if tipo == "mini":
+		return randi_range(5, 9) * andar
+	return randi_range(1, 3) * andar
