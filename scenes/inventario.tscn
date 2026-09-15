@@ -1,6 +1,7 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://scenes/inventario.gd" id="1_inventory"]
+[ext_resource type="Texture2D" path="res://scenes/icon.svg" id="2_icon"]
 
 [node name="Inventario" type="CanvasLayer"]
 layer = 10
@@ -9,55 +10,174 @@ script = ExtResource("1_inventory")
 [node name="Fundo" type="ColorRect" parent="."]
 offset_right = 1000.0
 offset_bottom = 300.0
-color = Color(0.03, 0.04, 0.08, 0.94)
+color = Color(0.035, 0.04, 0.055, 0.97)
 
-[node name="Painel" type="Panel" parent="."]
-offset_left = 50.0
-offset_top = 15.0
-offset_right = 950.0
-offset_bottom = 285.0
+[node name="Equipamento" type="Panel" parent="."]
+offset_left = 24.0
+offset_top = 14.0
+offset_right = 465.0
+offset_bottom = 286.0
 
-[node name="Titulo" type="Label" parent="Painel"]
-offset_left = 20.0
+[node name="TituloEquipamento" type="Label" parent="Equipamento"]
+offset_left = 18.0
 offset_top = 10.0
-offset_right = 440.0
-offset_bottom = 42.0
-theme_override_font_sizes/font_size = 22
-text = "Equipamento do personagem"
+offset_right = 300.0
+offset_bottom = 36.0
+theme_override_font_sizes/font_size = 20
+text = "Equipamento"
 
-[node name="Fechar" type="Button" parent="Painel"]
-offset_left = 790.0
-offset_top = 10.0
-offset_right = 870.0
-offset_bottom = 45.0
+[node name="Avatar" type="TextureRect" parent="Equipamento"]
+offset_left = 170.0
+offset_top = 75.0
+offset_right = 270.0
+offset_bottom = 175.0
+texture = ExtResource("2_icon")
+expand_mode = 1
+stretch_mode = 5
+modulate = Color(0.62, 0.73, 0.88, 1)
+
+[node name="Nivel" type="Label" parent="Equipamento"]
+offset_left = 167.0
+offset_top = 184.0
+offset_right = 275.0
+offset_bottom = 209.0
+horizontal_alignment = 1
+text = "Nível 1"
+
+[node name="Status" type="Label" parent="Equipamento"]
+offset_left = 30.0
+offset_top = 235.0
+offset_right = 420.0
+offset_bottom = 260.0
+horizontal_alignment = 1
+text = "Bônus: +0 HP  +0 ATK"
+
+[node name="Cabeca" type="Button" parent="Equipamento"]
+offset_left = 18.0
+offset_top = 53.0
+offset_right = 153.0
+offset_bottom = 88.0
+text = "Cabeça: vazio"
+
+[node name="Peito" type="Button" parent="Equipamento"]
+offset_left = 18.0
+offset_top = 100.0
+offset_right = 153.0
+offset_bottom = 135.0
+text = "Peito: vazio"
+
+[node name="Pernas" type="Button" parent="Equipamento"]
+offset_left = 18.0
+offset_top = 147.0
+offset_right = 153.0
+offset_bottom = 182.0
+text = "Pernas: vazio"
+
+[node name="Luvas" type="Button" parent="Equipamento"]
+offset_left = 18.0
+offset_top = 194.0
+offset_right = 153.0
+offset_bottom = 229.0
+text = "Luvas: vazio"
+
+[node name="Arma" type="Button" parent="Equipamento"]
+offset_left = 287.0
+offset_top = 53.0
+offset_right = 423.0
+offset_bottom = 88.0
+text = "Arma: vazio"
+
+[node name="ArmaSecundaria" type="Button" parent="Equipamento"]
+offset_left = 287.0
+offset_top = 100.0
+offset_right = 423.0
+offset_bottom = 135.0
+text = "Secundária: vazio"
+
+[node name="Acessorio" type="Button" parent="Equipamento"]
+offset_left = 287.0
+offset_top = 147.0
+offset_right = 423.0
+offset_bottom = 182.0
+text = "Acessório: vazio"
+
+[node name="Bau" type="Panel" parent="."]
+offset_left = 475.0
+offset_top = 14.0
+offset_right = 976.0
+offset_bottom = 286.0
+
+[node name="TituloBau" type="Label" parent="Bau"]
+offset_left = 16.0
+offset_top = 8.0
+offset_right = 380.0
+offset_bottom = 34.0
+theme_override_font_sizes/font_size = 20
+text = "Baú"
+
+[node name="Fechar" type="Button" parent="Bau"]
+offset_left = 414.0
+offset_top = 8.0
+offset_right = 483.0
+offset_bottom = 38.0
 text = "Fechar"
 
-[node name="Partes" type="Label" parent="Painel"]
-offset_left = 20.0
-offset_top = 50.0
-offset_right = 410.0
-offset_bottom = 75.0
-text = "Partes equipadas"
+[node name="FiltroParte" type="OptionButton" parent="Bau"]
+offset_left = 15.0
+offset_top = 43.0
+offset_right = 125.0
+offset_bottom = 74.0
 
-[node name="Equipados" type="VBoxContainer" parent="Painel"]
-offset_left = 20.0
-offset_top = 82.0
-offset_right = 430.0
-offset_bottom = 245.0
+[node name="FiltroQualidade" type="OptionButton" parent="Bau"]
+offset_left = 131.0
+offset_top = 43.0
+offset_right = 267.0
+offset_bottom = 74.0
 
-[node name="TituloItens" type="Label" parent="Painel"]
-offset_left = 455.0
-offset_top = 50.0
-offset_right = 780.0
-offset_bottom = 75.0
-text = "Itens encontrados"
+[node name="FiltroAndar" type="OptionButton" parent="Bau"]
+offset_left = 273.0
+offset_top = 43.0
+offset_right = 375.0
+offset_bottom = 74.0
 
-[node name="Lista" type="ScrollContainer" parent="Painel"]
-offset_left = 455.0
-offset_top = 82.0
-offset_right = 870.0
-offset_bottom = 250.0
+[node name="SoMelhores" type="CheckButton" parent="Bau"]
+offset_left = 380.0
+offset_top = 42.0
+offset_right = 487.0
+offset_bottom = 76.0
+button_pressed = true
+text = "Melhores"
 
-[node name="Itens" type="VBoxContainer" parent="Painel/Lista"]
+[node name="Grade" type="ScrollContainer" parent="Bau"]
+offset_left = 15.0
+offset_top = 81.0
+offset_right = 486.0
+offset_bottom = 214.0
 
-[connection signal="pressed" from="Painel/Fechar" to="." method="_on_fechar_pressed"]
+[node name="Itens" type="GridContainer" parent="Bau/Grade"]
+columns = 7
+
+[node name="Contagem" type="Label" parent="Bau"]
+offset_left = 15.0
+offset_top = 217.0
+offset_right = 290.0
+offset_bottom = 241.0
+text = "0 itens guardados"
+
+[node name="Detalhe" type="Label" parent="Bau"]
+offset_left = 15.0
+offset_top = 243.0
+offset_right = 385.0
+offset_bottom = 267.0
+clip_text = true
+text = "Escolha um item do baú."
+
+[node name="Equipar" type="Button" parent="Bau"]
+offset_left = 390.0
+offset_top = 236.0
+offset_right = 485.0
+offset_bottom = 270.0
+disabled = true
+text = "Equipar"
+
+[connection signal="pressed" from="Bau/Fechar" to="." method="_on_fechar_pressed"]

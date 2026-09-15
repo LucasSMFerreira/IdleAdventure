@@ -72,7 +72,7 @@ offset_left = 685.0
 offset_top = 10.0
 offset_right = 830.0
 offset_bottom = 44.0
-text = "Inventário"
+text = "Baú"
 
 [node name="Menu" type="Button" parent="Interface"]
 offset_left = 835.0

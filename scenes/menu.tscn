@@ -52,6 +52,6 @@ offset_left = 800.0
 offset_top = 24.0
 offset_right = 960.0
 offset_bottom = 62.0
-text = "Inventário"
+text = "Baú"
 
 [connection signal="pressed" from="Inventario" to="." method="_on_inventario_pressed"]
