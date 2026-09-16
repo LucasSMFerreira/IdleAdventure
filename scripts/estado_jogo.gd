@@ -134,36 +134,74 @@ func parceiro_craft(id: int) -> Dictionary:
 	return parceiros[0] if not parceiros.is_empty() else {}
 
 func craft(id: int) -> int:
-	var alvo = item_por_id(id)
 	var parceiros = parceiros_craft(id)
+	if parceiros.size() < 5:
+		return 0
+	var ids: Array[int] = [id]
+	for parceiro in parceiros:
+		ids.append(int(parceiro.get("id", 0)))
+	return craft_com_itens(ids)
+
+func craft_com_itens(ids: Array[int]) -> int:
+	if ids.size() != 6:
+		return 0
+	var vistos = {}
+	var entradas: Array = []
+	var equipado_id = 0
+	for id in ids:
+		if id <= 0 or vistos.has(id):
+			return 0
+		vistos[id] = true
+		var item = item_por_id(id)
+		if item.is_empty():
+			return 0
+		if id in equipados.values():
+			if equipado_id != 0:
+				return 0
+			equipado_id = id
+		entradas.append(item)
+	var alvo: Dictionary = entradas[0]
+	for item in entradas:
+		if item.get("slot", "") != alvo.get("slot", "") or int(item.get("andar", 1)) != int(alvo.get("andar", 1)) or int(item.get("qualidade", 0)) != int(alvo.get("qualidade", 0)):
+			return 0
 	var custo = Itens.custo_craft(alvo)
-	if alvo.is_empty() or parceiros.size() < 5 or custo == 0 or gold < custo:
+	if custo <= 0 or gold < custo:
 		return 0
 	var qualidade = int(alvo.get("qualidade", 0))
 	var percentual = 0
 	if qualidade == 3:
-		percentual = int(alvo.get("qualidade_pct", 60))
-		for parceiro in parceiros:
-			percentual = maxi(percentual, int(parceiro.get("qualidade_pct", 60)))
+		for item in entradas:
+			percentual = maxi(percentual, int(item.get("qualidade_pct", 60)))
 		percentual = mini(100, percentual + randi_range(1, 10))
 	else:
 		qualidade += 1
 	var novo = Itens.criar_item(int(alvo.get("andar", 1)), str(alvo.get("slot", "")), qualidade, percentual)
 	if novo.is_empty():
 		return 0
-	var equipado = int(equipados.get(alvo.get("slot", ""), 0)) == id
-	for parceiro in parceiros:
-		inventario.erase(parceiro)
-	inventario.erase(alvo)
+	for item in entradas:
+		inventario.erase(item)
 	gold -= custo
 	novo["id"] = proximo_item_id
 	proximo_item_id += 1
 	inventario.append(novo)
-	if equipado:
+	if equipado_id != 0:
 		equipados[novo["slot"]] = int(novo["id"])
 	salvar()
 	dados_mudaram.emit()
 	return int(novo["id"])
+
+func reciclar(id: int) -> int:
+	if id in equipados.values():
+		return 0
+	var item = item_por_id(id)
+	var ganho = Itens.valor_reciclagem(item)
+	if ganho <= 0:
+		return 0
+	inventario.erase(item)
+	gold += ganho
+	salvar()
+	dados_mudaram.emit()
+	return ganho
 
 func item_equipado(slot: String) -> Dictionary:
 	var id = int(equipados.get(slot, 0))

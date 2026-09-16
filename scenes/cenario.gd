@@ -2,6 +2,7 @@ class_name Cenario
 extends Node2D
 
 const CEU = preload("res://assets/sprites/sky_loop.svg")
+const SOL = preload("res://assets/sprites/sun.svg")
 const FUNDO = preload("res://assets/sprites/background_far_sheet.svg")
 const CHAO = preload("res://assets/sprites/ground_tiles_sheet.svg")
 const OBJETOS = preload("res://assets/sprites/props_mid_sheet.svg")
@@ -37,12 +38,13 @@ func _draw():
 	for coluna in range(9):
 		var quadro_ceu = (coluna + andar) % 2
 		draw_texture_rect_region(CEU, Rect2(coluna * 128 - passo_ceu, 0, 128, 180), Rect2(quadro_ceu * 64, 0, 64, 64), cor_ceu)
+	draw_texture_rect(SOL, Rect2(580, 10, 105, 105), false, cor_ceu)
 	for coluna in range(8):
 		var quadro_fundo = (coluna + andar + int((fase - 1) / 3)) % 6
 		draw_texture_rect_region(FUNDO, Rect2(coluna * 160 - passo_fundo, 70, 160, 170), Rect2(quadro_fundo * 64, 0, 64, 64), cor_fundo)
 	for coluna in range(10):
 		var quadro_chao = (coluna + andar + fase) % 5
-		draw_texture_rect_region(CHAO, Rect2(coluna * 100, 240, 100, 60), Rect2(quadro_chao * 64, 38, 64, 26))
+		draw_texture_rect_region(CHAO, Rect2(coluna * 100, 240, 100, 60), Rect2(quadro_chao * 64, 0, 64, 64))
 	var quantidade_biomas = 2 if andar <= 2 else (3 if andar <= 5 else 5)
 	for indice in range(quantidade_biomas):
 		var x_bioma = 180 + int(640.0 * indice / maxi(quantidade_biomas - 1, 1))

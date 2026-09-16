@@ -152,7 +152,7 @@ offset_top = 43.0
 offset_right = 267.0
 offset_bottom = 74.0
 
-[node name="FiltroAndar" type="OptionButton" parent="Bau"]
+[node name="Ordenar" type="OptionButton" parent="Bau"]
 offset_left = 273.0
 offset_top = 43.0
 offset_right = 375.0
@@ -194,7 +194,7 @@ text = "Fundir 2 iguais + Gold"
 [node name="Detalhe" type="Label" parent="Bau"]
 offset_left = 15.0
 offset_top = 243.0
-offset_right = 405.0
+offset_right = 320.0
 offset_bottom = 267.0
 clip_text = true
 text = "Escolha um item do baú."
@@ -207,6 +207,14 @@ offset_right = 407.0
 offset_bottom = 270.0
 disabled = true
 text = "Fundir"
+
+[node name="Enviar" type="Button" parent="Bau"]
+offset_left = 322.0
+offset_top = 236.0
+offset_right = 407.0
+offset_bottom = 270.0
+disabled = true
+text = "Enviar"
 
 [node name="Equipar" type="Button" parent="Bau"]
 offset_left = 411.0
@@ -228,7 +236,7 @@ offset_left = 117.0
 offset_top = 8.0
 offset_right = 213.0
 offset_bottom = 37.0
-text = "Síntese"
+text = "Craft"
 
 [node name="Craft" type="Panel" parent="."]
 visible = false
@@ -249,7 +257,7 @@ offset_left = 117.0
 offset_top = 8.0
 offset_right = 213.0
 offset_bottom = 37.0
-text = "Síntese"
+text = "Craft"
 
 [node name="Gold" type="Label" parent="Craft"]
 offset_left = 227.0
@@ -265,7 +273,7 @@ offset_right = 483.0
 offset_bottom = 38.0
 text = "Fechar"
 
-[node name="Receitas" type="OptionButton" parent="Craft"]
+[node name="Modo" type="OptionButton" parent="Craft"]
 offset_left = 15.0
 offset_top = 48.0
 offset_right = 482.0
@@ -274,12 +282,25 @@ offset_bottom = 79.0
 [node name="Instrucoes" type="Label" parent="Craft"]
 offset_left = 17.0
 offset_top = 85.0
-offset_right = 482.0
+offset_right = 330.0
 offset_bottom = 109.0
 theme_override_font_sizes/font_size = 14
-text = "6 peças da mesma parte, andar e categoria."
+text = "Envie itens do baú para a caixa abaixo."
 
-[node name="Ingredientes" type="GridContainer" parent="Craft"]
+[node name="Limpar" type="Button" parent="Craft"]
+offset_left = 337.0
+offset_top = 82.0
+offset_right = 482.0
+offset_bottom = 109.0
+text = "Limpar caixa"
+
+[node name="BoxFundo" type="Panel" parent="Craft"]
+offset_left = 15.0
+offset_top = 109.0
+offset_right = 435.0
+offset_bottom = 183.0
+
+[node name="Box" type="GridContainer" parent="Craft"]
 offset_left = 17.0
 offset_top = 112.0
 offset_right = 435.0
@@ -300,7 +321,7 @@ offset_top = 189.0
 offset_right = 482.0
 offset_bottom = 211.0
 clip_text = true
-text = "Selecione uma receita."
+text = "Caixa vazia. Escolha uma função acima."
 
 [node name="Custo" type="Label" parent="Craft"]
 offset_left = 17.0
@@ -315,7 +336,7 @@ offset_top = 221.0
 offset_right = 482.0
 offset_bottom = 258.0
 disabled = true
-text = "Sintetizar"
+text = "Executar"
 
 [connection signal="pressed" from="Bau/Fechar" to="." method="_on_fechar_pressed"]
 [connection signal="pressed" from="Craft/Fechar" to="." method="_on_fechar_pressed"]

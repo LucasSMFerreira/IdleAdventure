@@ -1,24 +1,2 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 64" width="128" height="64">
-  <defs>
-    <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#4a90e2" />
-      <stop offset="55%" stop-color="#87ceeb" />
-      <stop offset="100%" stop-color="#e0f2fe" />
-    </linearGradient>
-    <style>
-      .cloud-back { fill: #cce7ff; opacity: 0.6; }
-      .cloud-front { fill: #ffffff; opacity: 0.85; }
-    </style>
-  </defs>
-
-  <!-- Fundo Gradiente -->
-  <rect width="128" height="64" fill="url(#skyGrad)" />
-
-  <!-- Nuvens Distantes (Camada Suave) -->
-  <path d="M-10 24 Q5 18 20 24 Q35 16 50 24 Q60 20 70 25 L70 34 L-10 34 Z" class="cloud-back" />
-  <path d="M80 20 Q95 14 110 20 Q125 12 138 20 L138 30 L80 30 Z" class="cloud-back" />
-
-  <!-- Nuvens Principais Estruturadas -->
-  <path d="M15 16 Q25 8 36 14 Q46 6 56 13 Q64 10 70 17 L10 17 Z" class="cloud-front" />
-  <path d="M90 12 Q100 4 112 10 Q122 3 134 11 L85 11 Z" class="cloud-front" />
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="64" viewBox="0 0 128 64"><defs><linearGradient id="day" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#458ac1"/><stop offset=".55" stop-color="#88c4dd"/><stop offset="1" stop-color="#d2e6d6"/></linearGradient>
+<radialGradient id="glow"><stop stop-color="#fff5cb" stop-opacity=".75"/><stop offset="1" stop-color="#fff5cb" stop-opacity="0"/></radialGradient></defs><g transform="translate(0 0)"><rect width="64" height="64" fill="url(#day)"/><path d="M4 19 H11 V16 H18 V12 H32 V14 H41 V18 H50 V21 H58 V24 H4Z" fill="#f6fff1" opacity=".62"/><path d="M9 24 H38 V26 H9Z" fill="#e9f9ed" opacity=".55"/><path d="M0 46 H64 M0 55 H64" stroke="#ddf3e5" stroke-opacity=".28" stroke-width="2"/></g><g transform="translate(64 0)"><rect width="64" height="64" fill="url(#day)"/><path d="M0 26 H12 V22 H19 V19 H36 V20 H44 V24 H64 V29 H0Z" fill="#f5fff1" opacity=".68"/><path d="M22 30 H51 V32 H22Z" fill="#dff5ed" opacity=".58"/><path d="M0 46 H64 M0 55 H64" stroke="#ddf3e5" stroke-opacity=".28" stroke-width="2"/></g></svg>

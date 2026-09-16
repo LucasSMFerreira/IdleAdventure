@@ -31,7 +31,7 @@ const CORES = [
 @onready var grade: GridContainer = $Bau/Grade/Itens
 @onready var filtro_parte: OptionButton = $Bau/FiltroParte
 @onready var filtro_qualidade: OptionButton = $Bau/FiltroQualidade
-@onready var filtro_andar: OptionButton = $Bau/FiltroAndar
+@onready var ordenacao: OptionButton = $Bau/Ordenar
 @onready var so_melhores: CheckButton = $Bau/SoMelhores
 @onready var contagem: Label = $Bau/Contagem
 @onready var detalhe: Label = $Bau/Detalhe
@@ -39,17 +39,18 @@ const CORES = [
 @onready var fundir_botao: Button = $Bau/Fundir
 @onready var craft_info: Label = $Bau/CraftInfo
 @onready var gold_label: Label = $Bau/Gold
+@onready var enviar_botao: Button = $Bau/Enviar
 @onready var craft_painel: Panel = $Craft
-@onready var receitas: OptionButton = $Craft/Receitas
-@onready var ingredientes: GridContainer = $Craft/Ingredientes
+@onready var modo: OptionButton = $Craft/Modo
+@onready var box_itens: GridContainer = $Craft/Box
 @onready var resultado: Label = $Craft/Resultado
 @onready var custo_label: Label = $Craft/Custo
 @onready var sintetizar_botao: Button = $Craft/Sintetizar
 @onready var personagem: AnimatedSprite2D = $Equipamento/Personagem
 
 var selecionado_id = 0
-var receitas_ids: Array[int] = []
-var receita_id = 0
+var enviados_ids: Array[int] = []
+var modo_atual = 0
 var tamanho_itens_anterior = -1
 var equipados_anteriores = ""
 var tamanho_anterior = Vector2i.ZERO
@@ -68,20 +69,25 @@ func _ready():
 	filtro_qualidade.add_item("Qualid.")
 	for qualidade in Itens.QUALIDADES:
 		filtro_qualidade.add_item(qualidade)
-	filtro_andar.add_item("Andar")
-	for andar in range(1, Progressao.TOTAL_ANDARES + 1):
-		filtro_andar.add_item("Andar %d" % andar)
+	ordenacao.add_item("Recentes")
+	ordenacao.add_item("Andar ↓")
+	ordenacao.add_item("Categoria ↓")
+	modo.add_item("Síntese • 6 peças")
+	modo.add_item("Refino lendário • 6 peças")
+	modo.add_item("Reciclar • 1 peça")
 	filtro_parte.item_selected.connect(_filtros_mudaram)
 	filtro_qualidade.item_selected.connect(_filtros_mudaram)
-	filtro_andar.item_selected.connect(_filtros_mudaram)
+	ordenacao.item_selected.connect(_filtros_mudaram)
 	so_melhores.toggled.connect(_melhores_mudou)
 	equipar_botao.pressed.connect(_equipar_selecionado)
-	sintetizar_botao.pressed.connect(_fundir_selecionado)
+	sintetizar_botao.pressed.connect(_executar_craft)
+	$Craft/Limpar.pressed.connect(_limpar_box)
+	enviar_botao.pressed.connect(_enviar_selecionado)
 	$Bau/AbaBau.pressed.connect(_abrir_bau)
 	$Bau/AbaCraft.pressed.connect(_abrir_craft)
 	$Craft/AbaBau.pressed.connect(_abrir_bau)
 	$Craft/AbaCraft.pressed.connect(_abrir_craft)
-	receitas.item_selected.connect(_selecionar_receita)
+	modo.item_selected.connect(_modo_mudou)
 	personagem.sprite_frames = AnimacaoSprites.montar("barbarian", ["idle"])
 	personagem.play("idle")
 	$Bau/TituloBau.hide()
@@ -112,8 +118,6 @@ func _abrir_bau():
 
 func _abrir_craft():
 	$Bau.hide()
-	if not _buscar(selecionado_id).is_empty():
-		receita_id = selecionado_id
 	craft_painel.show()
 	_atualizar_craft()
 
@@ -140,12 +144,15 @@ func _atualizar():
 	equipados_anteriores = assinatura
 	_atualizar_equipados()
 	if itens_mudaram:
+		for id in enviados_ids.duplicate():
+			if _buscar(id).is_empty():
+				enviados_ids.erase(id)
 		_atualizar_bau()
 		_atualizar_craft()
 	else:
 		gold_label.text = "Gold %d" % EstadoJogo.gold
 		$Craft/Gold.text = gold_label.text
-		_atualizar_custo()
+		_atualizar_estado_box()
 
 func _atualizar_equipados():
 	$Equipamento/Nivel.text = "Nível %d" % EstadoJogo.nivel
@@ -173,8 +180,6 @@ func _itens_visiveis() -> Array:
 			continue
 		if filtro_qualidade.selected > 0 and int(item.get("qualidade", 0)) != filtro_qualidade.selected - 1:
 			continue
-		if filtro_andar.selected > 0 and int(item.get("andar", 1)) != filtro_andar.selected:
-			continue
 		visiveis.append(item)
 	if so_melhores.button_pressed:
 		var melhores = {}
@@ -184,7 +189,13 @@ func _itens_visiveis() -> Array:
 			if anterior.is_empty() or Itens.pontuacao(item) > Itens.pontuacao(anterior) or (Itens.pontuacao(item) == Itens.pontuacao(anterior) and int(item.get("id", 0)) > int(anterior.get("id", 0))):
 				melhores[chave] = item
 		visiveis = melhores.values()
-	visiveis.sort_custom(func(a, b): return int(a.get("id", 0)) > int(b.get("id", 0)))
+	visiveis.sort_custom(func(a, b):
+		if ordenacao.selected == 1 and int(a.get("andar", 1)) != int(b.get("andar", 1)):
+			return int(a.get("andar", 1)) > int(b.get("andar", 1))
+		if ordenacao.selected == 2 and int(a.get("qualidade", 0)) != int(b.get("qualidade", 0)):
+			return int(a.get("qualidade", 0)) > int(b.get("qualidade", 0))
+		return int(a.get("id", 0)) > int(b.get("id", 0))
+	)
 	return visiveis
 
 func _atualizar_bau():
@@ -212,6 +223,19 @@ func _atualizar_bau():
 		selo.add_theme_color_override("font_color", Color.WHITE)
 		selo.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		botao.add_child(selo)
+		var andar_fundo = ColorRect.new()
+		andar_fundo.position = Vector2(35, 3)
+		andar_fundo.size = Vector2(24, 16)
+		andar_fundo.color = Color(0.06, 0.08, 0.11, 0.9)
+		andar_fundo.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		botao.add_child(andar_fundo)
+		var andar_selo = Label.new()
+		andar_selo.text = "A%d" % int(item.get("andar", 1))
+		andar_selo.position = Vector2(37, 2)
+		andar_selo.add_theme_font_size_override("font_size", 11)
+		andar_selo.add_theme_color_override("font_color", Color(1, 0.85, 0.47))
+		andar_selo.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		botao.add_child(andar_selo)
 		botao.tooltip_text = _descricao(item)
 		_estilizar(botao, _cor_item(item), int(item.get("id", 0)) == selecionado_id)
 		botao.pressed.connect(_selecionar.bind(int(item.get("id", 0))))
@@ -229,7 +253,7 @@ func _buscar(id: int) -> Dictionary:
 	return {}
 
 func _descricao(item: Dictionary) -> String:
-	return "%s  |  +%d HP  +%d ATK" % [Itens.nome_exibicao(item), int(item.get("bonus_vida", 0)), int(item.get("bonus_ataque", 0))]
+	return "%s  •  Andar %d  •  +%d HP  +%d ATK" % [Itens.nome_exibicao(item), int(item.get("andar", 1)), int(item.get("bonus_vida", 0)), int(item.get("bonus_ataque", 0))]
 
 func _atualizar_detalhe():
 	var item = _buscar(selecionado_id)
@@ -239,6 +263,8 @@ func _atualizar_detalhe():
 	equipar_botao.text = "Equipado" if not item.is_empty() and equipar_botao.disabled else "Equipar"
 	craft_info.text = ""
 	fundir_botao.disabled = true
+	enviar_botao.disabled = item.is_empty()
+	enviar_botao.text = "Retirar" if selecionado_id in enviados_ids else "Enviar"
 
 func _selecionar(id: int):
 	selecionado_id = id
@@ -250,7 +276,7 @@ func _selecionar_equipado(slot: String):
 		so_melhores.button_pressed = false
 		filtro_parte.select(0)
 		filtro_qualidade.select(0)
-		filtro_andar.select(0)
+		ordenacao.select(0)
 		selecionado_id = int(item.get("id", 0))
 		_atualizar_bau()
 
@@ -259,15 +285,65 @@ func _equipar_selecionado():
 		equipamento_mudou.emit()
 		_atualizar()
 
-func _fundir_selecionado():
-	var novo_id = EstadoJogo.craft(receita_id if craft_painel.visible else selecionado_id)
-	if novo_id > 0:
-		selecionado_id = novo_id
-		receita_id = novo_id
-		craft_concluido.emit()
-		equipamento_mudou.emit()
-		_atualizar()
-		_abrir_craft()
+func _enviar_selecionado():
+	var item = _buscar(selecionado_id)
+	if item.is_empty():
+		return
+	if selecionado_id in enviados_ids:
+		enviados_ids.erase(selecionado_id)
+	else:
+		if enviados_ids.size() >= 6:
+			detalhe.text = "Caixa cheia. Retire uma peça primeiro."
+			return
+		if selecionado_id in EstadoJogo.equipados.values() and (not enviados_ids.is_empty() or modo_atual == 2):
+			detalhe.text = "Peça equipada só pode ser a primeira da síntese."
+			return
+		if modo_atual == 2:
+			enviados_ids.clear()
+		enviados_ids.append(selecionado_id)
+		if enviados_ids.size() == 1 and modo_atual != 2:
+			so_melhores.button_pressed = false
+			filtro_parte.select(Itens.SLOTS.find(item.get("slot", "")) + 1)
+			filtro_qualidade.select(int(item.get("qualidade", 0)) + 1)
+			if int(item.get("qualidade", 0)) == 3:
+				modo_atual = 1
+				modo.select(1)
+	_atualizar_bau()
+	_atualizar_craft()
+
+func _limpar_box():
+	enviados_ids.clear()
+	_atualizar_bau()
+	_atualizar_craft()
+
+func _retirar_da_box(id: int):
+	enviados_ids.erase(id)
+	_atualizar_bau()
+	_atualizar_craft()
+
+func _modo_mudou(indice: int):
+	modo_atual = indice
+	if modo_atual == 2 and enviados_ids.size() > 1:
+		enviados_ids = [enviados_ids[0]]
+	_atualizar_craft()
+
+func _executar_craft():
+	if sintetizar_botao.disabled:
+		return
+	if modo_atual == 2:
+		var ganho = EstadoJogo.reciclar(enviados_ids[0])
+		if ganho > 0:
+			enviados_ids.clear()
+			craft_concluido.emit()
+	else:
+		var novo_id = EstadoJogo.craft_com_itens(enviados_ids)
+		if novo_id > 0:
+			enviados_ids.clear()
+			selecionado_id = novo_id
+			craft_concluido.emit()
+			equipamento_mudou.emit()
+	_atualizar()
+	_atualizar_craft()
 
 func _filtros_mudaram(_indice: int):
 	_atualizar_bau()
@@ -279,98 +355,72 @@ func _melhores_mudou(_ativo: bool):
 func _atualizar_craft():
 	if not is_node_ready():
 		return
-	var grupos = {}
-	for item in EstadoJogo.inventario:
-		if not item is Dictionary or Itens.custo_craft(item) == 0:
-			continue
-		var chave = "%s|%d|%d" % [item.get("slot", ""), int(item.get("andar", 1)), int(item.get("qualidade", 0))]
-		if not grupos.has(chave):
-			grupos[chave] = []
-		grupos[chave].append(item)
-	var chaves = grupos.keys()
-	chaves.sort_custom(func(a, b):
-		var quantidade_a = grupos[a].size()
-		var quantidade_b = grupos[b].size()
-		return quantidade_a > quantidade_b if quantidade_a != quantidade_b else str(a) < str(b)
-	)
-	receitas.clear()
-	receitas_ids.clear()
-	var indice_escolhido = 0
-	for chave in chaves:
-		var grupo: Array = grupos[chave]
-		var preferido = receita_id if craft_painel.visible and receita_id > 0 else selecionado_id
-		var selecionado_no_grupo = false
-		for candidato in grupo:
-			if int(candidato.get("id", 0)) == preferido:
-				selecionado_no_grupo = true
-		if grupo.size() < 2 and not selecionado_no_grupo:
-			continue
-		var alvo = grupo[0]
-		for item in grupo:
-			if int(item.get("id", 0)) == preferido:
-				alvo = item
-				indice_escolhido = receitas_ids.size()
-		var disponiveis = 1 + EstadoJogo.parceiros_craft(int(alvo.get("id", 0))).size()
-		receitas.add_item("%s • %s • andar %d  (%d/6)" % [Itens.PARTES.get(alvo.get("slot", ""), "Item"), Itens.QUALIDADES[int(alvo.get("qualidade", 0))], int(alvo.get("andar", 1)), disponiveis])
-		receitas_ids.append(int(alvo.get("id", 0)))
-	if receitas_ids.is_empty():
-		receitas.add_item("Nenhuma receita disponível")
-		receita_id = 0
-	else:
-		receitas.select(indice_escolhido)
-		receita_id = receitas_ids[indice_escolhido]
-	_atualizar_receita()
-
-func _selecionar_receita(indice: int):
-	if indice >= 0 and indice < receitas_ids.size():
-		receita_id = receitas_ids[indice]
-		_atualizar_receita()
-
-func _atualizar_custo():
-	var item = _buscar(receita_id)
-	if item.is_empty():
-		return
-	var custo = Itens.custo_craft(item)
-	var entradas = 1 + EstadoJogo.parceiros_craft(receita_id).size()
-	custo_label.text = "%d/6 peças  •  %d Gold" % [entradas, custo]
-	sintetizar_botao.disabled = entradas < 6 or EstadoJogo.gold < custo
-	sintetizar_botao.tooltip_text = "Faltam %d Gold" % maxi(custo - EstadoJogo.gold, 0) if EstadoJogo.gold < custo else "Consome seis peças e cria uma melhor."
-
-func _atualizar_receita():
-	for antigo in ingredientes.get_children():
-		ingredientes.remove_child(antigo)
+	for antigo in box_itens.get_children():
+		box_itens.remove_child(antigo)
 		antigo.queue_free()
-	var item = _buscar(receita_id)
-	var parceiros = EstadoJogo.parceiros_craft(receita_id)
-	var entradas = [item] if not item.is_empty() else []
-	entradas.append_array(parceiros)
 	for indice in range(6):
 		var botao = Button.new()
 		botao.custom_minimum_size = Vector2(63, 62)
-		botao.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		botao.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-		if indice < entradas.size():
-			var entrada: Dictionary = entradas[indice]
-			botao.icon = ICONES.get(entrada.get("slot", ""), null)
-			botao.expand_icon = true
-			botao.tooltip_text = _descricao(entrada)
-			_estilizar(botao, _cor_item(entrada), indice == 0)
+		if indice < enviados_ids.size():
+			var item = _buscar(enviados_ids[indice])
+			if not item.is_empty():
+				botao.icon = ICONES.get(item.get("slot", ""), null)
+				botao.expand_icon = true
+				botao.tooltip_text = _descricao(item) + "  •  Clique para retirar"
+				_estilizar(botao, _cor_item(item), indice == 0)
+				botao.pressed.connect(_retirar_da_box.bind(enviados_ids[indice]))
 		else:
 			botao.text = "+"
-			_estilizar(botao, Color(0.36, 0.31, 0.27))
-		ingredientes.add_child(botao)
+			botao.disabled = true
+			_estilizar(botao, Color(0.38, 0.35, 0.3))
+		box_itens.add_child(botao)
+	$Bau/AbaCraft.text = "Box %d" % enviados_ids.size()
+	$Craft/AbaCraft.text = "Box %d" % enviados_ids.size()
 	$Craft/Gold.text = "Gold %d" % EstadoJogo.gold
-	if item.is_empty():
-		resultado.text = "Reúna seis peças para começar."
+	_atualizar_estado_box()
+
+func _atualizar_estado_box():
+	var quantidade = enviados_ids.size()
+	if quantidade == 0:
+		$Craft/Instrucoes.text = "Envie itens do baú para esta caixa."
+		resultado.text = "Caixa vazia. Escolha uma função acima."
 		custo_label.text = ""
 		$Craft/ResultadoIcone.texture = null
 		sintetizar_botao.disabled = true
 		return
-	var qualidade = int(item.get("qualidade", 0))
-	var saida = "refinar Lendário %" if qualidade == 3 else Itens.QUALIDADES[qualidade + 1]
-	resultado.text = "Resultado: %s • %s • andar %d" % [saida, Itens.PARTES[item.get("slot", "")], int(item.get("andar", 1))]
-	$Craft/ResultadoIcone.texture = ICONES.get(item.get("slot", ""), null)
-	_atualizar_custo()
+	var primeiro = _buscar(enviados_ids[0])
+	if primeiro.is_empty():
+		sintetizar_botao.disabled = true
+		return
+	$Craft/ResultadoIcone.texture = ICONES.get(primeiro.get("slot", ""), null)
+	if modo_atual == 2:
+		$Craft/Instrucoes.text = "Reciclar uma peça livre do baú."
+		var ganho = Itens.valor_reciclagem(primeiro)
+		resultado.text = "Reciclagem: +%d Gold • andar %d" % [ganho, int(primeiro.get("andar", 1))]
+		custo_label.text = "%d/1 item • sem custo" % quantidade
+		sintetizar_botao.disabled = quantidade != 1 or enviados_ids[0] in EstadoJogo.equipados.values()
+		return
+	$Craft/Instrucoes.text = "Seis peças da mesma parte, andar e categoria."
+	var qualidade = int(primeiro.get("qualidade", 0))
+	var saida = "Refinar Lendário %" if modo_atual == 1 else Itens.QUALIDADES[mini(qualidade + 1, 3)]
+	resultado.text = "%s • %s • andar %d" % [saida, Itens.PARTES.get(primeiro.get("slot", ""), "Item"), int(primeiro.get("andar", 1))]
+	var custo = Itens.custo_craft(primeiro)
+	custo_label.text = "%d/6 peças • %d Gold" % [quantidade, custo]
+	var valido = quantidade == 6 and custo > 0 and EstadoJogo.gold >= custo
+	valido = valido and ((modo_atual == 1 and qualidade == 3) or (modo_atual == 0 and qualidade < 3))
+	var equipados_na_box = 0
+	for id in enviados_ids:
+		var item = _buscar(id)
+		if item.is_empty() or item.get("slot", "") != primeiro.get("slot", "") or int(item.get("andar", 1)) != int(primeiro.get("andar", 1)) or int(item.get("qualidade", 0)) != qualidade:
+			valido = false
+		if id in EstadoJogo.equipados.values():
+			equipados_na_box += 1
+	if equipados_na_box > 1:
+		valido = false
+	sintetizar_botao.disabled = not valido
+	if quantidade == 6 and not valido:
+		$Craft/Instrucoes.text = "Confira andar, categoria, Gold e peças equipadas."
 
 func _on_fechar_pressed():
 	queue_free()

@@ -24,6 +24,11 @@ static func custo_craft(item: Dictionary) -> int:
 		return 0
 	return maxi(1, int(item.get("andar", 1))) * 25 * (clampi(int(item.get("qualidade", 0)), 0, 3) + 1)
 
+static func valor_reciclagem(item: Dictionary) -> int:
+	if item.is_empty():
+		return 0
+	return maxi(1, int(item.get("andar", 1))) * 5 * (clampi(int(item.get("qualidade", 0)), 0, 3) + 1)
+
 static func criar_item(andar: int, slot: String, qualidade: int, percentual_lendario: int = 0) -> Dictionary:
 	if not SLOTS.has(slot):
 		return {}

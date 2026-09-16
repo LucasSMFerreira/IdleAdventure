@@ -6,6 +6,9 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_detection"]
 size = Vector2(35, 50)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_axe"]
+size = Vector2(44, 42)
+
 [node name="Player" type="CharacterBody2D" unique_id=653104005 groups=["player"]]
 script = ExtResource("2_player")
 
@@ -20,6 +23,13 @@ shape = SubResource("RectangleShape2D_f1574")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Detection"]
 position = Vector2(30, 0)
 shape = SubResource("RectangleShape2D_detection")
+
+[node name="MachadoHitbox" type="Area2D" parent="."]
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MachadoHitbox"]
+position = Vector2(36, 0)
+shape = SubResource("RectangleShape2D_axe")
 
 [node name="AvisoAtaque" type="Label" parent="."]
 visible = false

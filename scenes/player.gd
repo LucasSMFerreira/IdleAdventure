@@ -18,6 +18,8 @@ var alvo: Enemy
 var golpe_pendente = false
 
 @onready var visual: AnimatedSprite2D = $Visual
+@onready var machado_hitbox: Area2D = $MachadoHitbox
+@onready var deteccao: Area2D = $Detection
 @onready var aviso_ataque: Label = $AvisoAtaque
 @onready var tempo_ataque: Timer = $TempoAtaque
 @onready var tempo_aviso: Timer = $TempoAviso
@@ -32,6 +34,11 @@ func _ready():
 func _physics_process(_delta):
 	velocity.x = 0.0 if inimigo_perto or derrotado else velocidade
 	move_and_slide()
+	if not inimigo_perto and not derrotado:
+		for corpo in deteccao.get_overlapping_bodies():
+			if corpo is Enemy and corpo.vida_atual > 0:
+				_on_detection_body_entered(corpo)
+				break
 	if derrotado or current_state == State.HIT or current_state == State.ATTACK:
 		return
 	if velocity.x != 0.0 and current_state != State.WALK:
@@ -93,8 +100,10 @@ func curar(valor: int):
 func _on_frame_changed():
 	if current_state == State.ATTACK and visual.frame == 3 and golpe_pendente:
 		golpe_pendente = false
-		if is_instance_valid(alvo) and alvo.vida_atual > 0 and not derrotado:
-			atacou.emit(alvo)
+		if not derrotado:
+			for corpo in machado_hitbox.get_overlapping_bodies():
+				if corpo is Enemy and corpo.vida_atual > 0:
+					atacou.emit(corpo)
 
 func _on_animation_finished():
 	match current_state:
@@ -130,7 +139,6 @@ func reiniciar():
 	alvo = null
 	inimigo_perto = false
 	derrotado = false
-	golpe_pendente = false
 	vida_atual = vida_maxima
 	set_physics_process(true)
 	visual.modulate = Color.WHITE
