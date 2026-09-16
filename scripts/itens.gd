@@ -64,8 +64,9 @@ static func criar_item(andar: int, slot: String, qualidade: int, percentual_lend
 		item["qualidade_pct"] = percentual_lendario
 	return item
 
-static func gerar_drop(andar: int, _fase: int, tipo: String) -> Dictionary:
-	if tipo == "normal" and randf() > 0.35:
+static func gerar_drop(andar: int, _fase: int, tipo: String, dificuldade: int = 0) -> Dictionary:
+	var chance: float = 0.525 if dificuldade >= 1 else 0.35
+	if tipo == "normal" and randf() > chance:
 		return {}
 	var sorteio: float = randf()
 	var qualidade: int = clampi(int((andar - 1) / 3), 0, 2)
@@ -77,5 +78,11 @@ static func gerar_drop(andar: int, _fase: int, tipo: String) -> Dictionary:
 		qualidade = mini(qualidade + 2, 3)
 	elif sorteio > 0.8:
 		qualidade = mini(qualidade + 1, 3)
+	if dificuldade >= 2:
+		qualidade = maxi(qualidade, 1)
 	var slot: String = "arma" if tipo == "mini" else SLOTS[randi_range(0, SLOTS.size() - 1)]
-	return criar_item(andar, slot, qualidade)
+	var drop: Dictionary = criar_item(andar, slot, qualidade)
+	if dificuldade >= 3 and tipo == "boss":
+		drop["unico"] = true
+		drop["nome"] = "Único " + str(drop.get("nome", "Item"))
+	return drop

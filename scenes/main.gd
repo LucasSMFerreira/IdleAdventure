@@ -31,6 +31,7 @@ func _ready() -> void:
     stage_manager.reposition_requested.connect(func(destination: Vector2) -> void: player.position = destination)
     stage_manager.tower_finished.connect(_on_tower_finished)
     stage_manager.ground_impact.connect(camera.shake_ground)
+    stage_manager.floor_transition_started.connect(_on_floor_transition)
     stage_manager.configure(EstadoJogo.andar_escolhido, EstadoJogo.fase_escolhida)
     _aplicar_status()
     _on_player_vida_mudou(player.vida_atual, player.vida_maxima)
@@ -39,6 +40,7 @@ func _ready() -> void:
     _estilizar_barra(barra_vida, Color(0.22, 0.79, 0.48))
     _estilizar_barra(barra_xp, Color(0.42, 0.72, 1.0))
     _criar_onda()
+    UIFactory.navigation($Interface, _open_module)
 
 func _estilizar_barra(barra: ProgressBar, cor: Color) -> void:
     var fundo: StyleBoxFlat = StyleBoxFlat.new()
@@ -85,7 +87,7 @@ func _on_inimigo_morreu(tipo: String) -> void:
     EstadoJogo.ganhar_gold(gold_drop)
     _atualizar_gold()
     texto_drop.text = "+%d Gold" % gold_drop
-    var item: Dictionary = Itens.gerar_drop(andar_atual, fase_atual, tipo)
+    var item: Dictionary = Itens.gerar_drop(andar_atual, fase_atual, tipo, EstadoJogo.difficulty_selected)
     if not item.is_empty():
         EstadoJogo.adicionar_item(item)
         texto_drop.text = "DROP: %s  |  +%d Gold" % [Itens.nome_exibicao(item), gold_drop]
@@ -129,12 +131,29 @@ func _on_menu_pressed() -> void:
     get_tree().change_scene_to_file("res://scenes/menu.tscn")
 
 func _on_inventario_pressed() -> void:
-    if get_node_or_null("PainelBau"):
+    if get_node_or_null("PainelBau") != null:
         return
-    var painel: CanvasLayer = preload("res://scenes/inventario.tscn").instantiate() as CanvasLayer
-    painel.name = "PainelBau"
-    add_child(painel)
-    camera.chest_open = true
-    painel.tree_exiting.connect(func() -> void: camera.chest_open = false)
-    painel.connect("equipamento_mudou", _aplicar_status)
-    painel.connect("craft_concluido", _atualizar_gold)
+    var panel := preload("res://scenes/ui/inventory_stash.tscn").instantiate()
+    panel.name = "PainelBau"
+    add_child(panel)
+
+func _open_module(module: String) -> void:
+    UIFactory.open_module(self, module)
+
+func _on_floor_transition(_from_floor: int, _to_floor: int) -> void:
+    var wipe := ColorRect.new()
+    wipe.color = Color.WHITE
+    var wipe_material := ShaderMaterial.new()
+    wipe_material.shader = load("res://assets/shaders/rune_wipe.gdshader")
+    wipe_material.set_shader_parameter("progress", 0.0)
+    wipe.material = wipe_material
+    wipe.position = Vector2.ZERO
+    wipe.size = Vector2(640, 360)
+    wipe.mouse_filter = Control.MOUSE_FILTER_IGNORE
+    wipe.modulate.a = 0.0
+    $Interface.add_child(wipe)
+    var tween := create_tween()
+    wipe.modulate.a = 1.0
+    tween.tween_property(wipe_material, "shader_parameter/progress", 1.0, 0.28)
+    tween.tween_property(wipe_material, "shader_parameter/progress", 0.0, 0.42)
+    tween.finished.connect(wipe.queue_free)

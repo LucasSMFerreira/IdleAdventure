@@ -11,8 +11,12 @@ var nivel: int = 1
 var xp_atual: int = 0
 var gold: int = 0
 var inventario: Array = []
-var equipados: Dictionary = {"arma": 0, "arma_secundaria": 0, "cabeca": 0, "peito": 0, "pernas": 0, "luvas": 0, "acessorio": 0}
+var equipados: Dictionary = {"arma": 0, "arma_secundaria": 0, "cabeca": 0, "peito": 0, "pernas": 0, "luvas": 0, "acessorio": 0, "amuleto": 0, "anel_1": 0, "anel_2": 0, "insignia": 0}
 var proximo_item_id: int = 1
+var stash_tab_ids: Array = []
+var bag_ids: Array[int] = []
+var difficulty_selected: int = 0
+var active_class: String = "Bárbaro"
 
 func _ready() -> void:
 	carregar()
@@ -45,13 +49,20 @@ func carregar() -> void:
 				if int(item.get("qualidade", 0)) == 3 and not item.has("qualidade_pct"):
 					item["qualidade_pct"] = 100
 		var salvos: Variant = dados.get("equipados", {})
-		equipados = {"arma": 0, "arma_secundaria": 0, "cabeca": 0, "peito": 0, "pernas": 0, "luvas": 0, "acessorio": 0}
+		equipados = {"arma": 0, "arma_secundaria": 0, "cabeca": 0, "peito": 0, "pernas": 0, "luvas": 0, "acessorio": 0, "amuleto": 0, "anel_1": 0, "anel_2": 0, "insignia": 0}
 		if salvos is Dictionary:
 			for slot in equipados:
 				equipados[slot] = int(salvos.get(slot, 0))
 			if equipados["peito"] == 0:
 				equipados["peito"] = int(salvos.get("armadura", 0))
 		proximo_item_id = maxi(int(dados.get("proximo_item_id", 1)), 1)
+		stash_tab_ids = dados.get("stash_tab_ids", []) if dados.get("stash_tab_ids", []) is Array else []
+		bag_ids.clear()
+		if dados.get("bag_ids", []) is Array:
+			for value: Variant in dados.get("bag_ids", []):
+				bag_ids.append(int(value))
+		difficulty_selected = clampi(int(dados.get("difficulty_selected", 0)), 0, 3)
+		active_class = str(dados.get("active_class", "Bárbaro"))
 
 func salvar() -> void:
 	var arquivo: FileAccess = FileAccess.open(caminho_save, FileAccess.WRITE)
@@ -65,6 +76,10 @@ func salvar() -> void:
 			"inventario": inventario,
 			"equipados": equipados,
 			"proximo_item_id": proximo_item_id,
+			"stash_tab_ids": stash_tab_ids,
+			"bag_ids": bag_ids,
+			"difficulty_selected": difficulty_selected,
+			"active_class": active_class,
 		}))
 
 func ganhar_xp(valor: int) -> bool:
@@ -235,3 +250,65 @@ func liberar_proxima(andar: int, fase: int) -> void:
 		maior_fase_liberada = maxi(maior_fase_liberada, indice + 1)
 	salvar()
 	dados_mudaram.emit()
+
+func synthesize_nine(ids: Array[int], include_stash: bool) -> int:
+	if ids.size() != 9 or ids.has(0):
+		return 0
+	var seen: Dictionary = {}
+	var entries: Array[Dictionary] = []
+	for item_id: int in ids:
+		if seen.has(item_id) or item_id in equipados.values():
+			return 0
+		seen[item_id] = true
+		var place: String = InventoryStore.locate(item_id)
+		if place == "" or not include_stash and place != "bag":
+			return 0
+		var item: Dictionary = item_por_id(item_id)
+		if item.is_empty():
+			return 0
+		entries.append(item)
+	var first: Dictionary = entries[0]
+	for entry: Dictionary in entries:
+		if entry.get("slot", "") != first.get("slot", "") or int(entry.get("andar", 1)) != int(first.get("andar", 1)) or int(entry.get("qualidade", 0)) != int(first.get("qualidade", 0)):
+			return 0
+	var cost: int = Itens.custo_craft(first) * 2
+	if cost <= 0 or gold < cost:
+		return 0
+	var rarity: int = int(first.get("qualidade", 0))
+	var pct: int = 0
+	if rarity == 3:
+		for entry: Dictionary in entries:
+			pct = maxi(pct, int(entry.get("qualidade_pct", 60)))
+		pct = mini(100, pct + 10)
+	else:
+		rarity += 1
+	var crafted: Dictionary = Itens.criar_item(int(first.get("andar", 1)), str(first.get("slot", "")), rarity, pct)
+	if crafted.is_empty():
+		return 0
+	for entry: Dictionary in entries:
+		inventario.erase(entry)
+	gold -= cost
+	crafted["id"] = proximo_item_id
+	proximo_item_id += 1
+	inventario.append(crafted)
+	InventoryStore.remove_consumed(ids)
+	salvar()
+	dados_mudaram.emit()
+	return int(crafted["id"])
+
+func set_difficulty(value: int) -> void:
+	difficulty_selected = clampi(value, 0, 3)
+	salvar()
+	dados_mudaram.emit()
+
+func equipar_no_slot(id: int, target_slot: String) -> bool:
+	var item: Dictionary = item_por_id(id)
+	if item.is_empty() or not equipados.has(target_slot):
+		return false
+	var data := ItemData.from_legacy(item)
+	if not data.can_equip(active_class, nivel, target_slot):
+		return false
+	equipados[target_slot] = id
+	salvar()
+	dados_mudaram.emit()
+	return true

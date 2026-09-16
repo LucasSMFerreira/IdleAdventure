@@ -18,6 +18,7 @@ config/icon="res://scenes/icon.svg"
 [autoload]
 
 EstadoJogo="*res://scripts/estado_jogo.gd"
+InventoryStore="*res://scripts/managers/inventory_store.gd"
 
 [display]
 
