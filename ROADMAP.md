@@ -9,8 +9,14 @@
 
 Os spritesheets iniciais ficam em assets/sprites. O Bárbaro usa quadros de andar, parado, ataque, dano e morte. O boss usa seu golpe especial a cada terceiro ataque, com aviso e dano no momento do impacto.
 
-No computador, abrir o baú mostra o jogo acima e o baú embaixo. No telefone, o baú cobre a partida; ela continua rodando ao fundo. Na aba Craft, o jogador envia itens do baú para uma caixa. Síntese consome seis peças da mesma parte, andar e categoria com Gold; Refino usa seis lendários para elevar sua qualidade percentual; Reciclagem transforma uma peça livre em Gold.
+No computador, abrir o baú mostra o jogo acima e o baú embaixo. No telefone, um fundo do baú cobre a partida; ela continua rodando ao fundo. Na aba Craft, o jogador envia itens do baú para uma caixa. Síntese consome seis peças da mesma parte, andar e categoria com Gold; Refino usa seis lendários para elevar sua qualidade percentual; Reciclagem transforma uma peça livre em Gold.
 
 Fases são liberadas ao vencer bosses. XP evolui o personagem aos poucos; drops melhores e equipamentos são essenciais para vencer fases mais difíceis. O jogador pode revisitar fases liberadas; em caso de derrota, mantém a evolução e tenta a fase novamente.
 
 O machado acompanha a mão nos SVGs parado, andando e atacando. O golpe usa uma área de colisão física e só acerta inimigos dentro dela no quadro do impacto.
+
+## Base técnica da fase Wildlands Road
+
+O combate usa CharacterStats (.tres) por entidade, Hurtbox para vida e Hitbox para golpes. Os componentes emitem health_changed, died e attack_landed; o StageManager distribui ondas e avança as fases por sinais. Estados Idle, Walk, PreAttack, Attack, PostAttack, Hit e Death vivem em nós State independentes. A câmera acompanha o Bárbaro e recebe o sinal de impacto do Special do Rei Orc.
+
+A viewport lógica é 640×360, com filtro Nearest. O baú ocupa a parte de baixo no computador e o jogo continua visível acima. Os sprites têm offset definido pela linha dos pés do frame de repouso, medida nos SVGs. Os testes de combate, ciclo de fase e especial do boss ficam em tests/.

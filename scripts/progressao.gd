@@ -20,7 +20,7 @@ static func dano_inimigo(andar: int) -> int:
 	return 1 + int((andar - 1) / 2)
 
 static func vida_chefe(andar: int, fase: int) -> int:
-	var vida = vida_inimigo(andar, fase)
+	var vida: int = vida_inimigo(andar, fase)
 	return vida * 2 + 4 if fase == FASES_POR_ANDAR else vida + 3
 
 static func dano_chefe(andar: int, fase: int) -> int:

@@ -2,7 +2,15 @@
 
 [ext_resource type="Script" uid="uid://wluv1auo4yb2" path="res://scenes/player.gd" id="2_player"]
 
+[ext_resource type="Script" path="res://scripts/combat/hurtbox.gd" id="3_hurt"]
+[ext_resource type="Script" path="res://scripts/combat/hitbox.gd" id="4_hit"]
+[ext_resource type="Script" path="res://scripts/states/state_machine.gd" id="5_states"]
+[ext_resource type="Script" path="res://scripts/states/state.gd" id="6_state"]
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_f1574"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hurt"]
+size = Vector2(22, 44)
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_detection"]
 size = Vector2(35, 50)
 
@@ -14,21 +22,32 @@ script = ExtResource("2_player")
 
 [node name="Visual" type="AnimatedSprite2D" parent="." unique_id=376890448]
 scale = Vector2(1, 1)
+offset = Vector2(0, -28)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=19082127]
 shape = SubResource("RectangleShape2D_f1574")
 
+[node name="Hurtbox" type="Area2D" parent="."]
+position = Vector2(0, -22)
+script = ExtResource("3_hurt")
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+shape = SubResource("RectangleShape2D_hurt")
+
 [node name="Detection" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Detection"]
-position = Vector2(30, 0)
+position = Vector2(30, -22)
 shape = SubResource("RectangleShape2D_detection")
 
 [node name="MachadoHitbox" type="Area2D" parent="."]
-collision_layer = 0
+script = ExtResource("4_hit")
+target_layer = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MachadoHitbox"]
-position = Vector2(36, 0)
+position = Vector2(36, -22)
 shape = SubResource("RectangleShape2D_axe")
 
 [node name="AvisoAtaque" type="Label" parent="."]
@@ -40,13 +59,42 @@ offset_bottom = -35.0
 theme_override_colors/font_color = Color(1, 0.85, 0.2, 1)
 text = "ATAQUE!"
 
-[node name="TempoAtaque" type="Timer" parent="."]
-wait_time = 1.0
 
-[node name="TempoAviso" type="Timer" parent="."]
-wait_time = 0.3
-one_shot = true
+[node name="StateMachine" type="Node" parent="."]
+script = ExtResource("5_states")
+initial_state = &"Walk"
+
+[node name="Idle" type="Node" parent="StateMachine"]
+script = ExtResource("6_state")
+animation = &"idle"
+
+[node name="Walk" type="Node" parent="StateMachine"]
+script = ExtResource("6_state")
+animation = &"walk"
+move = true
+
+[node name="PreAttack" type="Node" parent="StateMachine"]
+script = ExtResource("6_state")
+animation = &"idle"
+duration = 0.28
+next_state = &"Attack"
+
+[node name="Attack" type="Node" parent="StateMachine"]
+script = ExtResource("6_state")
+animation = &"attack"
+
+[node name="PostAttack" type="Node" parent="StateMachine"]
+script = ExtResource("6_state")
+animation = &"idle"
+duration = 0.5
+next_state = &"Idle"
+
+[node name="Hit" type="Node" parent="StateMachine"]
+script = ExtResource("6_state")
+animation = &"hit"
+
+[node name="Death" type="Node" parent="StateMachine"]
+script = ExtResource("6_state")
+animation = &"death"
 
 [connection signal="body_entered" from="Detection" to="." method="_on_detection_body_entered"]
-[connection signal="timeout" from="TempoAtaque" to="." method="_atacar"]
-[connection signal="timeout" from="TempoAviso" to="." method="_on_tempo_aviso_timeout"]

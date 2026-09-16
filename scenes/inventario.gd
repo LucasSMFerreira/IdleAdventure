@@ -48,21 +48,24 @@ const CORES = [
 @onready var sintetizar_botao: Button = $Craft/Sintetizar
 @onready var personagem: AnimatedSprite2D = $Equipamento/Personagem
 
-var selecionado_id = 0
+var selecionado_id: int = 0
 var enviados_ids: Array[int] = []
-var modo_atual = 0
-var tamanho_itens_anterior = -1
-var equipados_anteriores = ""
-var tamanho_anterior = Vector2i.ZERO
-var modo_mobile = OS.has_feature("mobile") or OS.has_feature("web_android") or OS.has_feature("web_ios")
+var modo_atual: int = 0
+var tamanho_itens_anterior: int = -1
+var equipados_anteriores: String = ""
+var tamanho_anterior: Vector2i = Vector2i.ZERO
+var modo_mobile: bool = OS.has_feature("mobile") or OS.has_feature("web_android") or OS.has_feature("web_ios")
 
-func _ready():
+func _ready() -> void:
+	scale = Vector2(0.64, 0.64)
 	if not modo_mobile:
 		tamanho_anterior = get_window().size
-		get_window().size = Vector2i(1000, 600)
-		offset = Vector2(0, 300)
+		get_window().size = Vector2i(1280, 720)
+		offset = Vector2(0, 168)
 	else:
-		offset = Vector2.ZERO
+		offset = Vector2(0, 84)
+		$Fundo.position = Vector2(0, -131)
+		$Fundo.size = Vector2(1000, 563)
 	filtro_parte.add_item("Parte")
 	for slot in Itens.SLOTS:
 		filtro_parte.add_item("Arma 2" if slot == "arma_secundaria" else Itens.PARTES[slot])
@@ -99,24 +102,24 @@ func _ready():
 	EstadoJogo.dados_mudaram.connect(_atualizar)
 	_atualizar()
 
-func _exit_tree():
+func _exit_tree() -> void:
 	if tamanho_anterior != Vector2i.ZERO:
 		get_window().size = tamanho_anterior
 
-func _estilizar_painel(painel: Panel):
-	var estilo = StyleBoxFlat.new()
+func _estilizar_painel(painel: Panel) -> void:
+	var estilo: StyleBoxFlat = StyleBoxFlat.new()
 	estilo.bg_color = Color(0.22, 0.18, 0.14)
 	estilo.border_color = Color(0.57, 0.39, 0.24)
 	estilo.set_border_width_all(3)
 	estilo.set_corner_radius_all(4)
 	painel.add_theme_stylebox_override("panel", estilo)
 
-func _abrir_bau():
+func _abrir_bau() -> void:
 	$Bau.show()
 	craft_painel.hide()
 	_atualizar_bau()
 
-func _abrir_craft():
+func _abrir_craft() -> void:
 	$Bau.hide()
 	craft_painel.show()
 	_atualizar_craft()
@@ -124,22 +127,22 @@ func _abrir_craft():
 func _cor_item(item: Dictionary) -> Color:
 	return CORES[clampi(int(item.get("qualidade", 0)), 0, CORES.size() - 1)]
 
-func _estilizar(botao: Button, cor: Color, marcado: bool = false):
-	var estilo = StyleBoxFlat.new()
+func _estilizar(botao: Button, cor: Color, marcado: bool = false) -> void:
+	var estilo: StyleBoxFlat = StyleBoxFlat.new()
 	estilo.bg_color = cor.darkened(0.68)
 	estilo.border_color = cor
 	estilo.set_border_width_all(3 if marcado else 2)
 	estilo.set_corner_radius_all(3)
 	botao.add_theme_stylebox_override("normal", estilo)
-	var hover = estilo.duplicate()
+	var hover: StyleBoxFlat = estilo.duplicate() as StyleBoxFlat
 	hover.bg_color = cor.darkened(0.43)
 	botao.add_theme_stylebox_override("hover", hover)
 	botao.add_theme_color_override("font_color", Color.WHITE)
 	botao.add_theme_font_size_override("font_size", 13)
 
-func _atualizar():
-	var assinatura = JSON.stringify(EstadoJogo.equipados)
-	var itens_mudaram = tamanho_itens_anterior != EstadoJogo.inventario.size() or assinatura != equipados_anteriores
+func _atualizar() -> void:
+	var assinatura: String = JSON.stringify(EstadoJogo.equipados)
+	var itens_mudaram: bool = tamanho_itens_anterior != EstadoJogo.inventario.size() or assinatura != equipados_anteriores
 	tamanho_itens_anterior = EstadoJogo.inventario.size()
 	equipados_anteriores = assinatura
 	_atualizar_equipados()
@@ -154,14 +157,14 @@ func _atualizar():
 		$Craft/Gold.text = gold_label.text
 		_atualizar_estado_box()
 
-func _atualizar_equipados():
+func _atualizar_equipados() -> void:
 	$Equipamento/Nivel.text = "Nível %d" % EstadoJogo.nivel
 	$Equipamento/Status.text = "Bônus: +%d HP  +%d ATK" % [EstadoJogo.bonus_vida(), EstadoJogo.bonus_ataque()]
 	for slot in Itens.SLOTS:
 		var botao: Button = get_node("Equipamento/" + BOTOES[slot])
-		var item = EstadoJogo.item_equipado(slot)
-		var titulo = "Arma 2" if slot == "arma_secundaria" else Itens.PARTES[slot]
-		var categoria = Itens.QUALIDADES[clampi(int(item.get("qualidade", 0)), 0, 3)]
+		var item: Dictionary = EstadoJogo.item_equipado(slot)
+		var titulo: String = "Arma 2" if slot == "arma_secundaria" else Itens.PARTES[slot]
+		var categoria: String = Itens.QUALIDADES[clampi(int(item.get("qualidade", 0)), 0, 3)]
 		if not item.is_empty() and int(item.get("qualidade", 0)) == 3:
 			categoria = "L%d%%" % int(item.get("qualidade_pct", 100))
 		if not item.is_empty():
@@ -184,10 +187,10 @@ func _itens_visiveis() -> Array:
 			continue
 		visiveis.append(item)
 	if so_melhores.button_pressed:
-		var melhores = {}
+		var melhores: Dictionary = {}
 		for item in visiveis:
-			var chave = "%s_%d" % [item.get("slot", ""), int(item.get("andar", 1))]
-			var anterior = melhores.get(chave, {})
+			var chave: String = "%s_%d" % [item.get("slot", ""), int(item.get("andar", 1))]
+			var anterior: Dictionary = melhores.get(chave, {})
 			if anterior.is_empty() or Itens.pontuacao(item) > Itens.pontuacao(anterior) or (Itens.pontuacao(item) == Itens.pontuacao(anterior) and int(item.get("id", 0)) > int(anterior.get("id", 0))):
 				melhores[chave] = item
 		visiveis = melhores.values()
@@ -200,38 +203,38 @@ func _itens_visiveis() -> Array:
 	)
 	return visiveis
 
-func _atualizar_bau():
+func _atualizar_bau() -> void:
 	for botao in grade.get_children():
 		grade.remove_child(botao)
 		botao.queue_free()
-	var visiveis = _itens_visiveis()
-	var existe = false
+	var visiveis: Array = _itens_visiveis()
+	var existe: bool = false
 	for item in visiveis:
 		if int(item.get("id", 0)) == selecionado_id:
 			existe = true
-		var botao = Button.new()
+		var botao: Button = Button.new()
 		botao.custom_minimum_size = Vector2(62, 60)
 		botao.icon = ICONES.get(item.get("slot", ""), null)
 		botao.expand_icon = true
 		botao.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-		var categoria = Itens.QUALIDADES[clampi(int(item.get("qualidade", 0)), 0, 3)].substr(0, 1)
+		var categoria: String = Itens.QUALIDADES[clampi(int(item.get("qualidade", 0)), 0, 3)].substr(0, 1)
 		if int(item.get("qualidade", 0)) == 3:
 			categoria = "%d%%" % int(item.get("qualidade_pct", 100))
 		botao.text = ""
-		var selo = Label.new()
+		var selo: Label = Label.new()
 		selo.text = categoria
 		selo.position = Vector2(4, 42)
 		selo.add_theme_font_size_override("font_size", 11)
 		selo.add_theme_color_override("font_color", Color.WHITE)
 		selo.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		botao.add_child(selo)
-		var andar_fundo = ColorRect.new()
+		var andar_fundo: ColorRect = ColorRect.new()
 		andar_fundo.position = Vector2(35, 3)
 		andar_fundo.size = Vector2(24, 16)
 		andar_fundo.color = Color(0.06, 0.08, 0.11, 0.9)
 		andar_fundo.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		botao.add_child(andar_fundo)
-		var andar_selo = Label.new()
+		var andar_selo: Label = Label.new()
 		andar_selo.text = "A%d" % int(item.get("andar", 1))
 		andar_selo.position = Vector2(37, 2)
 		andar_selo.add_theme_font_size_override("font_size", 11)
@@ -257,8 +260,8 @@ func _buscar(id: int) -> Dictionary:
 func _descricao(item: Dictionary) -> String:
 	return "%s  •  Andar %d  •  +%d HP  +%d ATK" % [Itens.nome_exibicao(item), int(item.get("andar", 1)), int(item.get("bonus_vida", 0)), int(item.get("bonus_ataque", 0))]
 
-func _atualizar_detalhe():
-	var item = _buscar(selecionado_id)
+func _atualizar_detalhe() -> void:
+	var item: Dictionary = _buscar(selecionado_id)
 	detalhe.text = _descricao(item) if not item.is_empty() else "Escolha um item do baú."
 	detalhe.tooltip_text = _descricao(item) if not item.is_empty() else ""
 	equipar_botao.disabled = item.is_empty() or int(EstadoJogo.equipados.get(item.get("slot", ""), 0)) == selecionado_id
@@ -268,12 +271,12 @@ func _atualizar_detalhe():
 	enviar_botao.disabled = item.is_empty()
 	enviar_botao.text = "Retirar" if selecionado_id in enviados_ids else "Enviar"
 
-func _selecionar(id: int):
+func _selecionar(id: int) -> void:
 	selecionado_id = id
 	_atualizar_bau()
 
-func _selecionar_equipado(slot: String):
-	var item = EstadoJogo.item_equipado(slot)
+func _selecionar_equipado(slot: String) -> void:
+	var item: Dictionary = EstadoJogo.item_equipado(slot)
 	if not item.is_empty():
 		so_melhores.button_pressed = false
 		filtro_parte.select(0)
@@ -282,13 +285,13 @@ func _selecionar_equipado(slot: String):
 		selecionado_id = int(item.get("id", 0))
 		_atualizar_bau()
 
-func _equipar_selecionado():
+func _equipar_selecionado() -> void:
 	if EstadoJogo.equipar(selecionado_id):
 		equipamento_mudou.emit()
 		_atualizar()
 
-func _enviar_selecionado():
-	var item = _buscar(selecionado_id)
+func _enviar_selecionado() -> void:
+	var item: Dictionary = _buscar(selecionado_id)
 	if item.is_empty():
 		return
 	if selecionado_id in enviados_ids:
@@ -313,32 +316,32 @@ func _enviar_selecionado():
 	_atualizar_bau()
 	_atualizar_craft()
 
-func _limpar_box():
+func _limpar_box() -> void:
 	enviados_ids.clear()
 	_atualizar_bau()
 	_atualizar_craft()
 
-func _retirar_da_box(id: int):
+func _retirar_da_box(id: int) -> void:
 	enviados_ids.erase(id)
 	_atualizar_bau()
 	_atualizar_craft()
 
-func _modo_mudou(indice: int):
+func _modo_mudou(indice: int) -> void:
 	modo_atual = indice
 	if modo_atual == 2 and enviados_ids.size() > 1:
 		enviados_ids = [enviados_ids[0]]
 	_atualizar_craft()
 
-func _executar_craft():
+func _executar_craft() -> void:
 	if sintetizar_botao.disabled:
 		return
 	if modo_atual == 2:
-		var ganho = EstadoJogo.reciclar(enviados_ids[0])
+		var ganho: int = EstadoJogo.reciclar(enviados_ids[0])
 		if ganho > 0:
 			enviados_ids.clear()
 			craft_concluido.emit()
 	else:
-		var novo_id = EstadoJogo.craft_com_itens(enviados_ids)
+		var novo_id: int = EstadoJogo.craft_com_itens(enviados_ids)
 		if novo_id > 0:
 			enviados_ids.clear()
 			selecionado_id = novo_id
@@ -347,25 +350,25 @@ func _executar_craft():
 	_atualizar()
 	_atualizar_craft()
 
-func _filtros_mudaram(_indice: int):
+func _filtros_mudaram(_indice: int) -> void:
 	_atualizar_bau()
 
-func _melhores_mudou(_ativo: bool):
+func _melhores_mudou(_ativo: bool) -> void:
 	_atualizar_bau()
 
 
-func _atualizar_craft():
+func _atualizar_craft() -> void:
 	if not is_node_ready():
 		return
 	for antigo in box_itens.get_children():
 		box_itens.remove_child(antigo)
 		antigo.queue_free()
 	for indice in range(6):
-		var botao = Button.new()
+		var botao: Button = Button.new()
 		botao.custom_minimum_size = Vector2(63, 62)
 		botao.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 		if indice < enviados_ids.size():
-			var item = _buscar(enviados_ids[indice])
+			var item: Dictionary = _buscar(enviados_ids[indice])
 			if not item.is_empty():
 				botao.icon = ICONES.get(item.get("slot", ""), null)
 				botao.expand_icon = true
@@ -382,8 +385,8 @@ func _atualizar_craft():
 	$Craft/Gold.text = "Gold %d" % EstadoJogo.gold
 	_atualizar_estado_box()
 
-func _atualizar_estado_box():
-	var quantidade = enviados_ids.size()
+func _atualizar_estado_box() -> void:
+	var quantidade: int = enviados_ids.size()
 	if quantidade == 0:
 		$Craft/Instrucoes.text = "Envie itens do baú para a caixa."
 		resultado.text = "Caixa vazia. Escolha uma função acima."
@@ -391,29 +394,29 @@ func _atualizar_estado_box():
 		$Craft/ResultadoIcone.texture = null
 		sintetizar_botao.disabled = true
 		return
-	var primeiro = _buscar(enviados_ids[0])
+	var primeiro: Dictionary = _buscar(enviados_ids[0])
 	if primeiro.is_empty():
 		sintetizar_botao.disabled = true
 		return
 	$Craft/ResultadoIcone.texture = ICONES.get(primeiro.get("slot", ""), null)
 	if modo_atual == 2:
 		$Craft/Instrucoes.text = "Reciclar uma peça livre do baú."
-		var ganho = Itens.valor_reciclagem(primeiro)
+		var ganho: int = Itens.valor_reciclagem(primeiro)
 		resultado.text = "Reciclagem: +%d Gold • andar %d" % [ganho, int(primeiro.get("andar", 1))]
 		custo_label.text = "%d/1 item • sem custo" % quantidade
 		sintetizar_botao.disabled = quantidade != 1 or enviados_ids[0] in EstadoJogo.equipados.values()
 		return
 	$Craft/Instrucoes.text = "6 peças: parte, andar e grau iguais."
-	var qualidade = int(primeiro.get("qualidade", 0))
-	var saida = "Refinar Lendário %" if modo_atual == 1 else Itens.QUALIDADES[mini(qualidade + 1, 3)]
+	var qualidade: int = int(primeiro.get("qualidade", 0))
+	var saida: String = "Refinar Lendário %" if modo_atual == 1 else Itens.QUALIDADES[mini(qualidade + 1, 3)]
 	resultado.text = "%s • %s • andar %d" % [saida, Itens.PARTES.get(primeiro.get("slot", ""), "Item"), int(primeiro.get("andar", 1))]
-	var custo = Itens.custo_craft(primeiro)
+	var custo: int = Itens.custo_craft(primeiro)
 	custo_label.text = "%d/6 peças • %d Gold" % [quantidade, custo]
-	var valido = quantidade == 6 and custo > 0 and EstadoJogo.gold >= custo
+	var valido: bool = quantidade == 6 and custo > 0 and EstadoJogo.gold >= custo
 	valido = valido and ((modo_atual == 1 and qualidade == 3) or (modo_atual == 0 and qualidade < 3))
-	var equipados_na_box = 0
+	var equipados_na_box: int = 0
 	for id in enviados_ids:
-		var item = _buscar(id)
+		var item: Dictionary = _buscar(id)
 		if item.is_empty() or item.get("slot", "") != primeiro.get("slot", "") or int(item.get("andar", 1)) != int(primeiro.get("andar", 1)) or int(item.get("qualidade", 0)) != qualidade:
 			valido = false
 		if id in EstadoJogo.equipados.values():
@@ -424,5 +427,5 @@ func _atualizar_estado_box():
 	if quantidade == 6 and not valido:
 		$Craft/Instrucoes.text = "Confira andar, grau, Gold e equipado."
 
-func _on_fechar_pressed():
+func _on_fechar_pressed() -> void:
 	queue_free()

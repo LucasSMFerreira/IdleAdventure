@@ -43,7 +43,8 @@ stretch_mode = 5
 modulate = Color(0.62, 0.73, 0.88, 1)
 
 [node name="Personagem" type="AnimatedSprite2D" parent="Equipamento"]
-position = Vector2(220, 135)
+offset = Vector2(0, -28)
+position = Vector2(220, 173)
 scale = Vector2(2.25, 2.25)
 texture_filter = 1
 
@@ -164,7 +165,7 @@ offset_top = 42.0
 offset_right = 487.0
 offset_bottom = 76.0
 button_pressed = true
-text = "Melhores"
+text = "Top"
 
 [node name="Grade" type="ScrollContainer" parent="Bau"]
 offset_left = 15.0

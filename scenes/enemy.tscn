@@ -2,7 +2,15 @@
 
 [ext_resource type="Script" path="res://scenes/enemy.gd" id="2_enemy"]
 
+[ext_resource type="Script" path="res://scripts/combat/hurtbox.gd" id="3_hurt"]
+[ext_resource type="Script" path="res://scripts/combat/hitbox.gd" id="4_hit"]
+[ext_resource type="Script" path="res://scripts/states/state_machine.gd" id="5_states"]
+[ext_resource type="Script" path="res://scripts/states/state.gd" id="6_state"]
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_f1574"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hurt"]
+size = Vector2(26, 44)
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_attack"]
 size = Vector2(45, 50)
 
@@ -11,6 +19,7 @@ script = ExtResource("2_enemy")
 
 [node name="Visual" type="AnimatedSprite2D" parent="." unique_id=314700448]
 scale = Vector2(1, 1)
+offset = Vector2(0, -28)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1284074429]
 shape = SubResource("RectangleShape2D_f1574")
@@ -41,15 +50,65 @@ theme_override_colors/font_color = Color(1, 0.8, 0.32, 1)
 theme_override_font_sizes/font_size = 14
 text = "ESPECIAL!"
 
+[node name="Hurtbox" type="Area2D" parent="."]
+position = Vector2(0, -22)
+script = ExtResource("3_hurt")
+collision_layer = 4
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+shape = SubResource("RectangleShape2D_hurt")
+
+[node name="WeaponHitbox" type="Area2D" parent="."]
+script = ExtResource("4_hit")
+target_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WeaponHitbox"]
+position = Vector2(-30, -22)
+shape = SubResource("RectangleShape2D_attack")
+
 [node name="AreaAtaque" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AreaAtaque"]
-position = Vector2(-30, 0)
+position = Vector2(-30, -22)
 shape = SubResource("RectangleShape2D_attack")
 
-[node name="TempoAtaque" type="Timer" parent="."]
-wait_time = 1.5
+
+[node name="StateMachine" type="Node" parent="."]
+script = ExtResource("5_states")
+initial_state = &"Idle"
+
+[node name="Idle" type="Node" parent="StateMachine"]
+script = ExtResource("6_state")
+animation = &"idle"
+
+[node name="Walk" type="Node" parent="StateMachine"]
+script = ExtResource("6_state")
+animation = &"idle"
+
+[node name="PreAttack" type="Node" parent="StateMachine"]
+script = ExtResource("6_state")
+animation = &"idle"
+duration = 0.28
+next_state = &"Attack"
+
+[node name="Attack" type="Node" parent="StateMachine"]
+script = ExtResource("6_state")
+animation = &"attack"
+
+[node name="PostAttack" type="Node" parent="StateMachine"]
+script = ExtResource("6_state")
+animation = &"idle"
+duration = 0.5
+next_state = &"Idle"
+
+[node name="Hit" type="Node" parent="StateMachine"]
+script = ExtResource("6_state")
+animation = &"hit"
+
+[node name="Death" type="Node" parent="StateMachine"]
+script = ExtResource("6_state")
+animation = &"death"
 
 [connection signal="body_entered" from="AreaAtaque" to="." method="_on_area_ataque_body_entered"]
 [connection signal="body_exited" from="AreaAtaque" to="." method="_on_area_ataque_body_exited"]
-[connection signal="timeout" from="TempoAtaque" to="." method="_atacar"]

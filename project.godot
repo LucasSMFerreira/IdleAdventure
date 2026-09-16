@@ -21,10 +21,12 @@ EstadoJogo="*res://scripts/estado_jogo.gd"
 
 [display]
 
-window/size/viewport_width=1000
-window/size/viewport_height=300
+window/size/viewport_width=640
+window/size/viewport_height=360
+window/size/window_width_override=1280
+window/size/window_height_override=720
 window/stretch/mode="canvas_items"
-window/stretch/aspect="expand"
+window/stretch/aspect="keep"
 
 [physics]
 
@@ -32,4 +34,12 @@ window/stretch/aspect="expand"
 
 [rendering]
 
+textures/canvas_textures/default_texture_filter=0
+
 rendering_device/driver.windows="d3d12"
+
+[layer_names]
+
+2d_physics/layer_2="PlayerHurtbox"
+2d_physics/layer_3="EnemyHurtbox"
+2d_physics/layer_4="Hitboxes"

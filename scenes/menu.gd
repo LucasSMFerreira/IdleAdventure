@@ -4,8 +4,8 @@ extends Control
 @onready var lista_fases: GridContainer = $Fases
 @onready var estado: Label = $Estado
 
-func _ready():
-	var ultimo_andar = int((EstadoJogo.maior_fase_liberada - 1) / Progressao.FASES_POR_ANDAR) + 1
+func _ready() -> void:
+	var ultimo_andar: int = int((EstadoJogo.maior_fase_liberada - 1) / Progressao.FASES_POR_ANDAR) + 1
 	for andar in range(1, Progressao.TOTAL_ANDARES + 1):
 		escolha_andar.add_item("Andar %d" % andar)
 		escolha_andar.set_item_disabled(andar - 1, andar > ultimo_andar)
@@ -13,30 +13,30 @@ func _ready():
 	escolha_andar.item_selected.connect(_mostrar_fases)
 	_mostrar_fases(escolha_andar.selected)
 
-func _mostrar_fases(indice: int):
+func _mostrar_fases(indice: int) -> void:
 	for botao in lista_fases.get_children():
 		botao.free()
-	var andar = indice + 1
+	var andar: int = indice + 1
 	for fase in range(1, Progressao.FASES_POR_ANDAR + 1):
-		var botao = Button.new()
-		botao.custom_minimum_size = Vector2(120, 38)
-		botao.text = "Fase 10 - Boss" if fase == 10 else "Fase %d" % fase
+		var botao: Button = Button.new()
+		botao.custom_minimum_size = Vector2(78, 48)
+		botao.text = "10 • Boss" if fase == 10 else "Fase %d" % fase
 		botao.disabled = (andar - 1) * Progressao.FASES_POR_ANDAR + fase > EstadoJogo.maior_fase_liberada
 		botao.pressed.connect(_iniciar_fase.bind(andar, fase))
 		lista_fases.add_child(botao)
-	var ultimo_andar = int((EstadoJogo.maior_fase_liberada - 1) / Progressao.FASES_POR_ANDAR) + 1
-	var ultima_fase = (EstadoJogo.maior_fase_liberada - 1) % Progressao.FASES_POR_ANDAR + 1
-	var mensagem = "Torre concluída! Você pode revisitar qualquer fase." if EstadoJogo.torre_concluida else "Liberado até: Andar %d, Fase %d." % [ultimo_andar, ultima_fase]
+	var ultimo_andar: int = int((EstadoJogo.maior_fase_liberada - 1) / Progressao.FASES_POR_ANDAR) + 1
+	var ultima_fase: int = (EstadoJogo.maior_fase_liberada - 1) % Progressao.FASES_POR_ANDAR + 1
+	var mensagem: String = "Torre concluída! Você pode revisitar qualquer fase." if EstadoJogo.torre_concluida else "Liberado até: Andar %d, Fase %d." % [ultimo_andar, ultima_fase]
 	estado.text = "%s  |  Nível %d/100  |  Gold %d" % [mensagem, EstadoJogo.nivel, EstadoJogo.gold]
 
-func _iniciar_fase(andar: int, fase: int):
+func _iniciar_fase(andar: int, fase: int) -> void:
 	if EstadoJogo.selecionar_fase(andar, fase):
-		get_tree().change_scene_to_file("res://scenes/main.tscn")
+		get_tree().change_scene_to_file("res://scenes/world/wildlands_road.tscn")
 
-func _on_inventario_pressed():
+func _on_inventario_pressed() -> void:
 	if get_node_or_null("PainelBau"):
 		return
-	var painel = preload("res://scenes/inventario.tscn").instantiate()
+	var painel: CanvasLayer = preload("res://scenes/inventario.tscn").instantiate() as CanvasLayer
 	painel.name = "PainelBau"
 	add_child(painel)
 	painel.craft_concluido.connect(func(): _mostrar_fases(escolha_andar.selected))

@@ -8,7 +8,7 @@ const QUALIDADES = ["Comum", "Raro", "Épico", "Lendário"]
 const MULTIPLICADORES = [1, 2, 3, 5]
 
 static func nome_exibicao(item: Dictionary) -> String:
-	var nome = str(item.get("nome", "Item"))
+	var nome: String = str(item.get("nome", "Item"))
 	if int(item.get("qualidade", 0)) == 3:
 		return nome.replace("Lendário", "Lendário %d%%" % clampi(int(item.get("qualidade_pct", 100)), 60, 100))
 	return nome
@@ -16,7 +16,7 @@ static func nome_exibicao(item: Dictionary) -> String:
 static func pontuacao(item: Dictionary) -> int:
 	if item.is_empty():
 		return -1
-	var categoria = clampi(int(item.get("qualidade", 0)), 0, 3)
+	var categoria: int = clampi(int(item.get("qualidade", 0)), 0, 3)
 	return categoria * 100 + (clampi(int(item.get("qualidade_pct", 100)), 60, 100) if categoria == 3 else 0)
 
 static func custo_craft(item: Dictionary) -> int:
@@ -34,13 +34,13 @@ static func criar_item(andar: int, slot: String, qualidade: int, percentual_lend
 		return {}
 	andar = clampi(andar, 1, 10)
 	qualidade = clampi(qualidade, 0, 3)
-	var nivel_item = 1 + (andar - 1) * 10
-	var multiplicador = float(MULTIPLICADORES[qualidade])
+	var nivel_item: int = 1 + (andar - 1) * 10
+	var multiplicador: float = float(MULTIPLICADORES[qualidade])
 	if qualidade == 3:
 		percentual_lendario = clampi(percentual_lendario if percentual_lendario > 0 else randi_range(60, 100), 60, 100)
 		multiplicador = 3.0 + 2.0 * float(percentual_lendario) / 100.0
-	var vida_base = 0
-	var ataque_base = 0
+	var vida_base: int = 0
+	var ataque_base: int = 0
 	if slot == "arma":
 		ataque_base = maxi(1, int((nivel_item + 19) / 20))
 	elif slot == "arma_secundaria":
@@ -51,7 +51,7 @@ static func criar_item(andar: int, slot: String, qualidade: int, percentual_lend
 		ataque_base = maxi(1, int((nivel_item + 39) / 40))
 	else:
 		vida_base = maxi(2, int((nivel_item + 4) / 5))
-	var item = {
+	var item: Dictionary = {
 		"nome": "%s %s de %s" % [QUALIDADES[qualidade], PARTES[slot], CONJUNTOS[andar - 1]],
 		"slot": slot,
 		"andar": andar,
@@ -67,8 +67,8 @@ static func criar_item(andar: int, slot: String, qualidade: int, percentual_lend
 static func gerar_drop(andar: int, _fase: int, tipo: String) -> Dictionary:
 	if tipo == "normal" and randf() > 0.35:
 		return {}
-	var sorteio = randf()
-	var qualidade = clampi(int((andar - 1) / 3), 0, 2)
+	var sorteio: float = randf()
+	var qualidade: int = clampi(int((andar - 1) / 3), 0, 2)
 	if tipo == "boss":
 		qualidade = mini(qualidade + 2, 3) if sorteio > 0.7 else mini(qualidade + 1, 3)
 	elif tipo == "mini":
@@ -77,5 +77,5 @@ static func gerar_drop(andar: int, _fase: int, tipo: String) -> Dictionary:
 		qualidade = mini(qualidade + 2, 3)
 	elif sorteio > 0.8:
 		qualidade = mini(qualidade + 1, 3)
-	var slot = "arma" if tipo == "mini" else SLOTS[randi_range(0, SLOTS.size() - 1)]
+	var slot: String = "arma" if tipo == "mini" else SLOTS[randi_range(0, SLOTS.size() - 1)]
 	return criar_item(andar, slot, qualidade)

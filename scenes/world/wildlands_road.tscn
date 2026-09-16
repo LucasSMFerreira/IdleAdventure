@@ -1,0 +1,152 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" uid="uid://84amswouxexy" path="res://scenes/player.tscn" id="1_o5qli"]
+[ext_resource type="PackedScene" uid="uid://ued1gefky06h" path="res://scenes/enemy.tscn" id="3_sugp2"]
+[ext_resource type="Script" path="res://scenes/main.gd" id="4_main"]
+[ext_resource type="Script" path="res://scenes/cenario.gd" id="5_cenario"]
+
+[ext_resource type="Script" path="res://scripts/world/stage_manager.gd" id="6_stage"]
+[ext_resource type="Script" path="res://scripts/world/parallax_driver.gd" id="7_parallax"]
+[ext_resource type="Script" path="res://scripts/world/camera_feedback.gd" id="8_camera"]
+
+[node name="Main" type="Node2D" unique_id=1100356496]
+script = ExtResource("4_main")
+
+[node name="Background" type="ColorRect" parent="."]
+offset_right = 1000.0
+offset_bottom = 360.0
+mouse_filter = 2
+color = Color(0.1, 0.2, 0.15, 0)
+
+[node name="Ground" type="ColorRect" parent="." unique_id=739260343]
+offset_top = 300.0
+offset_right = 1000.0
+offset_bottom = 360.0
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+script = ExtResource("7_parallax")
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(1, 1)
+
+[node name="Cenario" type="Node2D" parent="ParallaxBackground/ParallaxLayer"]
+script = ExtResource("5_cenario")
+
+[node name="Player" parent="." unique_id=653104005 instance=ExtResource("1_o5qli")]
+position = Vector2(100, 240)
+
+[node name="StageManager" type="Node2D" parent="."]
+script = ExtResource("6_stage")
+enemy_scene = ExtResource("3_sugp2")
+
+[node name="Camera" type="Camera2D" parent="."]
+script = ExtResource("8_camera")
+position = Vector2(320, 180)
+
+
+[node name="Interface" type="CanvasLayer" parent="."]
+
+[node name="HudFundo" type="ColorRect" parent="Interface"]
+offset_left = 8.0
+offset_top = 7.0
+offset_right = 375.0
+offset_bottom = 83.0
+mouse_filter = 2
+color = Color(0.045, 0.09, 0.13, 0.82)
+
+[node name="Fase" type="Label" parent="Interface"]
+offset_left = 20.0
+offset_top = 10.0
+offset_right = 365.0
+offset_bottom = 29.0
+theme_override_font_sizes/font_size = 15
+text = "ANDAR 1  /  FASE 1  /  CICLO 1"
+
+[node name="VidaPlayer" type="Label" parent="Interface"]
+offset_left = 20.0
+offset_top = 34.0
+offset_right = 195.0
+offset_bottom = 51.0
+theme_override_font_sizes/font_size = 13
+text = "HP 20/20  •  ATK 1"
+
+[node name="BarraVida" type="ProgressBar" parent="Interface"]
+offset_left = 20.0
+offset_top = 53.0
+offset_right = 190.0
+offset_bottom = 61.0
+mouse_filter = 2
+show_percentage = false
+value = 100.0
+
+[node name="Objetivo" type="Label" parent="Interface"]
+visible = false
+offset_left = 20.0
+offset_top = 72.0
+offset_right = 360.0
+offset_bottom = 91.0
+text = "Elimine os inimigos para avançar."
+
+[node name="Experiencia" type="Label" parent="Interface"]
+offset_left = 210.0
+offset_top = 34.0
+offset_right = 365.0
+offset_bottom = 51.0
+theme_override_font_sizes/font_size = 13
+text = "LV 1  •  XP 0/25"
+
+[node name="BarraXP" type="ProgressBar" parent="Interface"]
+offset_left = 210.0
+offset_top = 53.0
+offset_right = 365.0
+offset_bottom = 61.0
+mouse_filter = 2
+show_percentage = false
+
+[node name="Drop" type="Label" parent="Interface"]
+visible = false
+offset_left = 20.0
+offset_top = 87.0
+offset_right = 635.0
+offset_bottom = 109.0
+theme_override_colors/font_color = Color(1, 0.85, 0.45, 1)
+theme_override_font_sizes/font_size = 13
+text = ""
+
+[node name="Gold" type="Label" parent="Interface"]
+offset_left = 210.0
+offset_top = 64.0
+offset_right = 365.0
+offset_bottom = 82.0
+theme_override_colors/font_color = Color(1, 0.84, 0.43, 1)
+theme_override_font_sizes/font_size = 13
+text = "GOLD 0"
+
+[node name="Inventario" type="Button" parent="Interface"]
+offset_left = 439.0
+offset_top = 10.0
+offset_right = 529.0
+offset_bottom = 44.0
+text = "Baú"
+
+[node name="Menu" type="Button" parent="Interface"]
+offset_left = 534.0
+offset_top = 10.0
+offset_right = 635.0
+offset_bottom = 44.0
+text = "Escolher fase"
+
+[node name="AvisoDrop" type="Timer" parent="."]
+wait_time = 3.5
+one_shot = true
+
+[node name="Reinicio" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[connection signal="pressed" from="Interface/Inventario" to="." method="_on_inventario_pressed"]
+[connection signal="pressed" from="Interface/Menu" to="." method="_on_menu_pressed"]
+[connection signal="health_changed" from="Player" to="." method="_on_player_vida_mudou"]
+[connection signal="died" from="Player" to="." method="_on_player_morreu"]
+[connection signal="timeout" from="Reinicio" to="." method="_on_reinicio_timeout"]
+[connection signal="timeout" from="AvisoDrop" to="." method="_on_aviso_drop_timeout"]
