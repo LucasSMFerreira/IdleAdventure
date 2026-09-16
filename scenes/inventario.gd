@@ -163,7 +163,9 @@ func _atualizar_equipados():
 		var titulo = "Arma 2" if slot == "arma_secundaria" else Itens.PARTES[slot]
 		var categoria = Itens.QUALIDADES[clampi(int(item.get("qualidade", 0)), 0, 3)]
 		if not item.is_empty() and int(item.get("qualidade", 0)) == 3:
-			categoria = "Lend.%d%%" % int(item.get("qualidade_pct", 100))
+			categoria = "L%d%%" % int(item.get("qualidade_pct", 100))
+		if not item.is_empty():
+			categoria += " A%d" % int(item.get("andar", 1))
 		botao.icon = ICONES[slot]
 		botao.expand_icon = true
 		botao.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
@@ -383,7 +385,7 @@ func _atualizar_craft():
 func _atualizar_estado_box():
 	var quantidade = enviados_ids.size()
 	if quantidade == 0:
-		$Craft/Instrucoes.text = "Envie itens do baú para esta caixa."
+		$Craft/Instrucoes.text = "Envie itens do baú para a caixa."
 		resultado.text = "Caixa vazia. Escolha uma função acima."
 		custo_label.text = ""
 		$Craft/ResultadoIcone.texture = null
@@ -401,7 +403,7 @@ func _atualizar_estado_box():
 		custo_label.text = "%d/1 item • sem custo" % quantidade
 		sintetizar_botao.disabled = quantidade != 1 or enviados_ids[0] in EstadoJogo.equipados.values()
 		return
-	$Craft/Instrucoes.text = "Seis peças da mesma parte, andar e categoria."
+	$Craft/Instrucoes.text = "6 peças: parte, andar e grau iguais."
 	var qualidade = int(primeiro.get("qualidade", 0))
 	var saida = "Refinar Lendário %" if modo_atual == 1 else Itens.QUALIDADES[mini(qualidade + 1, 3)]
 	resultado.text = "%s • %s • andar %d" % [saida, Itens.PARTES.get(primeiro.get("slot", ""), "Item"), int(primeiro.get("andar", 1))]
@@ -420,7 +422,7 @@ func _atualizar_estado_box():
 		valido = false
 	sintetizar_botao.disabled = not valido
 	if quantidade == 6 and not valido:
-		$Craft/Instrucoes.text = "Confira andar, categoria, Gold e peças equipadas."
+		$Craft/Instrucoes.text = "Confira andar, grau, Gold e equipado."
 
 func _on_fechar_pressed():
 	queue_free()
