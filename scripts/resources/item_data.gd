@@ -18,7 +18,9 @@ enum Rarity { COMMON, RARE, EPIC, LEGENDARY }
 @export var tier: int = 1
 @export var legendary_quality_pct: int = 0
 @export var allowed_classes: Array[String] = []
+@export var class_restriction: String = ""
 @export var unique: bool = false
+@export_range(0, 10) var upgrade_level: int = 0
 
 const ICONS: Dictionary = {
     "arma": "res://assets/items/arma.svg",
@@ -48,7 +50,9 @@ static func from_legacy(record: Dictionary) -> ItemData:
     result.quantity = maxi(1, int(record.get("quantidade", 1)))
     result.can_stack = bool(record.get("empilhavel", false))
     result.unique = bool(record.get("unico", false))
+    result.upgrade_level = clampi(int(record.get("aprimoramento", 0)), 0, 10)
     result.allowed_classes.assign(record.get("classes", []))
+    result.class_restriction = str(record.get("class_restriction", ""))
     if result.equipment_slot in ["arma", "arma_secundaria"]:
         result.item_type = ItemType.WEAPON
     elif result.equipment_slot in ["acessorio", "amuleto", "anel", "insignia"]:
@@ -76,13 +80,17 @@ func to_legacy() -> Dictionary:
         record["empilhavel"] = true
     if unique:
         record["unico"] = true
+    if upgrade_level > 0:
+        record["aprimoramento"] = upgrade_level
     if not allowed_classes.is_empty():
         record["classes"] = allowed_classes
+    if not class_restriction.is_empty():
+        record["class_restriction"] = class_restriction
     return record
 
 func can_equip(hero_class: String, hero_level: int, slot: String) -> bool:
-    if hero_level < level_req or not allowed_classes.is_empty() and not allowed_classes.has(hero_class):
+    if hero_level < level_req or not class_restriction.is_empty() and class_restriction != hero_class or not allowed_classes.is_empty() and not allowed_classes.has(hero_class):
         return false
     if slot == equipment_slot:
         return true
-    return equipment_slot == "acessorio" and slot in ["amuleto", "anel_1", "anel_2", "insignia"]
+    return equipment_slot == "acessorio" and slot in ["amuleto", "anel_1", "anel_2", "insignia", "brinco", "anel"]

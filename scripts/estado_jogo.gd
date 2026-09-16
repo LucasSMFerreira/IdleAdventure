@@ -11,7 +11,7 @@ var nivel: int = 1
 var xp_atual: int = 0
 var gold: int = 0
 var inventario: Array = []
-var equipados: Dictionary = {"arma": 0, "arma_secundaria": 0, "cabeca": 0, "peito": 0, "pernas": 0, "luvas": 0, "acessorio": 0, "amuleto": 0, "anel_1": 0, "anel_2": 0, "insignia": 0}
+var equipados: Dictionary = {"arma": 0, "arma_secundaria": 0, "cabeca": 0, "peito": 0, "pernas": 0, "luvas": 0, "acessorio": 0, "amuleto": 0, "anel_1": 0, "anel_2": 0, "insignia": 0, "brinco": 0, "anel": 0}
 var proximo_item_id: int = 1
 var stash_tab_ids: Array = []
 var bag_ids: Array[int] = []
@@ -49,7 +49,7 @@ func carregar() -> void:
 				if int(item.get("qualidade", 0)) == 3 and not item.has("qualidade_pct"):
 					item["qualidade_pct"] = 100
 		var salvos: Variant = dados.get("equipados", {})
-		equipados = {"arma": 0, "arma_secundaria": 0, "cabeca": 0, "peito": 0, "pernas": 0, "luvas": 0, "acessorio": 0, "amuleto": 0, "anel_1": 0, "anel_2": 0, "insignia": 0}
+		equipados = {"arma": 0, "arma_secundaria": 0, "cabeca": 0, "peito": 0, "pernas": 0, "luvas": 0, "acessorio": 0, "amuleto": 0, "anel_1": 0, "anel_2": 0, "insignia": 0, "brinco": 0, "anel": 0}
 		if salvos is Dictionary:
 			for slot in equipados:
 				equipados[slot] = int(salvos.get(slot, 0))
@@ -63,6 +63,10 @@ func carregar() -> void:
 				bag_ids.append(int(value))
 		difficulty_selected = clampi(int(dados.get("difficulty_selected", 0)), 0, 3)
 		active_class = str(dados.get("active_class", "Bárbaro"))
+		if active_class == "Sacerdote":
+			active_class = "Healer"
+		if not active_class in ["Bárbaro", "Arqueira", "Healer", "Mago", "Tank"]:
+			active_class = "Bárbaro"
 
 func salvar() -> void:
 	var arquivo: FileAccess = FileAccess.open(caminho_save, FileAccess.WRITE)
@@ -106,6 +110,29 @@ func adicionar_item(item: Dictionary) -> int:
 	if item.is_empty():
 		return 0
 	var novo: Dictionary = item.duplicate(true)
+	if bool(novo.get("empilhavel", false)):
+		var restante: int = maxi(int(novo.get("quantidade", 1)), 1)
+		for existente: Variant in inventario:
+			if existente is Dictionary and bool(existente.get("empilhavel", false)) and existente.get("nome", "") == novo.get("nome", "") and existente.get("slot", "") == novo.get("slot", ""):
+				var espaco: int = 999 - int(existente.get("quantidade", 1))
+				var mover: int = mini(espaco, restante)
+				existente["quantidade"] = int(existente.get("quantidade", 1)) + mover
+				restante -= mover
+				if restante == 0:
+					salvar()
+					dados_mudaram.emit()
+					return int(existente.get("id", 0))
+		var first_id: int = proximo_item_id
+		while restante > 0:
+			var stack: Dictionary = novo.duplicate(true)
+			stack["quantidade"] = mini(999, restante)
+			stack["id"] = proximo_item_id
+			proximo_item_id += 1
+			restante -= int(stack["quantidade"])
+			inventario.append(stack)
+		salvar()
+		dados_mudaram.emit()
+		return first_id
 	novo["id"] = proximo_item_id
 	proximo_item_id += 1
 	inventario.append(novo)
@@ -308,7 +335,32 @@ func equipar_no_slot(id: int, target_slot: String) -> bool:
 	var data := ItemData.from_legacy(item)
 	if not data.can_equip(active_class, nivel, target_slot):
 		return false
+	for occupied_slot: String in equipados:
+		if int(equipados[occupied_slot]) == id:
+			equipados[occupied_slot] = 0
 	equipados[target_slot] = id
+	salvar()
+	dados_mudaram.emit()
+	return true
+
+func aprimorar_item(id: int) -> bool:
+	var item: Dictionary = item_por_id(id)
+	if item.is_empty() or str(item.get("slot", "")) == "material":
+		return false
+	var current: int = clampi(int(item.get("aprimoramento", 0)), 0, 10)
+	if current >= 10:
+		return false
+	var cost: int = maxi(1, int(item.get("andar", 1))) * 10 * (current + 1) * (int(item.get("qualidade", 0)) + 1)
+	if gold < cost:
+		return false
+	if current == 0:
+		item["base_vida"] = int(item.get("bonus_vida", 0))
+		item["base_ataque"] = int(item.get("bonus_ataque", 0))
+	current += 1
+	item["aprimoramento"] = current
+	item["bonus_vida"] = int(item.get("base_vida", 0)) + ceili(float(item.get("base_vida", 0)) * current * 0.1)
+	item["bonus_ataque"] = int(item.get("base_ataque", 0)) + ceili(float(item.get("base_ataque", 0)) * current * 0.1)
+	gold -= cost
 	salvar()
 	dados_mudaram.emit()
 	return true

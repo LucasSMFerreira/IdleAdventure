@@ -87,7 +87,7 @@ static func open_module(owner: Node, module: String) -> void:
 	var root := owner
 	var existing := root.get_node_or_null("ActiveModule")
 	if existing != null: existing.queue_free()
-	var paths := {"stash": "res://scenes/ui/inventory_stash.tscn", "hero": "res://scenes/ui/hero_panel.tscn", "cube": "res://scenes/ui/cube_synthesizer.tscn", "shop": "res://scenes/ui/shop_panel.tscn"}
+	var paths := {"stash": "res://scenes/ui/inventory_stash.tscn", "hero": "res://scenes/ui/hero_inventory_modal.tscn", "cube": "res://scenes/ui/cube_synthesizer.tscn", "shop": "res://scenes/ui/shop_panel.tscn"}
 	if not paths.has(module): return
 	var instance := (load(str(paths[module])) as PackedScene).instantiate()
 	instance.name = "ActiveModule"

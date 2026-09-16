@@ -14,7 +14,7 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
     var destination_x: float = clampf(player.position.x, 320.0, 680.0)
-    var destination_y: float = 300.0 if chest_open else 180.0
+    var destination_y: float = 70.0 if chest_open else 180.0
     global_position = global_position.lerp(Vector2(destination_x, destination_y), minf(1.0, delta * 5.0))
     if impact_time > 0.0:
         impact_time = maxf(impact_time - delta, 0.0)

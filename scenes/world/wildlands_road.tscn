@@ -123,6 +123,7 @@ theme_override_font_sizes/font_size = 13
 text = "GOLD 0"
 
 [node name="Inventario" type="Button" parent="Interface"]
+visible = false
 offset_left = 439.0
 offset_top = 10.0
 offset_right = 529.0
@@ -130,6 +131,7 @@ offset_bottom = 44.0
 text = "Baú"
 
 [node name="Menu" type="Button" parent="Interface"]
+visible = false
 offset_left = 534.0
 offset_top = 10.0
 offset_right = 635.0
