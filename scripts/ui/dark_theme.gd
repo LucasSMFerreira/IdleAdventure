@@ -25,6 +25,8 @@ static func button(control: Control, accent: Color = BRONZE) -> void:
 	control.add_theme_stylebox_override("normal", panel(STONE_LIGHT, accent, 1))
 	control.add_theme_stylebox_override("hover", panel(Color("38281c"), GOLD, 2))
 	control.add_theme_stylebox_override("pressed", panel(Color("100d0c"), CRIMSON, 2))
+	control.add_theme_stylebox_override("focus", panel(Color("241d19"), GOLD, 2))
+	control.focus_mode = Control.FOCUS_ALL
 
 static func label(control: Label, size: int = 12, color: Color = TEXT) -> void:
 	control.add_theme_font_size_override("font_size", size)

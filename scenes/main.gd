@@ -19,6 +19,7 @@ extends Node2D
 
 var battle_log: Label
 var battle_elapsed: float = 0.0
+var battle_history: Array[String] = []
 
 var andar_atual: int = 1
 var fase_atual: int = 1
@@ -53,15 +54,15 @@ func _process(delta: float) -> void:
 func _build_idle_hud() -> void:
     var log_background := ColorRect.new()
     log_background.position = Vector2(0, 252)
-    log_background.size = Vector2(640, 22)
+    log_background.size = Vector2(640, 26)
     log_background.color = Color(0.04, 0.025, 0.02, 0.76)
     log_background.mouse_filter = Control.MOUSE_FILTER_IGNORE
     $Interface.add_child(log_background)
     battle_log = Label.new()
     battle_log.position = Vector2(10, 254)
-    battle_log.size = Vector2(550, 18)
+    battle_log.size = Vector2(550, 23)
     battle_log.text = "[00:00] A aventura continua..."
-    battle_log.add_theme_font_size_override("font_size", 10)
+    battle_log.add_theme_font_size_override("font_size", 9)
     battle_log.add_theme_color_override("font_color", Color("f8e7c2"))
     $Interface.add_child(battle_log)
     var toggle := TextureButton.new()
@@ -143,6 +144,7 @@ func _on_inimigo_morreu(tipo: String) -> void:
     if not item.is_empty():
         EstadoJogo.adicionar_item(item)
         texto_drop.text = "DROP: %s  |  +%d Gold" % [Itens.nome_exibicao(item), gold_drop]
+        _write_battle_log("Item encontrado: %s" % Itens.nome_exibicao(item))
     texto_drop.show()
     aviso_drop.start()
     _atualizar_xp()
@@ -200,8 +202,15 @@ func _toggle_hero_modal() -> void:
 func _write_battle_log(message: String) -> void:
     if battle_log == null:
         return
-    var total_seconds := floori(battle_elapsed)
-    battle_log.text = "[%02d:%02d] %s" % [total_seconds / 60, total_seconds % 60, message]
+    var total_seconds: int = floori(battle_elapsed)
+    var entry: String = "[%02d:%02d] %s" % [total_seconds / 60, total_seconds % 60, message]
+    battle_history.append(entry)
+    if battle_history.size() > 4:
+        battle_history.pop_front()
+    battle_log.text = "\n".join(battle_history.slice(maxi(0, battle_history.size() - 2)))
+    battle_log.tooltip_text = "\n".join(battle_history)
+    var event_color: Color = Color("ef9990") if message.contains("dano") else Color("f8e7c2")
+    battle_log.add_theme_color_override("font_color", event_color)
 
 func _on_player_attack_landed(target: Hurtbox) -> void:
     _floating_damage(target.get_parent() as Node2D, player.dano, Color("fbbf24"))

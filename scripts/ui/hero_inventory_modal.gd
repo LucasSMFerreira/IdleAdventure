@@ -34,6 +34,14 @@ var skill_description: Label
 var forge_selection: int = 0
 var forge_mode: bool = false
 var forge_description: Label
+var utility_panel: Panel
+var search_field: LineEdit
+var type_filter: OptionButton
+var sort_selector: OptionButton
+var detail_label: Label
+var selected_item_id: int = 0
+var recycle_confirmation_id: int = 0
+var recycle_button: Button
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
@@ -65,6 +73,7 @@ func _build() -> void:
 	_build_hero_section()
 	_build_inventory_section()
 	_build_footer()
+	_build_item_details()
 
 func _build_header() -> void:
 	var header := PanelContainer.new()
@@ -169,6 +178,37 @@ func _build_inventory_section() -> void:
 	inventory_grid.add_theme_constant_override("h_separation", 5)
 	inventory_grid.add_theme_constant_override("v_separation", 1)
 	panel.add_child(inventory_grid)
+	utility_panel = Panel.new()
+	utility_panel.position = Vector2(18, 184)
+	utility_panel.size = Vector2(222, 94)
+	utility_panel.add_theme_stylebox_override("panel", DarkTheme.panel(Color("1c1917"), DarkTheme.BRONZE, 1))
+	panel.add_child(utility_panel)
+	search_field = LineEdit.new()
+	search_field.placeholder_text = "Buscar item..."
+	search_field.position = Vector2(7, 6)
+	search_field.size = Vector2(208, 25)
+	search_field.clear_button_enabled = true
+	search_field.add_theme_font_size_override("font_size", 11)
+	search_field.add_theme_color_override("font_color", DarkTheme.TEXT)
+	search_field.add_theme_stylebox_override("normal", DarkTheme.panel(Color("100d0c"), DarkTheme.BRONZE, 1))
+	search_field.text_changed.connect(func(_query: String) -> void: _reset_results())
+	utility_panel.add_child(search_field)
+	type_filter = OptionButton.new()
+	type_filter.position = Vector2(7, 35)
+	type_filter.size = Vector2(208, 23)
+	DarkTheme.button(type_filter)
+	for label: String in ["Todos os tipos", "Equipamentos", "Acessórios", "Materiais"]:
+		type_filter.add_item(label)
+	type_filter.item_selected.connect(func(_index: int) -> void: _reset_results())
+	utility_panel.add_child(type_filter)
+	sort_selector = OptionButton.new()
+	sort_selector.position = Vector2(7, 62)
+	sort_selector.size = Vector2(208, 23)
+	DarkTheme.button(sort_selector)
+	for label: String in ["Ordem dos slots", "Raridade", "Nível", "Nome"]:
+		sort_selector.add_item(label)
+	sort_selector.item_selected.connect(func(_index: int) -> void: _reset_results())
+	utility_panel.add_child(sort_selector)
 	info_panel = PanelContainer.new()
 	info_panel.position = Vector2(235, 188)
 	info_panel.size = Vector2(330, 72)
@@ -190,7 +230,7 @@ func _build_inventory_section() -> void:
 	forge_description = UIFactory.text(forge_controls, "Selecione um item na grade.", Vector2(8, 5), Vector2(208, 34), 9, DarkTheme.TEXT)
 	forge_description.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	UIFactory.action(forge_controls, "Aprimorar", Vector2(8, 45), Vector2(100, 28), _upgrade_selected, DarkTheme.GOLD)
-	UIFactory.action(forge_controls, "Reciclar", Vector2(114, 45), Vector2(100, 28), _recycle_selected, DarkTheme.CRIMSON)
+	recycle_button = UIFactory.action(forge_controls, "Reciclar", Vector2(114, 45), Vector2(100, 28), _recycle_selected, DarkTheme.CRIMSON)
 	skill_tree = Control.new()
 	skill_tree.position = Vector2(240, 185)
 	skill_tree.size = Vector2(335, 90)
@@ -209,6 +249,16 @@ func _build_inventory_section() -> void:
 	skill_description = UIFactory.text(skill_tree, "", Vector2(0, 45), Vector2(335, 42), 9)
 	skill_description.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 
+func _build_item_details() -> void:
+	var detail_panel := Panel.new()
+	detail_panel.position = Vector2(612, 52)
+	detail_panel.size = Vector2(166, 98)
+	detail_panel.add_theme_stylebox_override("panel", DarkTheme.panel(Color("171311"), DarkTheme.BRONZE, 1))
+	panel.add_child(detail_panel)
+	detail_label = UIFactory.text(detail_panel, "Selecione um item\npara comparar atributos.", Vector2(7, 5), Vector2(152, 88), 9)
+	detail_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	detail_label.clip_text = true
+
 func _build_footer() -> void:
 	for index: int in range(HUBS.size()):
 		var data: Array = HUBS[index]
@@ -221,6 +271,7 @@ func _build_footer() -> void:
 		button.ignore_texture_size = true
 		button.stretch_mode = TextureButton.STRETCH_KEEP_ASPECT_CENTERED
 		button.pressed.connect(_open_hub.bind(str(data[1])))
+		button.focus_mode = Control.FOCUS_ALL
 		panel.add_child(button)
 		var icon := Sprite2D.new()
 		icon.texture = load("res://assets/ui/%s.svg" % data[2])
@@ -246,6 +297,7 @@ func _icon_button(owner: Control, icon_name: String, at: Vector2, callback: Call
 	button.ignore_texture_size = true
 	button.stretch_mode = TextureButton.STRETCH_KEEP_ASPECT_CENTERED
 	button.pressed.connect(callback)
+	button.focus_mode = Control.FOCUS_ALL
 	owner.add_child(button)
 	var icon := Sprite2D.new()
 	icon.texture = load("res://assets/ui/%s.svg" % icon_name)
@@ -271,18 +323,60 @@ func refresh() -> void:
 func refresh_inventory() -> void:
 	if inventory_grid == null: return
 	for child: Node in inventory_grid.get_children(): child.queue_free()
-	var grid := InventoryStore.grid_for(current_source)
+	var grid: InventoryGrid = InventoryStore.grid_for(current_source)
 	if grid == null: return
-	var pages := maxi(1, ceili(float(grid.capacity()) / 21.0))
+	var entries: Array[Dictionary] = _visible_entries(grid)
+	var pages: int = maxi(1, ceili(float(entries.size()) / 21.0))
 	inventory_page = clampi(inventory_page, 0, pages - 1)
 	page_label.text = "%d/%d" % [inventory_page + 1, pages]
 	inventory_title.text = "MOCHILA" if current_source == "bag" else "BAÚ • ABA %s" % ("I" if current_source == "stash:0" else "II")
 	for index: int in range(21):
-		var source_index := inventory_page * 21 + index
-		var item_id := grid.item_at(source_index)
-		var cell := UIFactory.slot(inventory_grid, Vector2.ZERO, current_source, source_index, item_id)
+		var entry_index: int = inventory_page * 21 + index
+		var entry: Dictionary = entries[entry_index] if entry_index < entries.size() else {}
+		var item_id: int = int(entry.get("id", 0))
+		var source_index: int = int(entry.get("index", -1))
+		var cell: ItemSlot = UIFactory.slot(inventory_grid, Vector2.ZERO, current_source, source_index, item_id)
 		cell.quick_clicked.connect(_quick_equip)
 		cell.item_dropped.connect(_inventory_drop)
+
+func _visible_entries(grid: InventoryGrid) -> Array[Dictionary]:
+	var result: Array[Dictionary] = []
+	var filtered: bool = not search_field.text.strip_edges().is_empty() or type_filter.selected > 0 or sort_selector.selected > 0
+	for index: int in range(grid.capacity()):
+		var item_id: int = grid.item_at(index)
+		if not filtered:
+			result.append({"id": item_id, "index": index})
+			continue
+		if item_id <= 0: continue
+		var record: Dictionary = EstadoJogo.item_por_id(item_id)
+		var query: String = search_field.text.strip_edges().to_lower()
+		if not query.is_empty() and not str(record.get("nome", "")).to_lower().contains(query): continue
+		if not _type_matches(str(record.get("slot", ""))): continue
+		result.append({"id": item_id, "index": index, "rarity": int(record.get("qualidade", 0)), "level": int(record.get("nivel", 1)), "name": str(record.get("nome", ""))})
+	if sort_selector.selected > 0:
+		result.sort_custom(_entry_before)
+	return result
+
+func _type_matches(slot: String) -> bool:
+	match type_filter.selected:
+		1: return slot in ["arma", "arma_secundaria", "cabeca", "peito", "pernas", "luvas", "botas"]
+		2: return slot in ["acessorio", "amuleto", "anel", "brinco", "insignia"]
+		3: return slot == "material"
+	return true
+
+func _entry_before(left: Dictionary, right: Dictionary) -> bool:
+	match sort_selector.selected:
+		1:
+			if int(left["rarity"]) != int(right["rarity"]): return int(left["rarity"]) > int(right["rarity"])
+		2:
+			if int(left["level"]) != int(right["level"]): return int(left["level"]) > int(right["level"])
+		3:
+			if str(left["name"]) != str(right["name"]): return str(left["name"]).naturalnocasecmp_to(str(right["name"])) < 0
+	return int(left["index"]) < int(right["index"])
+
+func _reset_results() -> void:
+	inventory_page = 0
+	refresh_inventory()
 
 func _change_class(direction: int) -> void:
 	current_class_index = wrapi(current_class_index + direction, 0, CLASSES.size())
@@ -298,18 +392,48 @@ func _on_equipment_drop(item_id: int, _destination: String, index: int) -> void:
 		item_equipped.emit(slot_type, item)
 
 func _quick_equip(item_id: int, _source: String) -> void:
+	selected_item_id = item_id
+	_show_item_details(item_id)
 	if forge_mode:
 		forge_selection = item_id
+		recycle_confirmation_id = 0
+		recycle_button.text = "Reciclar"
 		_update_forge_description()
 		return
 	var item := ItemData.from_legacy(EstadoJogo.item_por_id(item_id))
 	var target := item.equipment_slot
 	if target == "acessorio": target = "brinco" if int(EstadoJogo.equipados.get("brinco", 0)) == 0 else "anel"
-	if target in EQUIPMENT and item.can_equip(CLASSES[current_class_index], EstadoJogo.nivel, target) and EstadoJogo.equipar_no_slot(item_id, target):
+	if target not in EQUIPMENT:
+		_show_item_details(item_id, "Material ou item sem slot de herói.")
+		return
+	if not item.can_equip(CLASSES[current_class_index], EstadoJogo.nivel, target):
+		var reason: String = "Nível insuficiente." if EstadoJogo.nivel < item.level_req else "Classe incompatível."
+		_show_item_details(item_id, reason)
+		return
+	if EstadoJogo.equipar_no_slot(item_id, target):
+		_show_item_details(item_id, "Equipado.")
 		item_equipped.emit(target, item)
 
 func _inventory_drop(item_id: int, _destination: String, index: int) -> void:
 	InventoryStore.transfer(item_id, current_source, index)
+	selected_item_id = item_id
+	_show_item_details(item_id)
+
+func _show_item_details(item_id: int, notice: String = "") -> void:
+	var record: Dictionary = EstadoJogo.item_por_id(item_id)
+	if record.is_empty():
+		detail_label.text = "Selecione um item\npara comparar atributos."
+		return
+	var item: ItemData = ItemData.from_legacy(record)
+	var target: String = item.equipment_slot
+	if target == "acessorio": target = "brinco"
+	var equipped: Dictionary = EstadoJogo.item_equipado(target)
+	var health_delta: int = int(record.get("bonus_vida", 0)) - int(equipped.get("bonus_vida", 0))
+	var attack_delta: int = int(record.get("bonus_ataque", 0)) - int(equipped.get("bonus_ataque", 0))
+	var rarity_name: String = Itens.QUALIDADES[int(item.rarity)]
+	var restriction: String = "Nível %d" % item.level_req
+	if not item.class_restriction.is_empty(): restriction += " • %s" % item.class_restriction
+	detail_label.text = "%s\n%s • Lv.%d • A%d\nΔHP %+d  ΔATK %+d\n%s" % [item.name.left(20), rarity_name, item.level_req, item.floor, health_delta, attack_delta, notice]
 
 func _change_page(direction: int) -> void:
 	inventory_page = maxi(0, inventory_page + direction)
@@ -319,6 +443,7 @@ func _show_inventory() -> void:
 	forge_mode = false
 	forge_controls.visible = false
 	skill_tree.visible = false
+	utility_panel.visible = true
 	current_source = "bag"
 	inventory_page = 0
 	inventory_grid.visible = true
@@ -329,6 +454,7 @@ func _show_formation() -> void:
 	forge_mode = false
 	forge_controls.visible = false
 	skill_tree.visible = false
+	utility_panel.visible = false
 	inventory_grid.visible = false
 	info_panel.visible = true
 	info_label.text = "FORMAÇÃO ATIVA\nBárbaro líder • bônus de equipe +5%\nTroque a classe pelas setas no retrato."
@@ -341,6 +467,7 @@ func _open_hub(tab_id: String) -> void:
 			forge_mode = false
 			forge_controls.visible = false
 			skill_tree.visible = false
+			utility_panel.visible = true
 			current_source = "stash:0" if current_source == "bag" else ("stash:1" if current_source == "stash:0" else "bag")
 			inventory_page = 0
 			inventory_grid.visible = true
@@ -349,6 +476,7 @@ func _open_hub(tab_id: String) -> void:
 		"skills":
 			forge_mode = false
 			forge_controls.visible = false
+			utility_panel.visible = false
 			inventory_grid.visible = false
 			info_panel.visible = false
 			skill_tree.visible = true
@@ -356,6 +484,7 @@ func _open_hub(tab_id: String) -> void:
 		"talents":
 			_show_info("TALENTOS PASSIVOS\n◆ Maestria +5%   ✦ Resistência +3%\nPontos adicionais serão liberados por nível.")
 		"forge":
+			utility_panel.visible = false
 			skill_tree.visible = false
 			forge_mode = true
 			forge_controls.visible = true
@@ -369,6 +498,7 @@ func _show_info(message: String) -> void:
 	forge_mode = false
 	forge_controls.visible = false
 	skill_tree.visible = false
+	utility_panel.visible = false
 	inventory_grid.visible = false
 	info_panel.visible = true
 	info_label.text = message
@@ -407,7 +537,15 @@ func _update_forge_description() -> void:
 	if record.is_empty():
 		forge_description.text = "Selecione um item na grade."
 		return
-	forge_description.text = "%s  +%d\nGold: %d  •  Reciclar: +%d" % [str(record.get("nome", "Item")), int(record.get("aprimoramento", 0)), _forge_cost(record), Itens.valor_reciclagem(record)]
+	var current: int = int(record.get("aprimoramento", 0))
+	if current >= 10:
+		forge_description.text = "Aprimoramento máximo: +10\nReciclar: +%d Gold" % Itens.valor_reciclagem(record)
+		return
+	var base_health: int = int(record.get("base_vida", record.get("bonus_vida", 0)))
+	var base_attack: int = int(record.get("base_ataque", record.get("bonus_ataque", 0)))
+	var next_health: int = base_health + ceili(float(base_health) * (current + 1) * 0.1)
+	var next_attack: int = base_attack + ceili(float(base_attack) * (current + 1) * 0.1)
+	forge_description.text = "+%d → +%d  •  %d Gold\nHP %d→%d  ATK %d→%d" % [current, current + 1, _forge_cost(record), int(record.get("bonus_vida", 0)), next_health, int(record.get("bonus_ataque", 0)), next_attack]
 
 func _forge_cost(record: Dictionary) -> int:
 	var next_rank: int = int(record.get("aprimoramento", 0)) + 1
@@ -416,17 +554,58 @@ func _forge_cost(record: Dictionary) -> int:
 func _upgrade_selected() -> void:
 	if EstadoJogo.aprimorar_item(forge_selection):
 		_update_forge_description()
+		_show_item_details(forge_selection, "Aprimoramento concluído.")
 		item_equipped.emit("upgrade", ItemData.from_legacy(EstadoJogo.item_por_id(forge_selection)))
 	else:
-		forge_description.text = "Aprimoramento indisponível: limite +10 ou Gold insuficiente."
+		forge_description.text = "Limite +10 ou Gold insuficiente."
 
 func _recycle_selected() -> void:
+	var record: Dictionary = EstadoJogo.item_por_id(forge_selection)
+	if record.is_empty():
+		forge_description.text = "Selecione um item na grade."
+		return
+	if int(record.get("qualidade", 0)) >= 1 and recycle_confirmation_id != forge_selection:
+		recycle_confirmation_id = forge_selection
+		recycle_button.text = "Confirmar"
+		forge_description.text = "Reciclar %s?\nClique em Confirmar para concluir." % Itens.QUALIDADES[int(record.get("qualidade", 0))]
+		return
 	var recycled: int = EstadoJogo.reciclar(forge_selection)
+	recycle_confirmation_id = 0
+	recycle_button.text = "Reciclar"
 	if recycled > 0:
 		forge_selection = 0
+		selected_item_id = 0
+		_show_item_details(0)
 		forge_description.text = "Item reciclado • +%d Gold" % recycled
 	else:
 		forge_description.text = "Remova o item equipado antes de reciclar."
+
+func _unhandled_key_input(event: InputEvent) -> void:
+	if not event is InputEventKey or not event.pressed or event.echo:
+		return
+	var key: InputEventKey = event as InputEventKey
+	if key.keycode == KEY_ESCAPE:
+		close()
+	elif key.ctrl_pressed and key.keycode == KEY_F:
+		_show_inventory()
+		search_field.grab_focus()
+	elif search_field.has_focus():
+		return
+	elif key.keycode == KEY_PAGEUP:
+		_change_page(-1)
+	elif key.keycode == KEY_PAGEDOWN:
+		_change_page(1)
+	elif key.keycode == KEY_LEFT:
+		_change_class(-1)
+	elif key.keycode == KEY_RIGHT:
+		_change_class(1)
+	elif key.keycode == KEY_B:
+		_open_hub("stash")
+	elif key.keycode == KEY_F:
+		_open_hub("forge")
+	else:
+		return
+	get_viewport().set_input_as_handled()
 
 func close() -> void:
 	closed.emit()
