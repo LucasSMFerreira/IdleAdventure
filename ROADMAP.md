@@ -12,3 +12,11 @@ Os spritesheets iniciais ficam em assets/sprites. O Bárbaro usa quadros de anda
 No computador, abrir o baú mostra o jogo acima e o baú embaixo. No telefone, o baú cobre a partida; ela continua rodando ao fundo. A aba Síntese consome seis peças da mesma parte, andar e categoria usando Gold. Lendários têm qualidade de 60% a 100%; cinco cópias lendárias podem refinar essa porcentagem.
 
 Fases são liberadas ao vencer bosses. XP evolui o personagem aos poucos; drops melhores e equipamentos são essenciais para vencer fases mais difíceis. O jogador pode revisitar fases liberadas; em caso de derrota, mantém a evolução e tenta a fase novamente.
+
+ 
+
+# Desenvolvimento
+
+Projeto em desenvolvimento.
+
+# Última revisão: treinamento Git.
