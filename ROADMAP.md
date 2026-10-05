@@ -18,3 +18,5 @@ Fases são liberadas ao vencer bosses. XP evolui o personagem aos poucos; drops 
 # Desenvolvimento
 
 Projeto em desenvolvimento.
+
+# Última revisão: treinamento Git.
